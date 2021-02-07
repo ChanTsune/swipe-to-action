@@ -221,7 +221,7 @@ class SwipeLayout : ViewGroup {
         val parentTop = paddingTop
         for (child in children) {
             if (child.visibility == GONE) continue
-            val lp = child.layoutParams as LayoutParams
+            val lp = child.swipeLayoutLayoutParams
             when (lp.gravity) {
                 LayoutParams.GRAVITY_CENTER -> centerView = child
                 LayoutParams.GRAVITY_LEFT -> leftView = child
@@ -231,7 +231,7 @@ class SwipeLayout : ViewGroup {
         val centerView = centerView ?: throw RuntimeException("Center view must be added")
         for (child in children) {
             if (child.visibility != GONE) {
-                val lp = child.layoutParams as LayoutParams
+                val lp = child.swipeLayoutLayoutParams
                 val orientation = lp.gravity
                 val width = child.measuredWidth
                 val height = child.measuredHeight
@@ -357,7 +357,7 @@ class SwipeLayout : ViewGroup {
         }
 
         private fun getStickyBound(view: View): Int {
-            val lp = getLayoutParams(view)
+            val lp = view.swipeLayoutLayoutParams
             if (lp.sticky == LayoutParams.STICKY_NONE) return LayoutParams.STICKY_NONE
             return if (lp.sticky == LayoutParams.STICKY_SELF) view.width else lp.sticky
         }
@@ -366,9 +366,7 @@ class SwipeLayout : ViewGroup {
             if (leftView == null) {
                 return if (child === centerView) left.coerceAtMost(0) else left.coerceAtMost(width)
             }
-            val lp = getLayoutParams(
-                leftView!!
-            )
+            val lp = leftView!!.swipeLayoutLayoutParams
             return when (lp.clamp) {
                 LayoutParams.CLAMP_PARENT -> left.coerceAtMost(width + child.left - leftView!!.right)
                 LayoutParams.CLAMP_SELF -> left.coerceAtMost(child.left - leftView!!.left)
@@ -380,9 +378,7 @@ class SwipeLayout : ViewGroup {
             if (rightView == null) {
                 return if (child === centerView) left.coerceAtLeast(0) else left.coerceAtLeast(-child.width)
             }
-            val lp = getLayoutParams(
-                rightView!!
-            )
+            val lp = rightView!!.swipeLayoutLayoutParams
             return when (lp.clamp) {
                 LayoutParams.CLAMP_PARENT -> (child.left - rightView!!.left).coerceAtLeast(left)
                 LayoutParams.CLAMP_SELF -> left.coerceAtLeast(width - rightView!!.left + child.left - rightView!!.width)
@@ -401,9 +397,7 @@ class SwipeLayout : ViewGroup {
                 startScrollAnimation(child, child.left - centerView!!.left, false, true)
                 return true
             }
-            val lp = getLayoutParams(
-                leftView!!
-            )
+            val lp = leftView!!.swipeLayoutLayoutParams
             if (dx > 0 && xvel >= 0 && leftViewClampReached(lp)) {
                 swipeListener?.onSwipeClampReached(this@SwipeLayout, true)
                 return true
@@ -444,9 +438,7 @@ class SwipeLayout : ViewGroup {
                 startScrollAnimation(child, child.left - centerView!!.left, false, false)
                 return true
             }
-            val lp = getLayoutParams(
-                rightView!!
-            )
+            val lp = rightView!!.swipeLayoutLayoutParams
             if (dx < 0 && xvel <= 0 && rightViewClampReached(lp)) {
                 swipeListener?.onSwipeClampReached(this@SwipeLayout, false)
                 return true
@@ -491,9 +483,8 @@ class SwipeLayout : ViewGroup {
         }
     }
 
-    private fun getLayoutParams(view: View): LayoutParams {
-        return view.layoutParams as LayoutParams
-    }
+    private val View.swipeLayoutLayoutParams: LayoutParams
+        get() = layoutParams as? LayoutParams ?: LayoutParams(layoutParams)
 
     private fun offsetChildren(skip: View?, dx: Int) {
         if (dx == 0) return
