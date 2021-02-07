@@ -448,9 +448,7 @@ class SwipeLayout : ViewGroup {
                 rightView!!
             )
             if (dx < 0 && xvel <= 0 && rightViewClampReached(lp)) {
-                if (swipeListener != null) {
-                    swipeListener!!.onSwipeClampReached(this@SwipeLayout, false)
-                }
+                swipeListener?.onSwipeClampReached(this@SwipeLayout, false)
                 return true
             }
             if (dx < 0 && xvel <= 0 && lp.bringToClamp != LayoutParams.BRING_TO_CLAMP_NO && rightView!!.left + lp.bringToClamp < width) {
