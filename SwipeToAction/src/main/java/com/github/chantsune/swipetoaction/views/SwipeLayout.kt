@@ -18,7 +18,7 @@ import java.util.*
 import kotlin.math.abs
 
 class SwipeLayout : ViewGroup {
-    private var dragHelper: ViewDragHelper? = null
+    private lateinit var dragHelper: ViewDragHelper
     var leftView: View? = null
     var rightView: View? = null
     var centerView: View? = null
@@ -93,7 +93,7 @@ class SwipeLayout : ViewGroup {
     fun reset() {
         centerView?.let {
             finishAnimator()
-            dragHelper?.abort()
+            dragHelper.abort()
             offsetChildren(null, -it.left)
         }
     }
@@ -135,7 +135,7 @@ class SwipeLayout : ViewGroup {
 
     private fun runAnimation(initialX: Int, targetX: Int) {
         finishAnimator()
-        dragHelper?.abort()
+        dragHelper.abort()
         val animator = ObjectAnimator()
         animator.target = this
         animator.setPropertyName("offset")
@@ -277,6 +277,7 @@ class SwipeLayout : ViewGroup {
                 else onMoveRightReleased(releasedChild, dx, xvel)
             }
             if (!handled) {
+                // go back to center
                 startScrollAnimation(
                     releasedChild,
                     releasedChild.left - centerView!!.left,
@@ -492,12 +493,10 @@ class SwipeLayout : ViewGroup {
         moveToClamp: Boolean,
         toRight: Boolean
     ) {
-        if (dragHelper!!.settleCapturedViewAt(targetX, view.top)) {
+        if (dragHelper.settleCapturedViewAt(targetX, view.top)) {
             ViewCompat.postOnAnimation(view, SettleRunnable(view, moveToClamp, toRight))
-        } else {
-            if (moveToClamp) {
-                swipeListener?.onSwipeClampReached(this@SwipeLayout, toRight)
-            }
+        } else if (moveToClamp) {
+            swipeListener?.onSwipeClampReached(this@SwipeLayout, toRight)
         }
     }
 
@@ -573,7 +572,7 @@ class SwipeLayout : ViewGroup {
             }
         }
         if (event.actionMasked != MotionEvent.ACTION_MOVE || touchState == TouchState.SWIPE) {
-            dragHelper!!.processTouchEvent(event)
+            dragHelper.processTouchEvent(event)
         }
         return true
     }
@@ -601,7 +600,7 @@ class SwipeLayout : ViewGroup {
         if (event.actionMasked == MotionEvent.ACTION_DOWN) {
             onTouchBegin(event)
         }
-        return dragHelper!!.shouldInterceptTouchEvent(event)
+        return dragHelper.shouldInterceptTouchEvent(event)
     }
 
     private fun onTouchBegin(event: MotionEvent) {
@@ -616,7 +615,7 @@ class SwipeLayout : ViewGroup {
         private val moveToRight: Boolean
     ) : Runnable {
         override fun run() {
-            if (dragHelper?.continueSettling(true) == true) {
+            if (dragHelper.continueSettling(true)) {
                 ViewCompat.postOnAnimation(view, this)
             } else {
                 Log.d(TAG, "ONSWIPE clamp: $moveToClamp ; moveToRight: $moveToRight")
@@ -671,7 +670,7 @@ class SwipeLayout : ViewGroup {
             const val BRING_TO_CLAMP_NO = -1
             const val STICKY_SELF = -1
             const val STICKY_NONE = -2
-            private const val DEFAULT_STICKY_SENSITIVITY = 0.9f
+            const val DEFAULT_STICKY_SENSITIVITY = 0.4f
         }
     }
 

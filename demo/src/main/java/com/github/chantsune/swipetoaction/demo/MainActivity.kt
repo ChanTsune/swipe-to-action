@@ -82,24 +82,19 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
         }
 
         override fun onBeginSwipe(swipeLayout: SwipeLayout, moveToRight: Boolean, position: Int) {
-            Toast.makeText(swipeLayout.context, "onBeginSwipe at $position", Toast.LENGTH_LONG).show()
+            Toast.makeText(swipeLayout.context, "onBeginSwipe at $position", Toast.LENGTH_SHORT).show()
         }
 
         override fun onSwipeClampReached(swipeLayout: SwipeLayout, moveToRight: Boolean, position: Int) {
-            Toast.makeText(swipeLayout.context, "onSwipeClampReached $position", Toast.LENGTH_LONG).show()
-            if (moveToRight) {
-                items.removeAt(position)
-                notifyItemRemoved(position)
-                notifyDataSetChanged()
-            }
+            Toast.makeText(swipeLayout.context, "onSwipeClampReached $position", Toast.LENGTH_SHORT).show()
         }
 
         override fun onLeftStickyEdge(swipeLayout: SwipeLayout, moveToRight: Boolean, position: Int) {
-            Toast.makeText(swipeLayout.context, "onLeftStickyEdge $position", Toast.LENGTH_LONG).show()
+            Toast.makeText(swipeLayout.context, "onLeftStickyEdge $position", Toast.LENGTH_SHORT).show()
         }
 
         override fun onRightStickyEdge(swipeLayout: SwipeLayout, moveToRight: Boolean, position: Int) {
-            Toast.makeText(swipeLayout.context, "onRightStickyEdge $position", Toast.LENGTH_LONG).show()
+            Toast.makeText(swipeLayout.context, "onRightStickyEdge $position", Toast.LENGTH_SHORT).show()
         }
         override fun getItemCount(): Int = items.size
     }
