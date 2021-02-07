@@ -6,7 +6,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.github.chantsune.swipetoaction.views.SwipeLayout
 
 abstract class SwipeToActionAdapter: RecyclerView.Adapter<SwipeToActionViewHolder>() {
-    private val overSwipeEnabled = false
+    private val overSwipeEnabled = true
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SwipeToActionViewHolder {
         val lp = SwipeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
         val swipeLayout = SwipeLayout(parent.context).apply {
