@@ -301,7 +301,7 @@ class SwipeLayout : ViewGroup {
         private fun rightViewClampReached(lp: LayoutParams): Boolean {
             return rightView?.let { view ->
                 when (lp.clamp) {
-                    LayoutParams.CLAMP_PARENT -> view.right <= width
+                    LayoutParams.CLAMP_PARENT -> view.left <= 0
                     LayoutParams.CLAMP_SELF -> view.right <= width
                     else -> view.left + lp.clamp <= width
                 }
