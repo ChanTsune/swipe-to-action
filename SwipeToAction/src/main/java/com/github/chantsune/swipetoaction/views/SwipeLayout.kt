@@ -7,8 +7,10 @@ import android.util.Log
 import android.util.TypedValue
 import android.view.*
 import android.view.animation.AccelerateInterpolator
+import androidx.core.content.res.use
 import androidx.core.view.NestedScrollingParent
 import androidx.core.view.ViewCompat
+import androidx.core.view.children
 import androidx.customview.widget.ViewDragHelper
 import com.github.chantsune.swipetoaction.R
 import java.lang.ref.WeakReference
@@ -25,10 +27,12 @@ class SwipeLayout : ViewGroup {
     private var swipeListener: OnSwipeListener? = null
     private var weakAnimator: WeakReference<ObjectAnimator>? = null
     private val hackedParents: MutableMap<View, Boolean> = WeakHashMap()
+
     /**
      * Enable or disable swipe gesture from left side
      */
     var leftSwipeEnabled = true
+
     /**
      * Enable or disable swipe gesture from right side
      */
@@ -62,18 +66,20 @@ class SwipeLayout : ViewGroup {
         )
         touchSlop = ViewConfiguration.get(getContext()).scaledTouchSlop.toFloat()
         if (attrs != null) {
-            val a = context.obtainStyledAttributes(attrs, R.styleable.SwipeLayout)
-            if (a.hasValue(R.styleable.SwipeLayout_swipe_enabled)) {
-                leftSwipeEnabled = a.getBoolean(R.styleable.SwipeLayout_swipe_enabled, true)
-                rightSwipeEnabled = a.getBoolean(R.styleable.SwipeLayout_swipe_enabled, true)
+            context.obtainStyledAttributes(attrs, R.styleable.SwipeLayout).use { a ->
+                if (a.hasValue(R.styleable.SwipeLayout_swipe_enabled)) {
+                    leftSwipeEnabled = a.getBoolean(R.styleable.SwipeLayout_swipe_enabled, true)
+                    rightSwipeEnabled = a.getBoolean(R.styleable.SwipeLayout_swipe_enabled, true)
+                }
+                if (a.hasValue(R.styleable.SwipeLayout_left_swipe_enabled)) {
+                    leftSwipeEnabled =
+                        a.getBoolean(R.styleable.SwipeLayout_left_swipe_enabled, true)
+                }
+                if (a.hasValue(R.styleable.SwipeLayout_right_swipe_enabled)) {
+                    rightSwipeEnabled =
+                        a.getBoolean(R.styleable.SwipeLayout_right_swipe_enabled, true)
+                }
             }
-            if (a.hasValue(R.styleable.SwipeLayout_left_swipe_enabled)) {
-                leftSwipeEnabled = a.getBoolean(R.styleable.SwipeLayout_left_swipe_enabled, true)
-            }
-            if (a.hasValue(R.styleable.SwipeLayout_right_swipe_enabled)) {
-                rightSwipeEnabled = a.getBoolean(R.styleable.SwipeLayout_right_swipe_enabled, true)
-            }
-            a.recycle()
         }
     }
 
@@ -110,7 +116,7 @@ class SwipeLayout : ViewGroup {
     fun animateSwipeLeft() {
         if (centerView != null && rightView != null) {
             val target = -rightView!!.width
-            runAnimation(getOffset(), target)
+            runAnimation(offset, target)
         }
     }
 
@@ -123,7 +129,7 @@ class SwipeLayout : ViewGroup {
     fun animateSwipeRight() {
         if (centerView != null && leftView != null) {
             val target = leftView!!.width
-            runAnimation(getOffset(), target)
+            runAnimation(offset, target)
         }
     }
 
@@ -152,34 +158,28 @@ class SwipeLayout : ViewGroup {
     }
 
     /**
-     * get horizontal offset from initial position
+     * horizontal offset from initial position
      */
-    fun getOffset(): Int {
-        return centerView?.left ?: 0
-    }
-
-    /**
-     * set horizontal offset from initial position
-     */
-    fun setOffset(offset: Int) {
-        if (centerView != null) {
-            offsetChildren(null, offset - centerView!!.left)
+    var offset: Int
+        get() = centerView?.left ?: 0
+        set(value) {
+            centerView?.let {
+                offsetChildren(null, value - it.left)
+            }
         }
-    }
 
     /**
      * enable or disable swipe gesture handling
      */
     var swipeEnabled: Boolean
-    get() = leftSwipeEnabled || rightSwipeEnabled
-    set(value) {
-        leftSwipeEnabled = value
-        rightSwipeEnabled = value
-    }
+        get() = leftSwipeEnabled || rightSwipeEnabled
+        set(value) {
+            leftSwipeEnabled = value
+            rightSwipeEnabled = value
+        }
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
         var heightMeasureSpec = heightMeasureSpec
-        val count = childCount
         var maxHeight = 0
 
         // Find out how big everyone wants to be
@@ -187,8 +187,7 @@ class SwipeLayout : ViewGroup {
             measureChildren(widthMeasureSpec, heightMeasureSpec)
         } else {
             //find a child with biggest height
-            for (i in 0 until count) {
-                val child = getChildAt(i)
+            for (child in children) {
                 measureChild(child, widthMeasureSpec, heightMeasureSpec)
                 maxHeight = maxHeight.coerceAtLeast(child.measuredHeight)
             }
@@ -199,8 +198,7 @@ class SwipeLayout : ViewGroup {
         }
 
         // Find rightmost and bottom-most child
-        for (i in 0 until count) {
-            val child = getChildAt(i)
+        for (child in children) {
             if (child.visibility != GONE) {
                 val childBottom: Int = child.measuredHeight
                 maxHeight = maxHeight.coerceAtLeast(childBottom)
@@ -219,10 +217,8 @@ class SwipeLayout : ViewGroup {
     }
 
     private fun layoutChildren(left: Int, top: Int, right: Int, bottom: Int) {
-        val count = childCount
         val parentTop = paddingTop
-        for (i in 0 until count) {
-            val child = getChildAt(i)
+        for (child in children) {
             if (child.visibility == GONE) continue
             val lp = child.layoutParams as LayoutParams
             when (lp.gravity) {
@@ -232,8 +228,7 @@ class SwipeLayout : ViewGroup {
             }
         }
         val centerView = centerView ?: throw RuntimeException("Center view must be added")
-        for (i in 0 until count) {
-            val child = getChildAt(i)
+        for (child in children) {
             if (child.visibility != GONE) {
                 val lp = child.layoutParams as LayoutParams
                 val orientation = lp.gravity
@@ -320,45 +315,40 @@ class SwipeLayout : ViewGroup {
         ) {
             offsetChildren(changedView, dx)
             if (swipeListener == null) return
-            var stickyBound: Int
             if (dx > 0) {
                 //move to right
-                if (leftView != null) {
-                    stickyBound = getStickyBound(leftView!!)
+                leftView?.let { leftView ->
+                    val stickyBound = getStickyBound(leftView)
                     if (stickyBound != LayoutParams.STICKY_NONE) {
-                        if (leftView!!.right - stickyBound > 0 && leftView!!.right - stickyBound - dx <= 0) swipeListener!!.onLeftStickyEdge(
-                            this@SwipeLayout,
-                            true
-                        )
+                        if (leftView.right - stickyBound > 0 && leftView.right - stickyBound - dx <= 0) {
+                            swipeListener?.onLeftStickyEdge(this@SwipeLayout, true)
+                        }
                     }
                 }
-                if (rightView != null) {
-                    stickyBound = getStickyBound(rightView!!)
+                rightView?.let { rightView ->
+                    val stickyBound = getStickyBound(rightView)
                     if (stickyBound != LayoutParams.STICKY_NONE) {
-                        if (rightView!!.left + stickyBound > width && rightView!!.left + stickyBound - dx <= width) swipeListener!!.onRightStickyEdge(
-                            this@SwipeLayout,
-                            true
-                        )
+                        if (rightView.left + stickyBound > width && rightView.left + stickyBound - dx <= width) {
+                            swipeListener?.onRightStickyEdge(this@SwipeLayout, true)
+                        }
                     }
                 }
             } else if (dx < 0) {
                 //move to left
-                if (leftView != null) {
-                    stickyBound = getStickyBound(leftView!!)
+                leftView?.let { leftView ->
+                    val stickyBound = getStickyBound(leftView)
                     if (stickyBound != LayoutParams.STICKY_NONE) {
-                        if (leftView!!.right - stickyBound <= 0 && leftView!!.right - stickyBound - dx > 0) swipeListener!!.onLeftStickyEdge(
-                            this@SwipeLayout,
-                            false
-                        )
+                        if (leftView.right - stickyBound <= 0 && leftView.right - stickyBound - dx > 0) {
+                            swipeListener?.onLeftStickyEdge(this@SwipeLayout, false)
+                        }
                     }
                 }
-                if (rightView != null) {
-                    stickyBound = getStickyBound(rightView!!)
+                rightView?.let { rightView ->
+                    val stickyBound = getStickyBound(rightView)
                     if (stickyBound != LayoutParams.STICKY_NONE) {
-                        if (rightView!!.left + stickyBound <= width && rightView!!.left + stickyBound - dx > width) swipeListener!!.onRightStickyEdge(
-                            this@SwipeLayout,
-                            false
-                        )
+                        if (rightView.left + stickyBound <= width && rightView.left + stickyBound - dx > width) {
+                            swipeListener?.onRightStickyEdge(this@SwipeLayout, false)
+                        }
                     }
                 }
             }
@@ -517,9 +507,7 @@ class SwipeLayout : ViewGroup {
 
     private fun offsetChildren(skip: View?, dx: Int) {
         if (dx == 0) return
-        val count = childCount
-        for (i in 0 until count) {
-            val child = getChildAt(i)
+        for (child in children) {
             if (child === skip) continue
             child.offsetLeftAndRight(dx)
             invalidate(child.left, child.top, child.right, child.bottom)
@@ -545,9 +533,8 @@ class SwipeLayout : ViewGroup {
     }
 
     override fun onInterceptTouchEvent(event: MotionEvent): Boolean {
-        return if (swipeEnabled) internalOnInterceptTouchEvent(event) else super.onInterceptTouchEvent(
-            event
-        )
+        return if (swipeEnabled) internalOnInterceptTouchEvent(event)
+        else super.onInterceptTouchEvent(event)
     }
 
     override fun onTouchEvent(event: MotionEvent): Boolean {
@@ -563,7 +550,7 @@ class SwipeLayout : ViewGroup {
                 val isLeftToRight = event.x - touchX > 0
                 if ((isLeftToRight && !leftSwipeEnabled || !isLeftToRight && !rightSwipeEnabled)
                     &&
-                    getOffset() == 0
+                    offset == 0
                 ) {
                     return defaultResult
                 }
@@ -648,29 +635,28 @@ class SwipeLayout : ViewGroup {
         var bringToClamp = BRING_TO_CLAMP_NO
 
         constructor(c: Context, attrs: AttributeSet) : super(c, attrs) {
-            val a = c.obtainStyledAttributes(attrs, R.styleable.SwipeLayout)
-            val N = a.indexCount
-            for (i in 0 until N) {
-                val attr = a.getIndex(i)
-                when (attr) {
-                    R.styleable.SwipeLayout_gravity -> {
-                        gravity = a.getInt(attr, GRAVITY_CENTER)
-                    }
-                    R.styleable.SwipeLayout_sticky -> {
-                        sticky = a.getLayoutDimension(attr, STICKY_SELF)
-                    }
-                    R.styleable.SwipeLayout_clamp -> {
-                        clamp = a.getLayoutDimension(attr, CLAMP_SELF)
-                    }
-                    R.styleable.SwipeLayout_bring_to_clamp -> {
-                        bringToClamp = a.getLayoutDimension(attr, BRING_TO_CLAMP_NO)
-                    }
-                    R.styleable.SwipeLayout_sticky_sensitivity -> {
-                        stickySensitivity = a.getFloat(attr, DEFAULT_STICKY_SENSITIVITY)
+            c.obtainStyledAttributes(attrs, R.styleable.SwipeLayout).use { a ->
+                for (i in 0 until a.indexCount) {
+                    val attr = a.getIndex(i)
+                    when (attr) {
+                        R.styleable.SwipeLayout_gravity -> {
+                            gravity = a.getInt(attr, GRAVITY_CENTER)
+                        }
+                        R.styleable.SwipeLayout_sticky -> {
+                            sticky = a.getLayoutDimension(attr, STICKY_SELF)
+                        }
+                        R.styleable.SwipeLayout_clamp -> {
+                            clamp = a.getLayoutDimension(attr, CLAMP_SELF)
+                        }
+                        R.styleable.SwipeLayout_bring_to_clamp -> {
+                            bringToClamp = a.getLayoutDimension(attr, BRING_TO_CLAMP_NO)
+                        }
+                        R.styleable.SwipeLayout_sticky_sensitivity -> {
+                            stickySensitivity = a.getFloat(attr, DEFAULT_STICKY_SENSITIVITY)
+                        }
                     }
                 }
             }
-            a.recycle()
         }
 
         constructor(source: ViewGroup.LayoutParams) : super(source)

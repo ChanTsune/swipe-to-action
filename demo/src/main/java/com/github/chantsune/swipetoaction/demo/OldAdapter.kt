@@ -45,12 +45,12 @@ internal class OldAdapter : RecyclerView.Adapter<OldAdapter.ViewHolder>() {
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.textViewPos.text = "#${position + 1}"
-        holder.swipeLayout.setOffset(itemsOffset[position])
+        holder.swipeLayout.offset = itemsOffset[position]
     }
 
     override fun onViewDetachedFromWindow(holder: ViewHolder) {
         if (holder.adapterPosition != RecyclerView.NO_POSITION) {
-            itemsOffset[holder.adapterPosition] = holder.swipeLayout.getOffset()
+            itemsOffset[holder.adapterPosition] = holder.swipeLayout.offset
         }
     }
 
