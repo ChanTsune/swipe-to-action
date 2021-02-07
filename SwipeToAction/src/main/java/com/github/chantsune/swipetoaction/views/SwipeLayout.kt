@@ -37,7 +37,7 @@ class SwipeLayout : ViewGroup {
      * Enable or disable swipe gesture from right side
      */
     var rightSwipeEnabled = true
-    private var touchState = TOUCH_STATE_WAIT
+    private var touchState = TouchState.WAIT
     private var touchX = 0f
     private var touchY = 0f
 
@@ -544,7 +544,7 @@ class SwipeLayout : ViewGroup {
         }
         when (event.actionMasked) {
             MotionEvent.ACTION_DOWN -> onTouchBegin(event)
-            MotionEvent.ACTION_MOVE -> if (touchState == TOUCH_STATE_WAIT) {
+            MotionEvent.ACTION_MOVE -> if (touchState == TouchState.WAIT) {
                 val dx = abs(event.x - touchX)
                 val dy = abs(event.y - touchY)
                 val isLeftToRight = event.x - touchX > 0
@@ -556,8 +556,8 @@ class SwipeLayout : ViewGroup {
                 }
                 if (dx >= touchSlop || dy >= touchSlop) {
                     touchState =
-                        if (dy == 0f || dx / dy > 1f) TOUCH_STATE_SWIPE else TOUCH_STATE_SKIP
-                    if (touchState == TOUCH_STATE_SWIPE) {
+                        if (dy == 0f || dx / dy > 1f) TouchState.SWIPE else TouchState.SKIP
+                    if (touchState == TouchState.SWIPE) {
                         requestDisallowInterceptTouchEvent(true)
                         hackParents()
                         swipeListener?.onBeginSwipe(this, event.x > touchX)
@@ -565,14 +565,14 @@ class SwipeLayout : ViewGroup {
                 }
             }
             MotionEvent.ACTION_CANCEL, MotionEvent.ACTION_UP -> {
-                if (touchState == TOUCH_STATE_SWIPE) {
+                if (touchState == TouchState.SWIPE) {
                     unHackParents()
                     requestDisallowInterceptTouchEvent(false)
                 }
-                touchState = TOUCH_STATE_WAIT
+                touchState = TouchState.WAIT
             }
         }
-        if (event.actionMasked != MotionEvent.ACTION_MOVE || touchState == TOUCH_STATE_SWIPE) {
+        if (event.actionMasked != MotionEvent.ACTION_MOVE || touchState == TouchState.SWIPE) {
             dragHelper!!.processTouchEvent(event)
         }
         return true
@@ -605,7 +605,7 @@ class SwipeLayout : ViewGroup {
     }
 
     private fun onTouchBegin(event: MotionEvent) {
-        touchState = TOUCH_STATE_WAIT
+        touchState = TouchState.WAIT
         touchX = event.x
         touchY = event.y
     }
@@ -682,11 +682,12 @@ class SwipeLayout : ViewGroup {
         fun onRightStickyEdge(swipeLayout: SwipeLayout, moveToRight: Boolean)
     }
 
+    private enum class TouchState {
+        WAIT, SWIPE, SKIP
+    }
+
     companion object {
         private val TAG = SwipeLayout::class.java.simpleName
         private const val VELOCITY_THRESHOLD = 1500f
-        private const val TOUCH_STATE_WAIT = 0
-        private const val TOUCH_STATE_SWIPE = 1
-        private const val TOUCH_STATE_SKIP = 2
     }
 }
