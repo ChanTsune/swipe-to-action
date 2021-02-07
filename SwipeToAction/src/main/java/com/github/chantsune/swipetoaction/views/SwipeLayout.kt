@@ -417,7 +417,7 @@ class SwipeLayout : ViewGroup {
                 val stickyBound =
                     if (lp.sticky == LayoutParams.STICKY_SELF) leftView!!.width else lp.sticky
                 val amplitude = stickyBound * lp.stickySensitivity
-                if (isBetween(-amplitude, amplitude, (centerView!!.left - stickyBound).toFloat())) {
+                if ((centerView!!.left - stickyBound).toFloat() in -amplitude..amplitude) {
                     val toClamp =
                         lp.clamp == LayoutParams.CLAMP_SELF && stickyBound == leftView!!.width || lp.clamp == stickyBound ||
                                 lp.clamp == LayoutParams.CLAMP_PARENT && stickyBound == width
@@ -460,12 +460,8 @@ class SwipeLayout : ViewGroup {
                 val stickyBound =
                     if (lp.sticky == LayoutParams.STICKY_SELF) rightView!!.width else lp.sticky
                 val amplitude = stickyBound * lp.stickySensitivity
-                if (isBetween(
-                        -amplitude,
-                        amplitude,
-                        (centerView!!.right + stickyBound - width).toFloat()
-                    )
-                ) {
+
+                if ((centerView!!.right + stickyBound - width).toFloat() in -amplitude..amplitude) {
                     val toClamp =
                         lp.clamp == LayoutParams.CLAMP_SELF && stickyBound == rightView!!.width || lp.clamp == stickyBound ||
                                 lp.clamp == LayoutParams.CLAMP_PARENT && stickyBound == width
@@ -479,10 +475,6 @@ class SwipeLayout : ViewGroup {
                 }
             }
             return false
-        }
-
-        private fun isBetween(left: Float, right: Float, check: Float): Boolean {
-            return check in left..right
         }
     }
 
