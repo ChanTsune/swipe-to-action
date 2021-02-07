@@ -363,27 +363,25 @@ class SwipeLayout : ViewGroup {
         }
 
         private fun clampMoveRight(child: View, left: Int): Int {
-            if (leftView == null) {
-                return if (child === centerView) left.coerceAtMost(0) else left.coerceAtMost(width)
-            }
-            val lp = leftView!!.swipeLayoutLayoutParams
-            return when (lp.clamp) {
-                LayoutParams.CLAMP_PARENT -> left.coerceAtMost(width + child.left - leftView!!.right)
-                LayoutParams.CLAMP_SELF -> left.coerceAtMost(child.left - leftView!!.left)
-                else -> left.coerceAtMost(child.left - leftView!!.right + lp.clamp)
-            }
+            return leftView?.let { leftView ->
+                val lp = leftView.swipeLayoutLayoutParams
+                return when (lp.clamp) {
+                    LayoutParams.CLAMP_PARENT -> left.coerceAtMost(width + child.left - leftView.right)
+                    LayoutParams.CLAMP_SELF -> left.coerceAtMost(child.left - leftView.left)
+                    else -> left.coerceAtMost(child.left - leftView.right + lp.clamp)
+                }
+            } ?: if (child === centerView) left.coerceAtMost(0) else left.coerceAtMost(width)
         }
 
         private fun clampMoveLeft(child: View, left: Int): Int {
-            if (rightView == null) {
-                return if (child === centerView) left.coerceAtLeast(0) else left.coerceAtLeast(-child.width)
-            }
-            val lp = rightView!!.swipeLayoutLayoutParams
-            return when (lp.clamp) {
-                LayoutParams.CLAMP_PARENT -> (child.left - rightView!!.left).coerceAtLeast(left)
-                LayoutParams.CLAMP_SELF -> left.coerceAtLeast(width - rightView!!.left + child.left - rightView!!.width)
-                else -> left.coerceAtLeast(width - rightView!!.left + child.left - lp.clamp)
-            }
+            return rightView?.let { rightView ->
+                val lp = rightView.swipeLayoutLayoutParams
+                when (lp.clamp) {
+                    LayoutParams.CLAMP_PARENT -> (child.left - rightView.left).coerceAtLeast(left)
+                    LayoutParams.CLAMP_SELF -> left.coerceAtLeast(width - rightView.left + child.left - rightView.width)
+                    else -> left.coerceAtLeast(width - rightView.left + child.left - lp.clamp)
+                }
+            } ?: if (child === centerView) left.coerceAtLeast(0) else left.coerceAtLeast(-child.width)
         }
 
         private fun onMoveRightReleased(child: View, dx: Int, xvel: Float): Boolean {
