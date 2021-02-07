@@ -13,6 +13,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.children
 import androidx.customview.widget.ViewDragHelper
 import com.github.chantsune.swipetoaction.R
+import com.github.chantsune.swipetoaction.extensions.iterator
 import java.lang.ref.WeakReference
 import java.util.*
 import kotlin.math.abs
@@ -635,8 +636,7 @@ class SwipeLayout : ViewGroup {
 
         constructor(c: Context, attrs: AttributeSet) : super(c, attrs) {
             c.obtainStyledAttributes(attrs, R.styleable.SwipeLayout).use { a ->
-                for (i in 0 until a.indexCount) {
-                    val attr = a.getIndex(i)
+                for (attr in a) {
                     when (attr) {
                         R.styleable.SwipeLayout_gravity -> {
                             gravity = a.getInt(attr, GRAVITY_CENTER)
