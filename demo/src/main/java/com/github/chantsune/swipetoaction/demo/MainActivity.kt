@@ -1,10 +1,10 @@
 package com.github.chantsune.swipetoaction.demo
 
-import androidx.appcompat.app.AppCompatActivity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.github.chantsune.swipetoaction.adapter.SwipeToActionAdapter
@@ -14,7 +14,6 @@ import com.github.chantsune.swipetoaction.demo.databinding.RightSwipeItemBinding
 import com.github.chantsune.swipetoaction.demo.databinding.ViewListItemBinding
 import com.github.chantsune.swipetoaction.views.SwipeLayout
 import com.google.android.material.button.MaterialButton
-import kotlin.concurrent.thread
 
 class MainActivity : AppCompatActivity(R.layout.activity_main) {
 
