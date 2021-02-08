@@ -117,8 +117,8 @@ class SwipeLayout @JvmOverloads constructor(context: Context, attrs: AttributeSe
         if (rightIcons != null) {
             rightLayoutMaxWidth = itemWidth * rightIcons!!.size
             if (rightLinear != null) removeView(rightLinear)
-            rightLinear = createLinearLayout(Gravity.RIGHT)
-            rightLinearWithoutLast = createLinearLayout(Gravity.RIGHT)
+            rightLinear = createLinearLayout(Gravity.END)
+            rightLinearWithoutLast = createLinearLayout(Gravity.END)
             rightLinearWithoutLast!!.layoutParams = LinearLayout.LayoutParams(
                 0,
                 ViewGroup.LayoutParams.MATCH_PARENT,
@@ -142,8 +142,8 @@ class SwipeLayout @JvmOverloads constructor(context: Context, attrs: AttributeSe
         if (leftIcons != null) {
             leftLayoutMaxWidth = itemWidth * leftIcons!!.size
             if (leftLinear != null) removeView(leftLinear)
-            leftLinear = createLinearLayout(Gravity.LEFT)
-            leftLinearWithoutFirst = createLinearLayout(Gravity.LEFT)
+            leftLinear = createLinearLayout(Gravity.START)
+            leftLinearWithoutFirst = createLinearLayout(Gravity.START)
             leftLinearWithoutFirst!!.layoutParams = LinearLayout.LayoutParams(
                 0,
                 ViewGroup.LayoutParams.MATCH_PARENT,
