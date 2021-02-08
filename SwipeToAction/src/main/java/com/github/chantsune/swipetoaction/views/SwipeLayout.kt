@@ -14,7 +14,6 @@ import android.view.animation.Animation
 import android.widget.*
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.use
-import androidx.core.view.ViewCompat
 import androidx.core.view.children
 import androidx.recyclerview.widget.RecyclerView
 import com.github.chantsune.swipetoaction.R
@@ -53,7 +52,8 @@ class SwipeLayout @JvmOverloads constructor(context: Context, attrs: AttributeSe
     private var iconSize = 0
     private var textSize = 0f
     private var textTopMargin = 0
-    private val fullSwipeEdgePadding: Int = resources.getDimensionPixelSize(R.dimen.full_swipe_edge_padding)
+    private val fullSwipeEdgePadding: Int =
+        resources.getDimensionPixelSize(R.dimen.full_swipe_edge_padding)
     var rightViews: Array<View?>? = null
         private set
     var leftViews: Array<View?>? = null
@@ -433,6 +433,7 @@ class SwipeLayout @JvmOverloads constructor(context: Context, attrs: AttributeSe
             override fun onAnimationEnd(animation: Animation) {
                 clickBySwipe()
             }
+
             override fun onAnimationRepeat(animation: Animation) {}
         }
 
@@ -462,7 +463,7 @@ class SwipeLayout @JvmOverloads constructor(context: Context, attrs: AttributeSe
                         prevRawX = event.rawX
                         downRawX = prevRawX
                     }
-                    if (ViewCompat.getTranslationX(swipeableView) == 0f) {
+                    if (swipeableView!!.translationX == 0f) {
                         rightLinearWithoutLast?.viewWeight = (rightViews!!.size - 1).toFloat()
                         leftLinearWithoutFirst?.viewWeight = (leftViews!!.size - 1).toFloat()
                     }
@@ -493,7 +494,7 @@ class SwipeLayout @JvmOverloads constructor(context: Context, attrs: AttributeSe
                     var rightLayoutWidth = 0
                     var leftLayoutWidth = 0
                     if (directionLeft) {
-                        var left = ViewCompat.getTranslationX(swipeableView) - delta
+                        var left = swipeableView!!.translationX - delta
                         if (left < -rightLayoutMaxWidth) {
                             if (!canFullSwipeFromRight) {
                                 left = -rightLayoutMaxWidth.toFloat()
@@ -502,7 +503,7 @@ class SwipeLayout @JvmOverloads constructor(context: Context, attrs: AttributeSe
                             }
                         }
                         if (canFullSwipeFromRight) {
-                            if (ViewCompat.getTranslationX(swipeableView) <= -(width - fullSwipeEdgePadding)) {
+                            if (swipeableView!!.translationX <= -(width - fullSwipeEdgePadding)) {
                                 if (rightLinearWithoutLast!!.viewWeight > 0 &&
                                     (collapseAnim == null || collapseAnim!!.hasEnded())
                                 ) {
@@ -529,22 +530,17 @@ class SwipeLayout @JvmOverloads constructor(context: Context, attrs: AttributeSe
                                 }
                             }
                         }
-                        ViewCompat.setTranslationX(swipeableView, left)
+                        swipeableView!!.translationX = left
                         if (rightLinear != null) {
                             rightLayoutWidth = abs(left).toInt()
                             setViewWidth(rightLinear!!, rightLayoutWidth)
                         }
                         if (leftLinear != null && left > 0) {
-                            leftLayoutWidth = abs(
-                                ViewCompat.getTranslationX(
-                                    swipeableView
-                                )
-                            )
-                                .toInt()
+                            leftLayoutWidth = abs(swipeableView!!.translationX).toInt()
                             setViewWidth(leftLinear!!, leftLayoutWidth)
                         }
                     } else {
-                        var right = ViewCompat.getTranslationX(swipeableView) + delta
+                        var right = swipeableView!!.translationX + delta
                         if (right > leftLayoutMaxWidth) {
                             if (!canFullSwipeFromLeft) {
                                 right = leftLayoutMaxWidth.toFloat()
@@ -553,7 +549,7 @@ class SwipeLayout @JvmOverloads constructor(context: Context, attrs: AttributeSe
                             }
                         }
                         if (canFullSwipeFromLeft) {
-                            if (ViewCompat.getTranslationX(swipeableView) >= width - fullSwipeEdgePadding) {
+                            if (swipeableView!!.translationX >= width - fullSwipeEdgePadding) {
                                 if (leftLinearWithoutFirst!!.viewWeight > 0 &&
                                     (collapseAnim == null || collapseAnim!!.hasEnded())
                                 ) {
@@ -576,22 +572,17 @@ class SwipeLayout @JvmOverloads constructor(context: Context, attrs: AttributeSe
                                 }
                             }
                         }
-                        ViewCompat.setTranslationX(swipeableView, right)
+                        swipeableView!!.translationX = right
                         if (leftLinear != null && right > 0) {
                             leftLayoutWidth = abs(right).toInt()
                             setViewWidth(leftLinear!!, leftLayoutWidth)
                         }
                         if (rightLinear != null) {
-                            rightLayoutWidth = abs(
-                                ViewCompat.getTranslationX(
-                                    swipeableView
-                                )
-                            )
-                                .toInt()
+                            rightLayoutWidth = abs(swipeableView!!.translationX).toInt()
                             setViewWidth(rightLinear!!, rightLayoutWidth)
                         }
                     }
-                    if (abs(ViewCompat.getTranslationX(swipeableView)) > itemWidth / 5) {
+                    if (abs(swipeableView!!.translationX) > itemWidth / 5) {
                         parent.requestDisallowInterceptTouchEvent(true)
                     }
                     prevRawX = event.rawX
@@ -628,7 +619,7 @@ class SwipeLayout @JvmOverloads constructor(context: Context, attrs: AttributeSe
         if (parent != null && parent is RecyclerView) {
             for (item in parent.children) {
                 if (item !== this && item is SwipeLayout) {
-                    if (ViewCompat.getTranslationX(item.swipeableView) != 0f && !item.inAnimatedState()) {
+                    if (item.swipeableView!!.translationX != 0f && !item.inAnimatedState()) {
                         item.setItemState(ITEM_STATE_COLLAPSED, true)
                     }
                 }
@@ -652,7 +643,7 @@ class SwipeLayout @JvmOverloads constructor(context: Context, attrs: AttributeSe
         var animateView: LinearLayout? = null
         var left = false
         var requiredWidth = 0
-        if (ViewCompat.getTranslationX(swipeableView) > 0) {
+        if (swipeableView!!.translationX > 0) {
             animateView = leftLinear
             left = true
             if (leftLinear != null) {
@@ -663,14 +654,14 @@ class SwipeLayout @JvmOverloads constructor(context: Context, attrs: AttributeSe
                     requiredWidth = leftLayoutMaxWidth
                 }
                 if (requiredWidth == leftLayoutMaxWidth && !directionLeft) {
-                    if (ViewCompat.getTranslationX(swipeableView) >= width - fullSwipeEdgePadding) {
+                    if (swipeableView!!.translationX >= width - fullSwipeEdgePadding) {
                         requiredWidth = width
                         invokedFromLeft = true
                     }
                 }
-                ViewCompat.setTranslationX(swipeableView, leftLinear!!.width.toFloat())
+                swipeableView!!.translationX = leftLinear!!.width.toFloat()
             }
-        } else if (ViewCompat.getTranslationX(swipeableView) < 0) {
+        } else if (swipeableView!!.translationX < 0) {
             left = false
             animateView = rightLinear
             if (rightLinear != null) {
@@ -681,12 +672,12 @@ class SwipeLayout @JvmOverloads constructor(context: Context, attrs: AttributeSe
                     requiredWidth = rightLayoutMaxWidth
                 }
                 if (requiredWidth == rightLayoutMaxWidth && directionLeft) {
-                    if (ViewCompat.getTranslationX(swipeableView) <= -(width - fullSwipeEdgePadding)) {
+                    if (swipeableView!!.translationX <= -(width - fullSwipeEdgePadding)) {
                         requiredWidth = width
                         invokedFromLeft = false
                     }
                 }
-                ViewCompat.setTranslationX(swipeableView, -rightLinear!!.width.toFloat())
+                swipeableView!!.translationX = -rightLinear!!.width.toFloat()
             }
         }
         var duration = (100 * speed).toLong()
@@ -701,19 +692,11 @@ class SwipeLayout @JvmOverloads constructor(context: Context, attrs: AttributeSe
             val views = if (animateView === leftLinear) leftViews else rightViews
             invokedFromLeft = animateView === leftLinear
             if (requiredWidth == width) {
-                if (layoutWithout!!.viewWeight == 0f && width.toFloat() != abs(
-                        ViewCompat.getTranslationX(
-                            swipeableView
-                        )
-                    )
-                ) swipeAnim.setAnimationListener(collapseListener) else if (collapseAnim != null && !collapseAnim!!.hasEnded()) {
+                if (layoutWithout!!.viewWeight == 0f && width.toFloat() != abs(swipeableView!!.translationX))
+                    swipeAnim.setAnimationListener(collapseListener)
+                else if (collapseAnim != null && !collapseAnim!!.hasEnded()) {
                     collapseAnim!!.setAnimationListener(collapseListener)
-                } else if (layoutWithout.viewWeight == 0f || width.toFloat() == abs(
-                        ViewCompat.getTranslationX(
-                            swipeableView
-                        )
-                    )
-                ) {
+                } else if (layoutWithout.viewWeight == 0f || width.toFloat() == abs(swipeableView!!.translationX)) {
                     clickBySwipe()
                 } else {
                     layoutWithout.clearAnimation()
@@ -742,7 +725,7 @@ class SwipeLayout @JvmOverloads constructor(context: Context, attrs: AttributeSe
                 val swipeAnim = SwipeAnimation(leftLinear!!, 0, swipeableView!!, true)
                 leftLinear!!.startAnimation(swipeAnim)
             } else {
-                ViewCompat.setTranslationX(swipeableView, 0f)
+                swipeableView!!.translationX = 0f
                 setViewWidth(leftLinear!!, 0)
             }
         } else if (rightLinear != null && rightLinear!!.width > 0) {
@@ -751,7 +734,7 @@ class SwipeLayout @JvmOverloads constructor(context: Context, attrs: AttributeSe
                 val swipeAnim = SwipeAnimation(rightLinear!!, 0, swipeableView!!, false)
                 rightLinear!!.startAnimation(swipeAnim)
             } else {
-                ViewCompat.setTranslationX(swipeableView, 0f)
+                swipeableView!!.translationX = 0f
                 setViewWidth(rightLinear!!, 0)
             }
         }
@@ -767,7 +750,7 @@ class SwipeLayout @JvmOverloads constructor(context: Context, attrs: AttributeSe
                         SwipeAnimation(leftLinear!!, requiredWidthLeft, swipeableView!!, true)
                     leftLinear!!.startAnimation(swipeAnim)
                 } else {
-                    ViewCompat.setTranslationX(swipeableView, requiredWidthLeft.toFloat())
+                    swipeableView!!.translationX = requiredWidthLeft.toFloat()
                     setViewWidth(leftLinear!!, requiredWidthLeft)
                 }
             }
@@ -778,7 +761,7 @@ class SwipeLayout @JvmOverloads constructor(context: Context, attrs: AttributeSe
                         SwipeAnimation(rightLinear!!, requiredWidthRight, swipeableView!!, false)
                     rightLinear!!.startAnimation(swipeAnim)
                 } else {
-                    ViewCompat.setTranslationX(swipeableView, -requiredWidthRight.toFloat())
+                    swipeableView!!.translationX = -requiredWidthRight.toFloat()
                     setViewWidth(rightLinear!!, requiredWidthRight)
                 }
             }
@@ -806,10 +789,7 @@ class SwipeLayout @JvmOverloads constructor(context: Context, attrs: AttributeSe
                 RecyclerView.OnScrollListener() {
                 override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
                     super.onScrollStateChanged(recyclerView, newState)
-                    if (newState == RecyclerView.SCROLL_STATE_DRAGGING && ViewCompat.getTranslationX(
-                            swipeableView
-                        ) != 0f
-                    ) {
+                    if (newState == RecyclerView.SCROLL_STATE_DRAGGING && swipeableView!!.translationX != 0f) {
                         setItemState(ITEM_STATE_COLLAPSED, true)
                     }
                 }
@@ -824,9 +804,9 @@ class SwipeLayout @JvmOverloads constructor(context: Context, attrs: AttributeSe
     }
 
     val isLeftExpanding: Boolean
-        get() = ViewCompat.getTranslationX(swipeableView) > 0
+        get() = swipeableView!!.translationX > 0
     val isRightExpanding: Boolean
-        get() = ViewCompat.getTranslationX(swipeableView) < 0
+        get() = swipeableView!!.translationX < 0
     val isExpanding: Boolean
         get() = isRightExpanding || isLeftExpanding
     val isRightExpanded: Boolean
@@ -866,7 +846,7 @@ class SwipeLayout @JvmOverloads constructor(context: Context, attrs: AttributeSe
         if (parent != null && parent is RecyclerView) {
             for (item in parent.children) {
                 if (item is SwipeLayout) {
-                    if (ViewCompat.getTranslationX(item.swipeableView) != 0f) {
+                    if (item.swipeableView!!.translationX != 0f) {
                         item.setItemState(ITEM_STATE_COLLAPSED, animated)
                     }
                 }
