@@ -427,7 +427,7 @@ class SwipeLayout @JvmOverloads constructor(context: Context, attrs: AttributeSe
 
     override fun setPressed(pressed: Boolean) {
         super.setPressed(pressed)
-        if (Build.VERSION.SDK_INT >= 21) drawableHotspotChanged(downX, downY)
+        drawableHotspotChanged(downX, downY)
     }
 
     private val collapsibleViews: Array<View?>?
