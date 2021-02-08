@@ -345,8 +345,7 @@ class SwipeLayout @JvmOverloads constructor(context: Context, attrs: AttributeSe
             val typefaceAssetPath = array.getString(R.styleable.SwipeLayout_customFont)
             if (typefaceAssetPath != null) {
                 if (typeface == null) {
-                    val assetManager = context.assets
-                    typeface = Typeface.createFromAsset(assetManager, typefaceAssetPath)
+                    typeface = Typeface.createFromAsset(context.assets, typefaceAssetPath)
                 }
             }
             initiateArrays(
