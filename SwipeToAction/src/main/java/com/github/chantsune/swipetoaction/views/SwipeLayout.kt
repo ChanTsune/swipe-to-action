@@ -881,14 +881,12 @@ class SwipeLayout @JvmOverloads constructor(context: Context, attrs: AttributeSe
     fun collapseAll(animated: Boolean) {
         val parent = parent
         if (parent != null && parent is RecyclerView) {
-            val recyclerView = parent
-            val count = recyclerView.childCount
+            val count = parent.childCount
             for (i in 0 until count) {
-                val item = recyclerView.getChildAt(i)
+                val item = parent.getChildAt(i)
                 if (item is SwipeLayout) {
-                    val swipeLayout = item
-                    if (ViewCompat.getTranslationX(swipeLayout.swipeableView) != 0f) {
-                        swipeLayout.setItemState(ITEM_STATE_COLLAPSED, animated)
+                    if (ViewCompat.getTranslationX(item.swipeableView) != 0f) {
+                        item.setItemState(ITEM_STATE_COLLAPSED, animated)
                     }
                 }
             }
