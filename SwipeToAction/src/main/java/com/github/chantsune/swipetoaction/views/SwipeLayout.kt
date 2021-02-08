@@ -313,8 +313,7 @@ class SwipeLayout @JvmOverloads constructor(context: Context, attrs: AttributeSe
     }
 
     private fun setUpAttrs(attrs: AttributeSet) {
-        val array = context.obtainStyledAttributes(attrs, R.styleable.SwipeLayout)
-        if (array != null) {
+        context.obtainStyledAttributes(attrs, R.styleable.SwipeLayout).use { array ->
             layoutId = array.getResourceId(R.styleable.SwipeLayout_foregroundLayout, NO_ID)
             itemWidth = array.getDimensionPixelSize(R.styleable.SwipeLayout_swipeItemWidth, 100)
             iconSize = array.getDimensionPixelSize(
@@ -362,7 +361,6 @@ class SwipeLayout @JvmOverloads constructor(context: Context, attrs: AttributeSe
                 leftIconColors,
                 rightIconColors
             )
-            array.recycle()
         }
     }
 
