@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <integer-array name="rightColors">
+        <item>@color/design_default_color_error</item>
+        <item>@color/design_default_color_error</item>
+        <item>@color/design_default_color_error</item>
+    </integer-array>
+
+    <integer-array name="leftColors">
+        <item>@color/design_default_color_error</item>
+        <item>@color/design_default_color_error</item>
+        <item>@color/design_default_color_error</item>
+    </integer-array>
+
+    <integer-array name="rightTextColors">
+        <item>@android:color/white</item>
+        <item>@android:color/white</item>
+        <item>@android:color/white</item>
+    </integer-array>
+
+    <integer-array name="rightDrawables">
+        <item>@drawable/ic_launcher_foreground</item>
+        <item>@drawable/ic_launcher_foreground</item>
+        <item>@drawable/ic_launcher_foreground</item>
+    </integer-array>
+
+    <integer-array name="rightDrawableColors">
+        <item>@android:color/white</item>
+        <item>@android:color/white</item>
+        <item>@android:color/white</item>
+    </integer-array>
+
+    <integer-array name="leftDrawables">
+        <item>@drawable/ic_launcher_foreground</item>
+        <item>@drawable/ic_launcher_foreground</item>
+        <item>@drawable/ic_launcher_foreground</item>
+    </integer-array>
+
+    <string-array name="rightTexts">
+        <item>reload</item>
+        <item>settings</item>
+        <item>trash</item>
+    </string-array>
+
+</resources>
