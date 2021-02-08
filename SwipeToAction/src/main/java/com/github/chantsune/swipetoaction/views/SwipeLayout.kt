@@ -253,15 +253,13 @@ class SwipeLayout @JvmOverloads constructor(context: Context, attrs: AttributeSe
         val frameLayout = FrameLayout(context)
         frameLayout.layoutParams =
             LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.MATCH_PARENT, 1f)
-        if (Build.VERSION.SDK_INT >= 16) {
-            val view = View(context)
-            view.layoutParams = LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.MATCH_PARENT
-            )
-            view.background = rippleDrawable
-            frameLayout.addView(view)
-        }
+        val view = View(context)
+        view.layoutParams = LayoutParams(
+            ViewGroup.LayoutParams.MATCH_PARENT,
+            ViewGroup.LayoutParams.MATCH_PARENT
+        )
+        view.background = rippleDrawable
+        frameLayout.addView(view)
         if (backgroundColor != NO_ID) {
             frameLayout.setBackgroundColor(backgroundColor)
         }
