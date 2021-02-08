@@ -4,7 +4,6 @@ import android.content.Context
 import android.content.res.TypedArray
 import android.graphics.Typeface
 import android.graphics.drawable.Drawable
-import android.os.Build
 import android.os.Handler
 import android.util.AttributeSet
 import android.util.Log
@@ -435,7 +434,6 @@ class SwipeLayout @JvmOverloads constructor(context: Context, attrs: AttributeSe
             override fun onAnimationEnd(animation: Animation) {
                 clickBySwipe()
             }
-
             override fun onAnimationRepeat(animation: Animation) {}
         }
 
