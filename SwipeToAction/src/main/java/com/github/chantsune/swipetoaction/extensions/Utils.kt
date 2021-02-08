@@ -5,20 +5,15 @@ import android.view.View
 import android.widget.LinearLayout
 import androidx.core.graphics.drawable.DrawableCompat
 
+var View.viewWeight: Float
+    get() = (layoutParams as LinearLayout.LayoutParams).weight
+    set(value) {
+        layoutParams = (layoutParams as LinearLayout.LayoutParams).apply {
+            weight = value
+        }
+    }
+
 object Utils {
-    @JvmStatic
-    fun getViewWeight(view: View): Float {
-        val lp = view.layoutParams as LinearLayout.LayoutParams
-        return lp.weight
-    }
-
-    @JvmStatic
-    fun setViewWeight(view: View, weight: Float) {
-        val lp = view.layoutParams as LinearLayout.LayoutParams
-        lp.weight = weight
-        view.layoutParams = lp
-    }
-
     @JvmStatic
     fun setViewWidth(view: View, width: Int) {
         view.layoutParams.width = width

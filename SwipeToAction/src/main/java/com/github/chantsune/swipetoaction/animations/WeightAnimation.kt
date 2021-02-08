@@ -3,7 +3,7 @@ package com.github.chantsune.swipetoaction.animations
 import android.view.View
 import android.view.animation.Animation
 import android.view.animation.Transformation
-import com.github.chantsune.swipetoaction.extensions.Utils
+import com.github.chantsune.swipetoaction.extensions.viewWeight
 
 class WeightAnimation(private val endWeight: Float, val view: View) : Animation() {
     private var startWeight = -1f
@@ -15,10 +15,10 @@ class WeightAnimation(private val endWeight: Float, val view: View) : Animation(
 
     override fun applyTransformation(interpolatedTime: Float, t: Transformation) {
         if (startWeight < 0) {
-            startWeight = Utils.getViewWeight(view)
+            startWeight = view.viewWeight
             deltaWeight = endWeight - startWeight
         }
-        Utils.setViewWeight(view, startWeight + deltaWeight * interpolatedTime)
+        view.viewWeight = startWeight + deltaWeight * interpolatedTime
     }
 
     override fun willChangeBounds(): Boolean = true

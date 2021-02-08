@@ -20,10 +20,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.github.chantsune.swipetoaction.R
 import com.github.chantsune.swipetoaction.animations.SwipeAnimation
 import com.github.chantsune.swipetoaction.animations.WeightAnimation
-import com.github.chantsune.swipetoaction.extensions.Utils.getViewWeight
 import com.github.chantsune.swipetoaction.extensions.Utils.setTint
-import com.github.chantsune.swipetoaction.extensions.Utils.setViewWeight
 import com.github.chantsune.swipetoaction.extensions.Utils.setViewWidth
+import com.github.chantsune.swipetoaction.extensions.viewWeight
 import kotlin.math.abs
 
 class SwipeLayout @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null) :
@@ -464,16 +463,8 @@ class SwipeLayout @JvmOverloads constructor(context: Context, attrs: AttributeSe
                         downRawX = prevRawX
                     }
                     if (ViewCompat.getTranslationX(swipeableView) == 0f) {
-                        if (rightLinearWithoutLast != null) {
-                            setViewWeight(
-                                rightLinearWithoutLast!!, (rightViews!!.size - 1).toFloat()
-                            )
-                        }
-                        if (leftLinearWithoutFirst != null) {
-                            setViewWeight(
-                                leftLinearWithoutFirst!!, (leftViews!!.size - 1).toFloat()
-                            )
-                        }
+                        rightLinearWithoutLast?.viewWeight = (rightViews!!.size - 1).toFloat()
+                        leftLinearWithoutFirst?.viewWeight = (leftViews!!.size - 1).toFloat()
                     }
                     return true
                 }
@@ -512,7 +503,7 @@ class SwipeLayout @JvmOverloads constructor(context: Context, attrs: AttributeSe
                         }
                         if (canFullSwipeFromRight) {
                             if (ViewCompat.getTranslationX(swipeableView) <= -(width - fullSwipeEdgePadding)) {
-                                if (getViewWeight(rightLinearWithoutLast!!) > 0 &&
+                                if (rightLinearWithoutLast!!.viewWeight > 0 &&
                                     (collapseAnim == null || collapseAnim!!.hasEnded())
                                 ) {
                                     view.isPressed = false
@@ -523,7 +514,7 @@ class SwipeLayout @JvmOverloads constructor(context: Context, attrs: AttributeSe
                                     startAnimation(collapseAnim)
                                 }
                             } else {
-                                if (getViewWeight(rightLinearWithoutLast!!) < rightIcons!!.size - 1f &&
+                                if (rightLinearWithoutLast!!.viewWeight < rightIcons!!.size - 1f &&
                                     (expandAnim == null || expandAnim!!.hasEnded())
                                 ) {
                                     Log.d("WeightAnim", "onTouch - Expand")
@@ -563,7 +554,7 @@ class SwipeLayout @JvmOverloads constructor(context: Context, attrs: AttributeSe
                         }
                         if (canFullSwipeFromLeft) {
                             if (ViewCompat.getTranslationX(swipeableView) >= width - fullSwipeEdgePadding) {
-                                if (getViewWeight(leftLinearWithoutFirst!!) > 0 &&
+                                if (leftLinearWithoutFirst!!.viewWeight > 0 &&
                                     (collapseAnim == null || collapseAnim!!.hasEnded())
                                 ) {
                                     leftLinearWithoutFirst!!.clearAnimation()
@@ -572,7 +563,7 @@ class SwipeLayout @JvmOverloads constructor(context: Context, attrs: AttributeSe
                                     startAnimation(collapseAnim)
                                 }
                             } else {
-                                if (getViewWeight(leftLinearWithoutFirst!!) < leftIcons!!.size - 1f &&
+                                if (leftLinearWithoutFirst!!.viewWeight < leftIcons!!.size - 1f &&
                                     (expandAnim == null || expandAnim!!.hasEnded())
                                 ) {
                                     leftLinearWithoutFirst!!.clearAnimation()
@@ -710,14 +701,14 @@ class SwipeLayout @JvmOverloads constructor(context: Context, attrs: AttributeSe
             val views = if (animateView === leftLinear) leftViews else rightViews
             invokedFromLeft = animateView === leftLinear
             if (requiredWidth == width) {
-                if (getViewWeight(layoutWithout!!) == 0f && width.toFloat() != abs(
+                if (layoutWithout!!.viewWeight == 0f && width.toFloat() != abs(
                         ViewCompat.getTranslationX(
                             swipeableView
                         )
                     )
                 ) swipeAnim.setAnimationListener(collapseListener) else if (collapseAnim != null && !collapseAnim!!.hasEnded()) {
                     collapseAnim!!.setAnimationListener(collapseListener)
-                } else if (getViewWeight(layoutWithout) == 0f || width.toFloat() == abs(
+                } else if (layoutWithout.viewWeight == 0f || width.toFloat() == abs(
                         ViewCompat.getTranslationX(
                             swipeableView
                         )
@@ -851,7 +842,7 @@ class SwipeLayout @JvmOverloads constructor(context: Context, attrs: AttributeSe
             if (leftViews != null) {
                 for ((i, v) in leftViews!!.withIndex()) {
                     if (v === view) {
-                        if (leftViews!!.size == 1 || getViewWeight(leftLinearWithoutFirst!!) > 0) {
+                        if (leftViews!!.size == 1 || leftLinearWithoutFirst!!.viewWeight > 0) {
                             onSwipeItemClickListener!!.onSwipeItemClick(true, i)
                         }
                         return
@@ -861,7 +852,7 @@ class SwipeLayout @JvmOverloads constructor(context: Context, attrs: AttributeSe
             if (rightViews != null) {
                 for ((i, v) in rightViews!!.withIndex()) {
                     if (v === view) {
-                        if (rightViews!!.size == 1 || getViewWeight(rightLinearWithoutLast!!) > 0) {
+                        if (rightViews!!.size == 1 || rightLinearWithoutLast!!.viewWeight > 0) {
                             onSwipeItemClickListener!!.onSwipeItemClick(false, i)
                         }
                         break
