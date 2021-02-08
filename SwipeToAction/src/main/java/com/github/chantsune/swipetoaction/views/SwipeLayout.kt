@@ -801,9 +801,8 @@ class SwipeLayout @JvmOverloads constructor(context: Context, attrs: AttributeSe
         this.autoHideSwipe = autoHideSwipe
         val parent = parent
         if (parent != null && parent is RecyclerView) {
-            val recyclerView = parent
-            if (onScrollListener != null) recyclerView.removeOnScrollListener(onScrollListener!!)
-            if (autoHideSwipe) recyclerView.addOnScrollListener(object :
+            if (onScrollListener != null) parent.removeOnScrollListener(onScrollListener!!)
+            if (autoHideSwipe) parent.addOnScrollListener(object :
                 RecyclerView.OnScrollListener() {
                 override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
                     super.onScrollStateChanged(recyclerView, newState)
