@@ -16,6 +16,7 @@ import android.widget.*
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.use
 import androidx.core.view.ViewCompat
+import androidx.core.view.children
 import androidx.recyclerview.widget.RecyclerView
 import com.github.chantsune.swipetoaction.R
 import com.github.chantsune.swipetoaction.animations.SwipeAnimation
@@ -881,9 +882,7 @@ class SwipeLayout @JvmOverloads constructor(context: Context, attrs: AttributeSe
     fun collapseAll(animated: Boolean) {
         val parent = parent
         if (parent != null && parent is RecyclerView) {
-            val count = parent.childCount
-            for (i in 0 until count) {
-                val item = parent.getChildAt(i)
+            for (item in parent.children) {
                 if (item is SwipeLayout) {
                     if (ViewCompat.getTranslationX(item.swipeableView) != 0f) {
                         item.setItemState(ITEM_STATE_COLLAPSED, animated)
