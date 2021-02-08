@@ -60,8 +60,8 @@ class SwipeLayout @JvmOverloads constructor(context: Context, attrs: AttributeSe
         private set
     private var onSwipeItemClickListener: OnSwipeItemClickListener? = null
     var isSwipeEnabled = true
-    private var canFullSwipeFromRight = false
-    private var canFullSwipeFromLeft = false
+    var canFullSwipeFromRight = false
+    var canFullSwipeFromLeft = false
     private var autoHideSwipe = true
     private var onlyOneSwipe = true
     private var onScrollListener: RecyclerView.OnScrollListener? = null
@@ -897,14 +897,6 @@ class SwipeLayout @JvmOverloads constructor(context: Context, attrs: AttributeSe
 
     interface OnSwipeItemClickListener {
         fun onSwipeItemClick(left: Boolean, index: Int)
-    }
-
-    fun setCanFullSwipeFromLeft(fullSwipeFromLeft: Boolean) {
-        canFullSwipeFromLeft = fullSwipeFromLeft
-    }
-
-    fun setCanFullSwipeFromRight(fullSwipeFromRight: Boolean) {
-        canFullSwipeFromRight = fullSwipeFromRight
     }
 
     companion object {
