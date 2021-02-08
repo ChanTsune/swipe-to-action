@@ -25,6 +25,7 @@ import com.github.chantsune.swipetoaction.extensions.Utils.getViewWeight
 import com.github.chantsune.swipetoaction.extensions.Utils.setTint
 import com.github.chantsune.swipetoaction.extensions.Utils.setViewWeight
 import com.github.chantsune.swipetoaction.extensions.Utils.setViewWidth
+import kotlin.math.abs
 
 class SwipeLayout @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null) :
     FrameLayout(
@@ -482,7 +483,7 @@ class SwipeLayout @JvmOverloads constructor(context: Context, attrs: AttributeSe
                     return true
                 }
                 MotionEvent.ACTION_MOVE -> {
-                    if (Math.abs(prevRawX - event.rawX) < 20 && !movementStarted) {
+                    if (abs(prevRawX - event.rawX) < 20 && !movementStarted) {
                         if (System.currentTimeMillis() - lastTime >= 50 && !isPressed && !isExpanding && !longClickPerformed) {
                             view.isPressed = true
                             if (!shouldPerformLongClick) {
@@ -501,7 +502,7 @@ class SwipeLayout @JvmOverloads constructor(context: Context, attrs: AttributeSe
                     collapseOthersIfNeeded()
                     clearAnimations()
                     directionLeft = prevRawX - event.rawX > 0
-                    val delta = Math.abs(prevRawX - event.rawX)
+                    val delta = abs(prevRawX - event.rawX)
                     speed = (System.currentTimeMillis() - lastTime) / delta
                     var rightLayoutWidth = 0
                     var leftLayoutWidth = 0
@@ -544,11 +545,11 @@ class SwipeLayout @JvmOverloads constructor(context: Context, attrs: AttributeSe
                         }
                         ViewCompat.setTranslationX(swipeableView, left)
                         if (rightLinear != null) {
-                            rightLayoutWidth = Math.abs(left).toInt()
+                            rightLayoutWidth = abs(left).toInt()
                             setViewWidth(rightLinear!!, rightLayoutWidth)
                         }
                         if (leftLinear != null && left > 0) {
-                            leftLayoutWidth = Math.abs(
+                            leftLayoutWidth = abs(
                                 ViewCompat.getTranslationX(
                                     swipeableView
                                 )
@@ -591,11 +592,11 @@ class SwipeLayout @JvmOverloads constructor(context: Context, attrs: AttributeSe
                         }
                         ViewCompat.setTranslationX(swipeableView, right)
                         if (leftLinear != null && right > 0) {
-                            leftLayoutWidth = Math.abs(right).toInt()
+                            leftLayoutWidth = abs(right).toInt()
                             setViewWidth(leftLinear!!, leftLayoutWidth)
                         }
                         if (rightLinear != null) {
-                            rightLayoutWidth = Math.abs(
+                            rightLayoutWidth = abs(
                                 ViewCompat.getTranslationX(
                                     swipeableView
                                 )
@@ -604,7 +605,7 @@ class SwipeLayout @JvmOverloads constructor(context: Context, attrs: AttributeSe
                             setViewWidth(rightLinear!!, rightLayoutWidth)
                         }
                     }
-                    if (Math.abs(ViewCompat.getTranslationX(swipeableView)) > itemWidth / 5) {
+                    if (abs(ViewCompat.getTranslationX(swipeableView)) > itemWidth / 5) {
                         parent.requestDisallowInterceptTouchEvent(true)
                     }
                     prevRawX = event.rawX
@@ -639,14 +640,10 @@ class SwipeLayout @JvmOverloads constructor(context: Context, attrs: AttributeSe
         if (!onlyOneSwipe) return
         val parent = parent
         if (parent != null && parent is RecyclerView) {
-            val recyclerView = parent
-            val count = recyclerView.childCount
-            for (i in 0 until count) {
-                val item = recyclerView.getChildAt(i)
+            for (item in parent.children) {
                 if (item !== this && item is SwipeLayout) {
-                    val swipeLayout = item
-                    if (ViewCompat.getTranslationX(swipeLayout.swipeableView) != 0f && !swipeLayout.inAnimatedState()) {
-                        swipeLayout.setItemState(ITEM_STATE_COLLAPSED, true)
+                    if (ViewCompat.getTranslationX(item.swipeableView) != 0f && !item.inAnimatedState()) {
+                        item.setItemState(ITEM_STATE_COLLAPSED, true)
                     }
                 }
             }
@@ -718,14 +715,14 @@ class SwipeLayout @JvmOverloads constructor(context: Context, attrs: AttributeSe
             val views = if (animateView === leftLinear) leftViews else rightViews
             invokedFromLeft = animateView === leftLinear
             if (requiredWidth == width) {
-                if (getViewWeight(layoutWithout!!) == 0f && width.toFloat() != Math.abs(
+                if (getViewWeight(layoutWithout!!) == 0f && width.toFloat() != abs(
                         ViewCompat.getTranslationX(
                             swipeableView
                         )
                     )
                 ) swipeAnim.setAnimationListener(collapseListener) else if (collapseAnim != null && !collapseAnim!!.hasEnded()) {
                     collapseAnim!!.setAnimationListener(collapseListener)
-                } else if (getViewWeight(layoutWithout) == 0f || width.toFloat() == Math.abs(
+                } else if (getViewWeight(layoutWithout) == 0f || width.toFloat() == abs(
                         ViewCompat.getTranslationX(
                             swipeableView
                         )
