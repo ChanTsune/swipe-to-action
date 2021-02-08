@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.res.TypedArray
 import android.graphics.Typeface
 import android.graphics.drawable.Drawable
+import android.os.Build
 import android.os.Handler
 import android.util.AttributeSet
 import android.util.Log
@@ -15,7 +16,6 @@ import android.widget.*
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.use
 import androidx.core.view.ViewCompat
-import androidx.core.view.children
 import androidx.recyclerview.widget.RecyclerView
 import com.github.chantsune.swipetoaction.R
 import com.github.chantsune.swipetoaction.animations.SwipeAnimation
@@ -24,7 +24,6 @@ import com.github.chantsune.swipetoaction.extensions.Utils.getViewWeight
 import com.github.chantsune.swipetoaction.extensions.Utils.setTint
 import com.github.chantsune.swipetoaction.extensions.Utils.setViewWeight
 import com.github.chantsune.swipetoaction.extensions.Utils.setViewWidth
-import kotlin.math.abs
 
 class SwipeLayout @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null) :
     FrameLayout(
@@ -54,16 +53,15 @@ class SwipeLayout @JvmOverloads constructor(context: Context, attrs: AttributeSe
     private var iconSize = 0
     private var textSize = 0f
     private var textTopMargin = 0
-    private val fullSwipeEdgePadding: Int =
-        resources.getDimensionPixelSize(R.dimen.full_swipe_edge_padding)
+    private val fullSwipeEdgePadding: Int = resources.getDimensionPixelSize(R.dimen.full_swipe_edge_padding)
     var rightViews: Array<View?>? = null
         private set
     var leftViews: Array<View?>? = null
         private set
     private var onSwipeItemClickListener: OnSwipeItemClickListener? = null
     var isSwipeEnabled = true
-    var canFullSwipeFromRight = false
-    var canFullSwipeFromLeft = false
+    private var canFullSwipeFromRight = false
+    private var canFullSwipeFromLeft = false
     private var autoHideSwipe = true
     private var onlyOneSwipe = true
     private var onScrollListener: RecyclerView.OnScrollListener? = null
@@ -119,8 +117,8 @@ class SwipeLayout @JvmOverloads constructor(context: Context, attrs: AttributeSe
         if (rightIcons != null) {
             rightLayoutMaxWidth = itemWidth * rightIcons!!.size
             if (rightLinear != null) removeView(rightLinear)
-            rightLinear = createLinearLayout(Gravity.END)
-            rightLinearWithoutLast = createLinearLayout(Gravity.END)
+            rightLinear = createLinearLayout(Gravity.RIGHT)
+            rightLinearWithoutLast = createLinearLayout(Gravity.RIGHT)
             rightLinearWithoutLast!!.layoutParams = LinearLayout.LayoutParams(
                 0,
                 ViewGroup.LayoutParams.MATCH_PARENT,
@@ -144,8 +142,8 @@ class SwipeLayout @JvmOverloads constructor(context: Context, attrs: AttributeSe
         if (leftIcons != null) {
             leftLayoutMaxWidth = itemWidth * leftIcons!!.size
             if (leftLinear != null) removeView(leftLinear)
-            leftLinear = createLinearLayout(Gravity.START)
-            leftLinearWithoutFirst = createLinearLayout(Gravity.START)
+            leftLinear = createLinearLayout(Gravity.LEFT)
+            leftLinearWithoutFirst = createLinearLayout(Gravity.LEFT)
             leftLinearWithoutFirst!!.layoutParams = LinearLayout.LayoutParams(
                 0,
                 ViewGroup.LayoutParams.MATCH_PARENT,
@@ -267,10 +265,11 @@ class SwipeLayout @JvmOverloads constructor(context: Context, attrs: AttributeSe
         }
         imageView.setImageDrawable(drawable)
         val relativeLayout = RelativeLayout(context)
-        val gravity = if (left) {
-            Gravity.CENTER_VERTICAL or Gravity.END
+        var gravity = Gravity.CENTER_VERTICAL
+        gravity = if (left) {
+            gravity or Gravity.END
         } else {
-            Gravity.CENTER_VERTICAL or Gravity.START
+            gravity or Gravity.START
         }
         relativeLayout.layoutParams =
             LayoutParams(itemWidth, ViewGroup.LayoutParams.WRAP_CONTENT, gravity)
@@ -312,7 +311,8 @@ class SwipeLayout @JvmOverloads constructor(context: Context, attrs: AttributeSe
     }
 
     private fun setUpAttrs(attrs: AttributeSet) {
-        context.obtainStyledAttributes(attrs, R.styleable.SwipeLayout).use { array ->
+        val array = context.obtainStyledAttributes(attrs, R.styleable.SwipeLayout)
+        if (array != null) {
             layoutId = array.getResourceId(R.styleable.SwipeLayout_foregroundLayout, NO_ID)
             itemWidth = array.getDimensionPixelSize(R.styleable.SwipeLayout_swipeItemWidth, 100)
             iconSize = array.getDimensionPixelSize(
@@ -369,18 +369,19 @@ class SwipeLayout @JvmOverloads constructor(context: Context, attrs: AttributeSe
         leftTextRes: Int, rightTextRes: Int, leftTextColorRes: Int, rightTextColorRes: Int,
         leftIconColorsRes: Int, rightIconColorsRes: Int
     ) {
-        if (rightColorsRes != NO_ID) rightColors = resources.getIntArray(rightColorsRes)
+        val res = resources
+        if (rightColorsRes != NO_ID) rightColors = res.getIntArray(rightColorsRes)
         if (rightIconsRes != NO_ID && !isInEditMode) rightIcons =
-            fillDrawables(resources.obtainTypedArray(rightIconsRes))
-        if (leftColorsRes != NO_ID) leftColors = resources.getIntArray(leftColorsRes)
+            fillDrawables(res.obtainTypedArray(rightIconsRes))
+        if (leftColorsRes != NO_ID) leftColors = res.getIntArray(leftColorsRes)
         if (leftIconsRes != NO_ID && !isInEditMode) leftIcons =
-            fillDrawables(resources.obtainTypedArray(leftIconsRes))
-        if (leftTextRes != NO_ID) leftTexts = resources.getStringArray(leftTextRes)
-        if (rightTextRes != NO_ID) rightTexts = resources.getStringArray(rightTextRes)
-        if (leftTextColorRes != NO_ID) leftTextColors = resources.getIntArray(leftTextColorRes)
-        if (rightTextColorRes != NO_ID) rightTextColors = resources.getIntArray(rightTextColorRes)
-        if (leftIconColorsRes != NO_ID) leftIconColors = resources.getIntArray(leftIconColorsRes)
-        if (rightIconColorsRes != NO_ID) rightIconColors = resources.getIntArray(rightIconColorsRes)
+            fillDrawables(res.obtainTypedArray(leftIconsRes))
+        if (leftTextRes != NO_ID) leftTexts = res.getStringArray(leftTextRes)
+        if (rightTextRes != NO_ID) rightTexts = res.getStringArray(rightTextRes)
+        if (leftTextColorRes != NO_ID) leftTextColors = res.getIntArray(leftTextColorRes)
+        if (rightTextColorRes != NO_ID) rightTextColors = res.getIntArray(rightTextColorRes)
+        if (leftIconColorsRes != NO_ID) leftIconColors = res.getIntArray(leftIconColorsRes)
+        if (rightIconColorsRes != NO_ID) rightIconColors = res.getIntArray(rightIconColorsRes)
     }
 
     private fun fillDrawables(ta: TypedArray): IntArray {
@@ -424,7 +425,7 @@ class SwipeLayout @JvmOverloads constructor(context: Context, attrs: AttributeSe
 
     override fun setPressed(pressed: Boolean) {
         super.setPressed(pressed)
-        drawableHotspotChanged(downX, downY)
+        if (Build.VERSION.SDK_INT >= 21) drawableHotspotChanged(downX, downY)
     }
 
     private val collapsibleViews: Array<View?>?
@@ -480,7 +481,7 @@ class SwipeLayout @JvmOverloads constructor(context: Context, attrs: AttributeSe
                     return true
                 }
                 MotionEvent.ACTION_MOVE -> {
-                    if (abs(prevRawX - event.rawX) < 20 && !movementStarted) {
+                    if (Math.abs(prevRawX - event.rawX) < 20 && !movementStarted) {
                         if (System.currentTimeMillis() - lastTime >= 50 && !isPressed && !isExpanding && !longClickPerformed) {
                             view.isPressed = true
                             if (!shouldPerformLongClick) {
@@ -499,7 +500,7 @@ class SwipeLayout @JvmOverloads constructor(context: Context, attrs: AttributeSe
                     collapseOthersIfNeeded()
                     clearAnimations()
                     directionLeft = prevRawX - event.rawX > 0
-                    val delta = abs(prevRawX - event.rawX)
+                    val delta = Math.abs(prevRawX - event.rawX)
                     speed = (System.currentTimeMillis() - lastTime) / delta
                     var rightLayoutWidth = 0
                     var leftLayoutWidth = 0
@@ -542,11 +543,11 @@ class SwipeLayout @JvmOverloads constructor(context: Context, attrs: AttributeSe
                         }
                         ViewCompat.setTranslationX(swipeableView, left)
                         if (rightLinear != null) {
-                            rightLayoutWidth = abs(left).toInt()
+                            rightLayoutWidth = Math.abs(left).toInt()
                             setViewWidth(rightLinear!!, rightLayoutWidth)
                         }
                         if (leftLinear != null && left > 0) {
-                            leftLayoutWidth = abs(
+                            leftLayoutWidth = Math.abs(
                                 ViewCompat.getTranslationX(
                                     swipeableView
                                 )
@@ -589,11 +590,11 @@ class SwipeLayout @JvmOverloads constructor(context: Context, attrs: AttributeSe
                         }
                         ViewCompat.setTranslationX(swipeableView, right)
                         if (leftLinear != null && right > 0) {
-                            leftLayoutWidth = abs(right).toInt()
+                            leftLayoutWidth = Math.abs(right).toInt()
                             setViewWidth(leftLinear!!, leftLayoutWidth)
                         }
                         if (rightLinear != null) {
-                            rightLayoutWidth = abs(
+                            rightLayoutWidth = Math.abs(
                                 ViewCompat.getTranslationX(
                                     swipeableView
                                 )
@@ -602,7 +603,7 @@ class SwipeLayout @JvmOverloads constructor(context: Context, attrs: AttributeSe
                             setViewWidth(rightLinear!!, rightLayoutWidth)
                         }
                     }
-                    if (abs(ViewCompat.getTranslationX(swipeableView)) > itemWidth / 5) {
+                    if (Math.abs(ViewCompat.getTranslationX(swipeableView)) > itemWidth / 5) {
                         parent.requestDisallowInterceptTouchEvent(true)
                     }
                     prevRawX = event.rawX
@@ -635,11 +636,16 @@ class SwipeLayout @JvmOverloads constructor(context: Context, attrs: AttributeSe
 
     private fun collapseOthersIfNeeded() {
         if (!onlyOneSwipe) return
-        (parent as? RecyclerView)?.let { parent ->
-            for (item in parent.children) {
+        val parent = parent
+        if (parent != null && parent is RecyclerView) {
+            val recyclerView = parent
+            val count = recyclerView.childCount
+            for (i in 0 until count) {
+                val item = recyclerView.getChildAt(i)
                 if (item !== this && item is SwipeLayout) {
-                    if (ViewCompat.getTranslationX(item.swipeableView) != 0f && !item.inAnimatedState()) {
-                        item.setItemState(ITEM_STATE_COLLAPSED, true)
+                    val swipeLayout = item
+                    if (ViewCompat.getTranslationX(swipeLayout.swipeableView) != 0f && !swipeLayout.inAnimatedState()) {
+                        swipeLayout.setItemState(ITEM_STATE_COLLAPSED, true)
                     }
                 }
             }
@@ -711,14 +717,14 @@ class SwipeLayout @JvmOverloads constructor(context: Context, attrs: AttributeSe
             val views = if (animateView === leftLinear) leftViews else rightViews
             invokedFromLeft = animateView === leftLinear
             if (requiredWidth == width) {
-                if (getViewWeight(layoutWithout!!) == 0f && width.toFloat() != abs(
+                if (getViewWeight(layoutWithout!!) == 0f && width.toFloat() != Math.abs(
                         ViewCompat.getTranslationX(
                             swipeableView
                         )
                     )
                 ) swipeAnim.setAnimationListener(collapseListener) else if (collapseAnim != null && !collapseAnim!!.hasEnded()) {
                     collapseAnim!!.setAnimationListener(collapseListener)
-                } else if (getViewWeight(layoutWithout) == 0f || width.toFloat() == abs(
+                } else if (getViewWeight(layoutWithout) == 0f || width.toFloat() == Math.abs(
                         ViewCompat.getTranslationX(
                             swipeableView
                         )
@@ -873,11 +879,16 @@ class SwipeLayout @JvmOverloads constructor(context: Context, attrs: AttributeSe
     }
 
     fun collapseAll(animated: Boolean) {
-        (parent as? RecyclerView)?.let { parent ->
-            for (item in parent.children) {
+        val parent = parent
+        if (parent != null && parent is RecyclerView) {
+            val recyclerView = parent
+            val count = recyclerView.childCount
+            for (i in 0 until count) {
+                val item = recyclerView.getChildAt(i)
                 if (item is SwipeLayout) {
-                    if (ViewCompat.getTranslationX(item.swipeableView) != 0f) {
-                        item.setItemState(ITEM_STATE_COLLAPSED, animated)
+                    val swipeLayout = item
+                    if (ViewCompat.getTranslationX(swipeLayout.swipeableView) != 0f) {
+                        swipeLayout.setItemState(ITEM_STATE_COLLAPSED, animated)
                     }
                 }
             }
@@ -888,8 +899,16 @@ class SwipeLayout @JvmOverloads constructor(context: Context, attrs: AttributeSe
         fun onSwipeItemClick(left: Boolean, index: Int)
     }
 
+    fun setCanFullSwipeFromLeft(fullSwipeFromLeft: Boolean) {
+        canFullSwipeFromLeft = fullSwipeFromLeft
+    }
+
+    fun setCanFullSwipeFromRight(fullSwipeFromRight: Boolean) {
+        canFullSwipeFromRight = fullSwipeFromRight
+    }
+
     companion object {
-        val TAG = SwipeLayout::class.java.simpleName
+        private const val TAG = "SwipeLayout"
         private const val NO_ID = 0
         private var typeface: Typeface? = null
         const val ITEM_STATE_LEFT_EXPAND = 0
