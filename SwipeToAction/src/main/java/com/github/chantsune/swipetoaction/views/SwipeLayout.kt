@@ -65,6 +65,12 @@ class SwipeLayout @JvmOverloads constructor(context: Context, attrs: AttributeSe
     private var autoHideSwipe = true
     private var onlyOneSwipe = true
     private var onScrollListener: RecyclerView.OnScrollListener? = null
+
+    init {
+        attrs?.let { setUpAttrs(it) }
+        setUpView()
+    }
+
     fun setOnSwipeItemClickListener(listener: OnSwipeItemClickListener?) {
         onSwipeItemClickListener = listener
     }
@@ -869,10 +875,5 @@ class SwipeLayout @JvmOverloads constructor(context: Context, attrs: AttributeSe
         const val ITEM_STATE_COLLAPSED = 2
         private const val ANIMATION_MIN_DURATION: Long = 100
         private const val ANIMATION_MAX_DURATION: Long = 300
-    }
-
-    init {
-        attrs?.let { setUpAttrs(it) }
-        setUpView()
     }
 }
