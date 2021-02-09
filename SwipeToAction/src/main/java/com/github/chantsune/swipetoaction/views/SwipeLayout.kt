@@ -120,19 +120,19 @@ class SwipeLayout @JvmOverloads constructor(context: Context, attrs: AttributeSe
 
     private fun createItemLayouts() {
         if (rightIcons != null) {
-            rightLayoutMaxWidth = itemWidth * rightIcons!!.size
+            rightLayoutMaxWidth = itemWidth * rightIcons.size
             if (rightLinear != null) removeView(rightLinear)
             rightLinear = createLinearLayout(Gravity.END)
             rightLinearWithoutLast = createLinearLayout(Gravity.END)
             rightLinearWithoutLast!!.layoutParams = LinearLayout.LayoutParams(
                 0,
                 ViewGroup.LayoutParams.MATCH_PARENT,
-                (rightIcons!!.size - 1).toFloat()
+                (rightIcons.size - 1).toFloat()
             )
             addView(rightLinear)
             rightLinear!!.addView(rightLinearWithoutLast)
             addSwipeItems(
-                rightIcons!!,
+                rightIcons,
                 rightIconColors,
                 rightColors,
                 rightTexts,
@@ -144,18 +144,18 @@ class SwipeLayout @JvmOverloads constructor(context: Context, attrs: AttributeSe
             )
         }
         if (leftIcons != null) {
-            leftLayoutMaxWidth = itemWidth * leftIcons!!.size
+            leftLayoutMaxWidth = itemWidth * leftIcons.size
             if (leftLinear != null) removeView(leftLinear)
             leftLinear = createLinearLayout(Gravity.START)
             leftLinearWithoutFirst = createLinearLayout(Gravity.START)
             leftLinearWithoutFirst!!.layoutParams = LinearLayout.LayoutParams(
                 0,
                 ViewGroup.LayoutParams.MATCH_PARENT,
-                (leftIcons!!.size - 1).toFloat()
+                (leftIcons.size - 1).toFloat()
             )
             addView(leftLinear)
             addSwipeItems(
-                leftIcons!!,
+                leftIcons,
                 leftIconColors,
                 leftColors,
                 leftTexts,
@@ -444,7 +444,7 @@ class SwipeLayout @JvmOverloads constructor(context: Context, attrs: AttributeSe
     private fun clickBySwipe() {
         onSwipeItemClickListener?.onSwipeItemClick(
             invokedFromLeft,
-            if (invokedFromLeft) 0 else rightIcons!!.size - 1
+            if (invokedFromLeft) 0 else rightIcons.size - 1
         )
     }
 
@@ -519,7 +519,7 @@ class SwipeLayout @JvmOverloads constructor(context: Context, attrs: AttributeSe
                                     startAnimation(collapseAnim)
                                 }
                             } else {
-                                if (rightLinearWithoutLast!!.viewWeight < rightIcons!!.size - 1f &&
+                                if (rightLinearWithoutLast!!.viewWeight < rightIcons.size - 1f &&
                                     (expandAnim == null || expandAnim!!.hasEnded())
                                 ) {
                                     Log.d("WeightAnim", "onTouch - Expand")
@@ -527,7 +527,7 @@ class SwipeLayout @JvmOverloads constructor(context: Context, attrs: AttributeSe
                                     rightLinearWithoutLast!!.clearAnimation()
                                     if (collapseAnim != null) collapseAnim = null
                                     expandAnim = WeightAnimation(
-                                        (rightIcons!!.size - 1).toFloat(),
+                                        (rightIcons.size - 1).toFloat(),
                                         rightLinearWithoutLast!!
                                     )
                                     startAnimation(expandAnim)
@@ -563,13 +563,13 @@ class SwipeLayout @JvmOverloads constructor(context: Context, attrs: AttributeSe
                                     startAnimation(collapseAnim)
                                 }
                             } else {
-                                if (leftLinearWithoutFirst!!.viewWeight < leftIcons!!.size - 1f &&
+                                if (leftLinearWithoutFirst!!.viewWeight < leftIcons.size - 1f &&
                                     (expandAnim == null || expandAnim!!.hasEnded())
                                 ) {
                                     leftLinearWithoutFirst!!.clearAnimation()
                                     if (collapseAnim != null) collapseAnim = null
                                     expandAnim = WeightAnimation(
-                                        (leftIcons!!.size - 1).toFloat(),
+                                        (leftIcons.size - 1).toFloat(),
                                         leftLinearWithoutFirst!!
                                     )
                                     startAnimation(expandAnim)
@@ -748,7 +748,7 @@ class SwipeLayout @JvmOverloads constructor(context: Context, attrs: AttributeSe
         when (state) {
             ITEM_STATE_COLLAPSED -> collapseItem(animated)
             ITEM_STATE_LEFT_EXPAND -> {
-                val requiredWidthLeft = leftIcons!!.size * itemWidth
+                val requiredWidthLeft = leftIcons.size * itemWidth
                 if (animated) {
                     val swipeAnim =
                         SwipeAnimation(leftLinear!!, requiredWidthLeft, swipeableView!!, true)
@@ -759,7 +759,7 @@ class SwipeLayout @JvmOverloads constructor(context: Context, attrs: AttributeSe
                 }
             }
             ITEM_STATE_RIGHT_EXPAND -> {
-                val requiredWidthRight = rightIcons!!.size * itemWidth
+                val requiredWidthRight = rightIcons.size * itemWidth
                 if (animated) {
                     val swipeAnim =
                         SwipeAnimation(rightLinear!!, requiredWidthRight, swipeableView!!, false)
