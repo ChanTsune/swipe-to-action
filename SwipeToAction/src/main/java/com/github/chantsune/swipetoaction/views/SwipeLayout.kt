@@ -81,7 +81,9 @@ class SwipeLayout @JvmOverloads constructor(context: Context, attrs: AttributeSe
     }
 
     override fun addView(child: View, index: Int, params: ViewGroup.LayoutParams) {
-        if (swipeableView != null) super.addView(child, index, params) else {
+        if (swipeableView != null) {
+            super.addView(child, index, params)
+        } else {
             swipeableView = child
             setUpView()
         }
