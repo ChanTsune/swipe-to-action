@@ -119,54 +119,50 @@ class SwipeLayout @JvmOverloads constructor(context: Context, attrs: AttributeSe
     }
 
     private fun createItemLayouts() {
-        if (rightIcons != null) {
-            rightLayoutMaxWidth = itemWidth * rightIcons.size
-            if (rightLinear != null) removeView(rightLinear)
-            rightLinear = createLinearLayout(Gravity.END)
-            rightLinearWithoutLast = createLinearLayout(Gravity.END)
-            rightLinearWithoutLast!!.layoutParams = LinearLayout.LayoutParams(
-                0,
-                ViewGroup.LayoutParams.MATCH_PARENT,
-                (rightIcons.size - 1).toFloat()
-            )
-            addView(rightLinear)
-            rightLinear!!.addView(rightLinearWithoutLast)
-            addSwipeItems(
-                rightIcons,
-                rightIconColors,
-                rightColors,
-                rightTexts,
-                rightTextColors,
-                rightLinear,
-                rightLinearWithoutLast,
-                rightViews,
-                false
-            )
-        }
-        if (leftIcons != null) {
-            leftLayoutMaxWidth = itemWidth * leftIcons.size
-            if (leftLinear != null) removeView(leftLinear)
-            leftLinear = createLinearLayout(Gravity.START)
-            leftLinearWithoutFirst = createLinearLayout(Gravity.START)
-            leftLinearWithoutFirst!!.layoutParams = LinearLayout.LayoutParams(
-                0,
-                ViewGroup.LayoutParams.MATCH_PARENT,
-                (leftIcons.size - 1).toFloat()
-            )
-            addView(leftLinear)
-            addSwipeItems(
-                leftIcons,
-                leftIconColors,
-                leftColors,
-                leftTexts,
-                leftTextColors,
-                leftLinear,
-                leftLinearWithoutFirst,
-                leftViews,
-                true
-            )
-            leftLinear!!.addView(leftLinearWithoutFirst)
-        }
+        rightLayoutMaxWidth = itemWidth * rightIcons.size
+        if (rightLinear != null) removeView(rightLinear)
+        rightLinear = createLinearLayout(Gravity.END)
+        rightLinearWithoutLast = createLinearLayout(Gravity.END)
+        rightLinearWithoutLast!!.layoutParams = LinearLayout.LayoutParams(
+            0,
+            ViewGroup.LayoutParams.MATCH_PARENT,
+            (rightIcons.size - 1).toFloat()
+        )
+        addView(rightLinear)
+        rightLinear!!.addView(rightLinearWithoutLast)
+        addSwipeItems(
+            rightIcons,
+            rightIconColors,
+            rightColors,
+            rightTexts,
+            rightTextColors,
+            rightLinear,
+            rightLinearWithoutLast,
+            rightViews,
+            false
+        )
+        leftLayoutMaxWidth = itemWidth * leftIcons.size
+        if (leftLinear != null) removeView(leftLinear)
+        leftLinear = createLinearLayout(Gravity.START)
+        leftLinearWithoutFirst = createLinearLayout(Gravity.START)
+        leftLinearWithoutFirst!!.layoutParams = LinearLayout.LayoutParams(
+            0,
+            ViewGroup.LayoutParams.MATCH_PARENT,
+            (leftIcons.size - 1).toFloat()
+        )
+        addView(leftLinear)
+        addSwipeItems(
+            leftIcons,
+            leftIconColors,
+            leftColors,
+            leftTexts,
+            leftTextColors,
+            leftLinear,
+            leftLinearWithoutFirst,
+            leftViews,
+            true
+        )
+        leftLinear!!.addView(leftLinearWithoutFirst)
     }
 
     private fun addSwipeItems(
