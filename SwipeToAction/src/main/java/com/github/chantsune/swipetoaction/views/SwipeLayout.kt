@@ -454,7 +454,7 @@ class SwipeLayout @JvmOverloads constructor(context: Context, attrs: AttributeSe
     //Set LayoutWithout to weight rightIcons.length - 1
     private var expandAnim: WeightAnimation? = null
     override fun onTouch(view: View, event: MotionEvent): Boolean {
-        if (isSwipeEnabled && (leftIcons != null || rightIcons != null)) {
+        if (isSwipeEnabled) {
             when (event.action) {
                 MotionEvent.ACTION_DOWN -> {
                     downX = event.x
