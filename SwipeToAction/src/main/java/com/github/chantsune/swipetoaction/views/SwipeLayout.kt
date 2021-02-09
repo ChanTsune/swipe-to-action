@@ -2,7 +2,6 @@ package com.github.chantsune.swipetoaction.views
 
 import android.content.Context
 import android.content.res.TypedArray
-import android.graphics.Typeface
 import android.graphics.drawable.Drawable
 import android.os.Handler
 import android.util.AttributeSet
@@ -291,7 +290,6 @@ class SwipeLayout @JvmOverloads constructor(context: Context, attrs: AttributeSe
             if (textColor != NO_ID) {
                 textView.setTextColor(textColor)
             }
-            if (typeface != null) textView.typeface = typeface
             textView.text = text
             textView.gravity = Gravity.CENTER
             val textViewParams =
@@ -345,12 +343,6 @@ class SwipeLayout @JvmOverloads constructor(context: Context, attrs: AttributeSe
             val leftIconColors = array.getResourceId(R.styleable.SwipeLayout_leftIconColors, NO_ID)
             val rightIconColors =
                 array.getResourceId(R.styleable.SwipeLayout_rightIconColors, NO_ID)
-            val typefaceAssetPath = array.getString(R.styleable.SwipeLayout_customFont)
-            if (typefaceAssetPath != null) {
-                if (typeface == null) {
-                    typeface = Typeface.createFromAsset(context.assets, typefaceAssetPath)
-                }
-            }
             initiateArrays(
                 rightColorsRes,
                 rightIconsRes,
@@ -869,7 +861,6 @@ class SwipeLayout @JvmOverloads constructor(context: Context, attrs: AttributeSe
     companion object {
         val TAG = SwipeLayout::class.simpleName
         private const val NO_ID = 0
-        private var typeface: Typeface? = null
         const val ITEM_STATE_LEFT_EXPAND = 0
         const val ITEM_STATE_RIGHT_EXPAND = 1
         const val ITEM_STATE_COLLAPSED = 2
