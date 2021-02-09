@@ -54,9 +54,9 @@ class SwipeLayout @JvmOverloads constructor(context: Context, attrs: AttributeSe
     private var textTopMargin = 0
     private val fullSwipeEdgePadding: Int =
         resources.getDimensionPixelSize(R.dimen.full_swipe_edge_padding)
-    var rightViews: Array<View?>? = null
+    var rightViews: MutableList<View> = mutableListOf()
         private set
-    var leftViews: Array<View?>? = null
+    var leftViews: MutableList<View> = mutableListOf()
         private set
     private var onSwipeItemClickListener: OnSwipeItemClickListener? = null
     var isSwipeEnabled = true
@@ -125,7 +125,6 @@ class SwipeLayout @JvmOverloads constructor(context: Context, attrs: AttributeSe
                 (rightIcons!!.size - 1).toFloat()
             )
             addView(rightLinear)
-            rightViews = arrayOfNulls(rightIcons!!.size)
             rightLinear!!.addView(rightLinearWithoutLast)
             addSwipeItems(
                 rightIcons!!,
@@ -135,7 +134,7 @@ class SwipeLayout @JvmOverloads constructor(context: Context, attrs: AttributeSe
                 rightTextColors,
                 rightLinear,
                 rightLinearWithoutLast,
-                rightViews!!,
+                rightViews,
                 false
             )
         }
@@ -149,7 +148,6 @@ class SwipeLayout @JvmOverloads constructor(context: Context, attrs: AttributeSe
                 ViewGroup.LayoutParams.MATCH_PARENT,
                 (leftIcons!!.size - 1).toFloat()
             )
-            leftViews = arrayOfNulls(leftIcons!!.size)
             addView(leftLinear)
             addSwipeItems(
                 leftIcons!!,
@@ -174,7 +172,7 @@ class SwipeLayout @JvmOverloads constructor(context: Context, attrs: AttributeSe
         textColors: IntArray?,
         layout: LinearLayout?,
         layoutWithout: LinearLayout?,
-        views: Array<View?>,
+        views: MutableList<View>,
         left: Boolean
     ) {
         for (i in icons.indices) {
@@ -187,7 +185,7 @@ class SwipeLayout @JvmOverloads constructor(context: Context, attrs: AttributeSe
             swipeItem.isClickable = true
             swipeItem.isFocusable = true
             swipeItem.setOnClickListener(this)
-            views[i] = swipeItem
+            views.add(swipeItem)
             if (i == icons.size - (if (!left) 1 else icons.size)) {
                 layout!!.addView(swipeItem)
             } else {
@@ -425,8 +423,8 @@ class SwipeLayout @JvmOverloads constructor(context: Context, attrs: AttributeSe
         drawableHotspotChanged(downX, downY)
     }
 
-    private val collapsibleViews: Array<View?>?
-        private get() = if (invokedFromLeft) leftViews else rightViews
+    private val collapsibleViews: List<View>
+        get() = if (invokedFromLeft) leftViews else rightViews
     private val collapseListener: Animation.AnimationListener =
         object : Animation.AnimationListener {
             override fun onAnimationStart(animation: Animation) {}
