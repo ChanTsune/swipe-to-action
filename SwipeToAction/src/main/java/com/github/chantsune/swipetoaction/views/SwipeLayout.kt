@@ -18,7 +18,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.github.chantsune.swipetoaction.R
 import com.github.chantsune.swipetoaction.animations.SwipeAnimation
 import com.github.chantsune.swipetoaction.animations.WeightAnimation
-import com.github.chantsune.swipetoaction.extensions.Utils.setTint
 import com.github.chantsune.swipetoaction.extensions.Utils.setViewWidth
 import com.github.chantsune.swipetoaction.extensions.viewWeight
 import kotlin.math.abs
@@ -258,11 +257,11 @@ class SwipeLayout @JvmOverloads constructor(context: Context, attrs: AttributeSe
             frameLayout.setBackgroundColor(backgroundColor)
         }
         val imageView = ImageView(context)
-        var drawable = ContextCompat.getDrawable(context, icon)
-        if (iconColor != NO_ID) {
-            drawable = setTint(drawable!!, iconColor)
-        }
-        imageView.setImageDrawable(drawable)
+        imageView.setImageDrawable(ContextCompat.getDrawable(context, icon)?.also { drawable ->
+            if (iconColor != NO_ID) {
+                drawable.setTint(iconColor)
+            }
+        })
         val relativeLayout = RelativeLayout(context)
         var gravity = Gravity.CENTER_VERTICAL
         gravity = if (left) {
