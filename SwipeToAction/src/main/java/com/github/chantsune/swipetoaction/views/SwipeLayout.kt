@@ -300,12 +300,13 @@ class SwipeLayout @JvmOverloads constructor(context: Context, attrs: AttributeSe
     }
 
     private fun createLinearLayout(gravity: Int): LinearLayout {
-        val linearLayout = LinearLayout(context)
-        linearLayout.orientation = LinearLayout.HORIZONTAL
-        val params = LayoutParams(0, ViewGroup.LayoutParams.MATCH_PARENT)
-        params.gravity = gravity
-        linearLayout.layoutParams = params
-        return linearLayout
+        return LinearLayout(context).also { linearLayout ->
+            linearLayout.orientation = LinearLayout.HORIZONTAL
+            linearLayout.layoutParams =
+                LayoutParams(0, ViewGroup.LayoutParams.MATCH_PARENT).also { params ->
+                    params.gravity = gravity
+                }
+        }
     }
 
     private fun setUpAttrs(attrs: AttributeSet) {
