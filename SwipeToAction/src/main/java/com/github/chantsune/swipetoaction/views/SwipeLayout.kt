@@ -157,7 +157,7 @@ class SwipeLayout @JvmOverloads constructor(context: Context, attrs: AttributeSe
                 leftTextColors,
                 leftLinear,
                 leftLinearWithoutFirst,
-                leftViews!!,
+                leftViews,
                 true
             )
             leftLinear!!.addView(leftLinearWithoutFirst)
@@ -196,29 +196,29 @@ class SwipeLayout @JvmOverloads constructor(context: Context, attrs: AttributeSe
 
     fun setAlphaAtIndex(left: Boolean, index: Int, alpha: Float) {
         val views = if (left) leftViews else rightViews
-        if (index <= views!!.size - 1) {
-            views[index]!!.alpha = alpha
+        if (index <= views.size - 1) {
+            views[index].alpha = alpha
         }
     }
 
     fun setEnableAtIndex(left: Boolean, index: Int, enabled: Boolean) {
         val views = if (left) leftViews else rightViews
-        if (index <= views!!.size - 1) {
-            views[index]!!.isEnabled = enabled
+        if (index <= views.size - 1) {
+            views[index].isEnabled = enabled
         }
     }
 
     fun getAlphaAtIndex(left: Boolean, index: Int): Float {
         val views = if (left) leftViews else rightViews
-        return if (index <= views!!.size - 1) {
-            views[index]!!.alpha
+        return if (index <= views.size - 1) {
+            views[index].alpha
         } else 1f
     }
 
     fun isEnabledAtIndex(left: Boolean, index: Int): Boolean {
         val views = if (left) leftViews else rightViews
-        return if (index <= views!!.size - 1) {
-            views[index]!!.isEnabled
+        return if (index <= views.size - 1) {
+            views[index].isEnabled
         } else true
     }
 
@@ -462,8 +462,8 @@ class SwipeLayout @JvmOverloads constructor(context: Context, attrs: AttributeSe
                         downRawX = prevRawX
                     }
                     if (swipeableView!!.translationX == 0f) {
-                        rightLinearWithoutLast?.viewWeight = (rightViews!!.size - 1).toFloat()
-                        leftLinearWithoutFirst?.viewWeight = (leftViews!!.size - 1).toFloat()
+                        rightLinearWithoutLast?.viewWeight = (rightViews.size - 1).toFloat()
+                        leftLinearWithoutFirst?.viewWeight = (leftViews.size - 1).toFloat()
                     }
                     return true
                 }
@@ -704,7 +704,7 @@ class SwipeLayout @JvmOverloads constructor(context: Context, attrs: AttributeSe
                     layoutWithout.startAnimation(collapseAnim)
                 }
             } else {
-                val weightAnimation = WeightAnimation((views!!.size - 1).toFloat(), layoutWithout!!)
+                val weightAnimation = WeightAnimation((views.size - 1).toFloat(), layoutWithout!!)
                 layoutWithout.startAnimation(weightAnimation)
             }
             animateView.startAnimation(swipeAnim)
@@ -718,7 +718,7 @@ class SwipeLayout @JvmOverloads constructor(context: Context, attrs: AttributeSe
 
     private fun collapseItem(animated: Boolean) {
         if (leftLinear != null && leftLinear!!.width > 0) {
-            setViewWidth(leftLinearWithoutFirst!!, leftViews!!.size - 1)
+            setViewWidth(leftLinearWithoutFirst!!, leftViews.size - 1)
             if (animated) {
                 val swipeAnim = SwipeAnimation(leftLinear!!, 0, swipeableView!!, true)
                 leftLinear!!.startAnimation(swipeAnim)
@@ -727,7 +727,7 @@ class SwipeLayout @JvmOverloads constructor(context: Context, attrs: AttributeSe
                 setViewWidth(leftLinear!!, 0)
             }
         } else if (rightLinear != null && rightLinear!!.width > 0) {
-            setViewWidth(rightLinearWithoutLast!!, rightViews!!.size - 1)
+            setViewWidth(rightLinearWithoutLast!!, rightViews.size - 1)
             if (animated) {
                 val swipeAnim = SwipeAnimation(rightLinear!!, 0, swipeableView!!, false)
                 rightLinear!!.startAnimation(swipeAnim)
@@ -817,9 +817,9 @@ class SwipeLayout @JvmOverloads constructor(context: Context, attrs: AttributeSe
     override fun onClick(view: View) {
         if (onSwipeItemClickListener != null) {
             if (leftViews != null) {
-                for ((i, v) in leftViews!!.withIndex()) {
+                for ((i, v) in leftViews.withIndex()) {
                     if (v === view) {
-                        if (leftViews!!.size == 1 || leftLinearWithoutFirst!!.viewWeight > 0) {
+                        if (leftViews.size == 1 || leftLinearWithoutFirst!!.viewWeight > 0) {
                             onSwipeItemClickListener!!.onSwipeItemClick(true, i)
                         }
                         return
@@ -827,9 +827,9 @@ class SwipeLayout @JvmOverloads constructor(context: Context, attrs: AttributeSe
                 }
             }
             if (rightViews != null) {
-                for ((i, v) in rightViews!!.withIndex()) {
+                for ((i, v) in rightViews.withIndex()) {
                     if (v === view) {
-                        if (rightViews!!.size == 1 || rightLinearWithoutLast!!.viewWeight > 0) {
+                        if (rightViews.size == 1 || rightLinearWithoutLast!!.viewWeight > 0) {
                             onSwipeItemClickListener!!.onSwipeItemClick(false, i)
                         }
                         break
@@ -857,7 +857,7 @@ class SwipeLayout @JvmOverloads constructor(context: Context, attrs: AttributeSe
     }
 
     companion object {
-        val TAG = SwipeLayout::class.java.simpleName
+        val TAG = SwipeLayout::class.simpleName
         private const val NO_ID = 0
         private var typeface: Typeface? = null
         const val ITEM_STATE_LEFT_EXPAND = 0
