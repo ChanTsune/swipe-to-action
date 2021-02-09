@@ -817,24 +817,20 @@ class SwipeLayout @JvmOverloads constructor(context: Context, attrs: AttributeSe
 
     override fun onClick(view: View) {
         if (onSwipeItemClickListener != null) {
-            if (leftViews != null) {
-                for ((i, v) in leftViews.withIndex()) {
-                    if (v === view) {
-                        if (leftViews.size == 1 || leftLinearWithoutFirst!!.viewWeight > 0) {
-                            onSwipeItemClickListener!!.onSwipeItemClick(true, i)
-                        }
-                        return
+            for ((i, v) in leftViews.withIndex()) {
+                if (v === view) {
+                    if (leftViews.size == 1 || leftLinearWithoutFirst!!.viewWeight > 0) {
+                        onSwipeItemClickListener!!.onSwipeItemClick(true, i)
                     }
+                    return
                 }
             }
-            if (rightViews != null) {
-                for ((i, v) in rightViews.withIndex()) {
-                    if (v === view) {
-                        if (rightViews.size == 1 || rightLinearWithoutLast!!.viewWeight > 0) {
-                            onSwipeItemClickListener!!.onSwipeItemClick(false, i)
-                        }
-                        break
+            for ((i, v) in rightViews.withIndex()) {
+                if (v === view) {
+                    if (rightViews.size == 1 || rightLinearWithoutLast!!.viewWeight > 0) {
+                        onSwipeItemClickListener!!.onSwipeItemClick(false, i)
                     }
+                    break
                 }
             }
         }
