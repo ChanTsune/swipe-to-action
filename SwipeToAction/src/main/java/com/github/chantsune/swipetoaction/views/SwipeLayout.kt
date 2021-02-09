@@ -263,11 +263,10 @@ class SwipeLayout @JvmOverloads constructor(context: Context, attrs: AttributeSe
             }
         })
         val relativeLayout = RelativeLayout(context)
-        var gravity = Gravity.CENTER_VERTICAL
-        gravity = if (left) {
-            gravity or Gravity.END
+        val gravity = if (left) {
+            Gravity.CENTER_VERTICAL or Gravity.END
         } else {
-            gravity or Gravity.START
+            Gravity.CENTER_VERTICAL or Gravity.START
         }
         relativeLayout.layoutParams =
             LayoutParams(itemWidth, ViewGroup.LayoutParams.WRAP_CONTENT, gravity)
