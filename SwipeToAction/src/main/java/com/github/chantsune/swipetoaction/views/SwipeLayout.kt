@@ -26,7 +26,7 @@ class SwipeLayout @JvmOverloads constructor(context: Context, attrs: AttributeSe
     FrameLayout(
         context, attrs
     ), OnTouchListener, View.OnClickListener {
-    private var layoutId = 0
+    private var contentLayoutId = 0
     private var leftColors: List<Int> = emptyList()
     var leftIcons: List<Int> = emptyList()
     var leftIconColors: List<Int> = emptyList()
@@ -94,8 +94,8 @@ class SwipeLayout @JvmOverloads constructor(context: Context, attrs: AttributeSe
     }
 
     private fun setUpView() {
-        if (layoutId != -NO_ID) {
-            swipeableView = LayoutInflater.from(context).inflate(layoutId, null)
+        if (contentLayoutId != -NO_ID) {
+            swipeableView = LayoutInflater.from(context).inflate(contentLayoutId, null)
         }
         if (swipeableView != null) {
             compareArrays(leftColors, leftIcons)
@@ -309,7 +309,7 @@ class SwipeLayout @JvmOverloads constructor(context: Context, attrs: AttributeSe
 
     private fun setUpAttrs(attrs: AttributeSet) {
         context.obtainStyledAttributes(attrs, R.styleable.SwipeLayout).use { array ->
-            layoutId = array.getResourceId(R.styleable.SwipeLayout_foregroundLayout, NO_ID)
+            contentLayoutId = array.getResourceId(R.styleable.SwipeLayout_foregroundLayout, NO_ID)
             itemWidth = array.getDimensionPixelSize(R.styleable.SwipeLayout_swipeItemWidth, 100)
             iconSize = array.getDimensionPixelSize(
                 R.styleable.SwipeLayout_iconSize,
