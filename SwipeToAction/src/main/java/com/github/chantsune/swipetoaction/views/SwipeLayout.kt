@@ -270,9 +270,9 @@ class SwipeLayout @JvmOverloads constructor(context: Context, attrs: AttributeSe
         }
         relativeLayout.layoutParams =
             LayoutParams(itemWidth, ViewGroup.LayoutParams.WRAP_CONTENT, gravity)
-        val imageViewParams = RelativeLayout.LayoutParams(iconSize, iconSize)
-        imageViewParams.addRule(RelativeLayout.CENTER_HORIZONTAL, RelativeLayout.TRUE)
-        imageView.layoutParams = imageViewParams
+        imageView.layoutParams = RelativeLayout.LayoutParams(iconSize, iconSize).also { params ->
+            params.addRule(RelativeLayout.CENTER_HORIZONTAL, RelativeLayout.TRUE)
+        }
         imageView.id = ++id_
         relativeLayout.addView(imageView)
         if (text != null) {
