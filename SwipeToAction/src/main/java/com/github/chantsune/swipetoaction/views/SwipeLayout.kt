@@ -29,17 +29,17 @@ class SwipeLayout @JvmOverloads constructor(context: Context, attrs: AttributeSe
         context, attrs
     ), OnTouchListener, View.OnClickListener {
     private var layoutId = 0
-    private var leftColors: IntArray? = null
-    var leftIcons: IntArray? = null
-    var leftIconColors: IntArray? = null
-    var rightColors: IntArray? = null
-    var rightIcons: IntArray? = null
-    var rightIconColors: IntArray? = null
-    var rightTextColors: IntArray? = null
+    private var leftColors: List<Int> = emptyList()
+    var leftIcons: List<Int> = emptyList()
+    var leftIconColors: List<Int> = emptyList()
+    var rightColors: List<Int> = emptyList()
+    var rightIcons: List<Int> = emptyList()
+    var rightIconColors: List<Int> = emptyList()
+    var rightTextColors: List<Int> = emptyList()
 
-    var leftTextColors: IntArray? = null
-    var leftTexts: Array<String>? = null
-    var rightTexts: Array<String>? = null
+    var leftTextColors: List<Int> = emptyList()
+    var leftTexts: List<String> = emptyList()
+    var rightTexts: List<String> = emptyList()
     private var itemWidth = 0
     private var rightLayoutMaxWidth = 0
     private var leftLayoutMaxWidth = 0
@@ -105,10 +105,8 @@ class SwipeLayout @JvmOverloads constructor(context: Context, attrs: AttributeSe
         }
     }
 
-    private fun compareArrays(arr1: IntArray?, arr2: IntArray?) {
-        if (arr1 != null && arr2 != null) {
-            check(arr1.size >= arr2.size) { "Drawable array shouldn't be bigger than color array" }
-        }
+    private fun compareArrays(arr1: List<Int>, arr2: List<Int>) {
+        check(arr1.size >= arr2.size) { "Drawable array shouldn't be bigger than color array" }
     }
 
     fun invalidateSwipeItems() {
@@ -167,21 +165,21 @@ class SwipeLayout @JvmOverloads constructor(context: Context, attrs: AttributeSe
     }
 
     private fun addSwipeItems(
-        icons: IntArray,
-        iconColors: IntArray?,
-        backgroundColors: IntArray?,
-        texts: Array<String>?,
-        textColors: IntArray?,
+        icons: List<Int>,
+        iconColors: List<Int>,
+        backgroundColors: List<Int>,
+        texts: List<String>,
+        textColors: List<Int>,
         layout: LinearLayout?,
         layoutWithout: LinearLayout?,
         views: MutableList<View>,
         left: Boolean
     ) {
         for (i in icons.indices) {
-            val backgroundColor = backgroundColors?.getOrNull(i) ?: NO_ID
-            val iconColor = iconColors?.getOrNull(i) ?: NO_ID
-            val txt: String? = texts?.getOrNull(i)
-            val textColor = textColors?.getOrNull(i) ?: NO_ID
+            val backgroundColor = backgroundColors.getOrNull(i) ?: NO_ID
+            val iconColor = iconColors.getOrNull(i) ?: NO_ID
+            val txt: String? = texts.getOrNull(i)
+            val textColor = textColors.getOrNull(i) ?: NO_ID
             val swipeItem =
                 createSwipeItem(icons[i], iconColor, backgroundColor, txt, textColor, left)
             swipeItem.isClickable = true
@@ -367,19 +365,26 @@ class SwipeLayout @JvmOverloads constructor(context: Context, attrs: AttributeSe
         leftTextRes: Int, rightTextRes: Int, leftTextColorRes: Int, rightTextColorRes: Int,
         leftIconColorsRes: Int, rightIconColorsRes: Int
     ) {
-        val res = resources
-        if (rightColorsRes != NO_ID) rightColors = res.getIntArray(rightColorsRes)
-        if (rightIconsRes != NO_ID && !isInEditMode) rightIcons =
-            fillDrawables(res.obtainTypedArray(rightIconsRes))
-        if (leftColorsRes != NO_ID) leftColors = res.getIntArray(leftColorsRes)
-        if (leftIconsRes != NO_ID && !isInEditMode) leftIcons =
-            fillDrawables(res.obtainTypedArray(leftIconsRes))
-        if (leftTextRes != NO_ID) leftTexts = res.getStringArray(leftTextRes)
-        if (rightTextRes != NO_ID) rightTexts = res.getStringArray(rightTextRes)
-        if (leftTextColorRes != NO_ID) leftTextColors = res.getIntArray(leftTextColorRes)
-        if (rightTextColorRes != NO_ID) rightTextColors = res.getIntArray(rightTextColorRes)
-        if (leftIconColorsRes != NO_ID) leftIconColors = res.getIntArray(leftIconColorsRes)
-        if (rightIconColorsRes != NO_ID) rightIconColors = res.getIntArray(rightIconColorsRes)
+        if (rightColorsRes != NO_ID)
+            rightColors = resources.getIntArray(rightColorsRes).toList()
+        if (rightIconsRes != NO_ID && !isInEditMode)
+            rightIcons = fillDrawables(resources.obtainTypedArray(rightIconsRes)).toList()
+        if (leftColorsRes != NO_ID)
+            leftColors = resources.getIntArray(leftColorsRes).toList()
+        if (leftIconsRes != NO_ID && !isInEditMode)
+            leftIcons = fillDrawables(resources.obtainTypedArray(leftIconsRes)).toList()
+        if (leftTextRes != NO_ID)
+            leftTexts = resources.getStringArray(leftTextRes).toList()
+        if (rightTextRes != NO_ID)
+            rightTexts = resources.getStringArray(rightTextRes).toList()
+        if (leftTextColorRes != NO_ID)
+            leftTextColors = resources.getIntArray(leftTextColorRes).toList()
+        if (rightTextColorRes != NO_ID)
+            rightTextColors = resources.getIntArray(rightTextColorRes).toList()
+        if (leftIconColorsRes != NO_ID)
+            leftIconColors = resources.getIntArray(leftIconColorsRes).toList()
+        if (rightIconColorsRes != NO_ID)
+            rightIconColors = resources.getIntArray(rightIconColorsRes).toList()
     }
 
     private fun fillDrawables(ta: TypedArray): IntArray {
