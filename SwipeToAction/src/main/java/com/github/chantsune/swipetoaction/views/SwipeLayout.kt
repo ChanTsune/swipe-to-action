@@ -219,12 +219,11 @@ class SwipeLayout @JvmOverloads constructor(context: Context, attrs: AttributeSe
     }
 
     private val rippleDrawable: Drawable?
-        private get() {
+        get() {
             val attrs = intArrayOf(android.R.attr.selectableItemBackground)
-            val ta = context.obtainStyledAttributes(attrs)
-            val ripple = ta.getDrawable(0)
-            ta.recycle()
-            return ripple
+            return context.obtainStyledAttributes(attrs).use {
+                it.getDrawable(0)
+            }
         }
     var id_ = 0
     private fun createSwipeItem(
