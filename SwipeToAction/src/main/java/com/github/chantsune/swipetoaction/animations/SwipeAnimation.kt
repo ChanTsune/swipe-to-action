@@ -4,8 +4,7 @@ import android.view.View
 import android.view.animation.Animation
 import android.view.animation.DecelerateInterpolator
 import android.view.animation.Transformation
-import androidx.core.view.ViewCompat
-import com.github.chantsune.swipetoaction.extensions.Utils
+import com.github.chantsune.swipetoaction.extensions.viewWidth
 
 class SwipeAnimation(
     private val resizeView: View,
@@ -24,14 +23,12 @@ class SwipeAnimation(
         if (startWidth < 0) {
             startWidth = resizeView.width
         }
-        Utils.setViewWidth(
-            resizeView,
-            startWidth + ((width.toFloat() - startWidth.toFloat()) * interpolatedTime).toInt()
-        )
+        resizeView.viewWidth = startWidth + ((width - startWidth) * interpolatedTime).toInt()
+
         if (left) {
-            ViewCompat.setTranslationX(changeXView, resizeView.width.toFloat())
+            changeXView.translationX = resizeView.width.toFloat()
         } else {
-            ViewCompat.setTranslationX(changeXView, -resizeView.width.toFloat())
+            changeXView.translationX = -resizeView.width.toFloat()
         }
     }
 

@@ -11,15 +11,24 @@ var View.viewWeight: Float
         }
     }
 
+var View.viewWidth: Int
+    get() = layoutParams.width
+    set(value) {
+        layoutParams.width = value
+        requestLayout()
+    }
+
+var View.viewHeight: Int
+    get() = layoutParams.height
+    set(value) {
+        layoutParams.height = value
+        requestLayout()
+    }
+
 object Utils {
     @JvmStatic
     fun setViewWidth(view: View, width: Int) {
         view.layoutParams.width = width
-        view.requestLayout()
-    }
-
-    fun setViewHeight(view: View, height: Int) {
-        view.layoutParams.height = height
         view.requestLayout()
     }
 }
