@@ -39,8 +39,8 @@ open class SwipeLayout(context: Context, attrs: AttributeSet? = null) :
     var rightTexts: List<String> = emptyList()
 
     private var itemWidth = 0
-    private var rightLayoutMaxWidth = 0
-    private var leftLayoutMaxWidth = 0
+    private val rightLayoutMaxWidth: Int get() = itemWidth * rightIcons.size
+    private val leftLayoutMaxWidth: Int get() = itemWidth * leftIcons.size
     var contentView: View? = null
         private set
     private var rightLinear: LinearLayout? = null
@@ -115,7 +115,6 @@ open class SwipeLayout(context: Context, attrs: AttributeSet? = null) :
     }
 
     private fun createItemLayouts() {
-        rightLayoutMaxWidth = itemWidth * rightIcons.size
         if (rightLinear != null) removeView(rightLinear)
         rightLinear = createLinearLayout(Gravity.END)
         rightLinearWithoutLast = createLinearLayout(Gravity.END)
@@ -137,7 +136,6 @@ open class SwipeLayout(context: Context, attrs: AttributeSet? = null) :
             rightViews,
             false
         )
-        leftLayoutMaxWidth = itemWidth * leftIcons.size
         if (leftLinear != null) removeView(leftLinear)
         leftLinear = createLinearLayout(Gravity.START)
         leftLinearWithoutFirst = createLinearLayout(Gravity.START)
