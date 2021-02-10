@@ -52,12 +52,12 @@ class RecyclerAdapter : RecyclerView.Adapter<RecyclerAdapter.ViewHolder>() {
         override fun onSwipeItemClick(left: Boolean, index: Int) {
             if (left) {
                 binding.swipeLayout.also { swipeLayout ->
-                    if (swipeLayout.isEnabledAtIndex(true, 0)) {
-                        swipeLayout.setAlphaAtIndex(true, 0, 0.5f)
-                        swipeLayout.setEnableAtIndex(true, 0, false)
+                    if (swipeLayout.isEnabledAtIndex(true, index)) {
+                        swipeLayout.setAlphaAtIndex(true, index, 0.5f)
+                        swipeLayout.setEnableAtIndex(true, index, false)
                     } else {
-                        swipeLayout.setAlphaAtIndex(true, 0, 1f)
-                        swipeLayout.setEnableAtIndex(true, 0, true)
+                        swipeLayout.setAlphaAtIndex(true, index, 1f)
+                        swipeLayout.setEnableAtIndex(true, index, true)
                     }
                 }
             } else {
