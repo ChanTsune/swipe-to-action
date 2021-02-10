@@ -2,16 +2,13 @@ package com.github.chantsune.swipetoaction.views
 
 import android.content.Context
 import android.content.res.TypedArray
-import android.graphics.drawable.Drawable
 import android.os.Handler
 import android.util.AttributeSet
 import android.util.Log
-import android.util.TypedValue
 import android.view.*
 import android.view.View.OnTouchListener
 import android.view.animation.Animation
 import android.widget.*
-import androidx.core.content.ContextCompat
 import androidx.core.content.res.use
 import androidx.core.view.children
 import androidx.recyclerview.widget.RecyclerView
@@ -181,7 +178,14 @@ class SwipeLayout @JvmOverloads constructor(context: Context, attrs: AttributeSe
             val txt: String? = texts.getOrNull(i)
             val textColor = textColors.getOrNull(i) ?: NO_ID
             val swipeItem =
-                createSwipeItem(icon, iconColor, backgroundColor, txt, textColor, left).also { itemView ->
+                createSwipeItem(
+                    icon,
+                    iconColor,
+                    backgroundColor,
+                    txt,
+                    textColor,
+                    left
+                ).also { itemView ->
                     itemView.isClickable = true
                     itemView.isFocusable = true
                     itemView.setOnClickListener(this)
@@ -219,14 +223,6 @@ class SwipeLayout @JvmOverloads constructor(context: Context, attrs: AttributeSe
         contentView?.setOnClickListener(listener)
     }
 
-    private val rippleDrawable: Drawable?
-        get() {
-            val attrs = intArrayOf(android.R.attr.selectableItemBackground)
-            return context.obtainStyledAttributes(attrs).use {
-                it.getDrawable(0)
-            }
-        }
-    var id_ = 0
     private fun createSwipeItem(
         icon: Int,
         iconColor: Int,
@@ -235,58 +231,20 @@ class SwipeLayout @JvmOverloads constructor(context: Context, attrs: AttributeSe
         textColor: Int,
         left: Boolean
     ): ViewGroup {
-        val frameLayout = FrameLayout(context)
-        frameLayout.layoutParams =
-            LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.MATCH_PARENT, 1f)
-        val view = View(context)
-        view.layoutParams = LayoutParams(
-            ViewGroup.LayoutParams.MATCH_PARENT,
-            ViewGroup.LayoutParams.MATCH_PARENT
+        return DefaultSwipeItemView(
+            context,
+            icon,
+            iconColor,
+            backgroundColor,
+            text,
+            textColor,
+            left,
+            itemWidth,
+            iconSize,
+            textSize,
+            textTopMargin,
+            this
         )
-        view.background = rippleDrawable
-        frameLayout.addView(view)
-        if (backgroundColor != NO_ID) {
-            frameLayout.setBackgroundColor(backgroundColor)
-        }
-        val imageView = ImageView(context)
-        imageView.setImageDrawable(ContextCompat.getDrawable(context, icon)?.also { drawable ->
-            if (iconColor != NO_ID) {
-                drawable.setTint(iconColor)
-            }
-        })
-        val relativeLayout = RelativeLayout(context)
-        val gravity = if (left) {
-            Gravity.CENTER_VERTICAL or Gravity.END
-        } else {
-            Gravity.CENTER_VERTICAL or Gravity.START
-        }
-        relativeLayout.layoutParams =
-            LayoutParams(itemWidth, ViewGroup.LayoutParams.WRAP_CONTENT, gravity)
-        imageView.layoutParams = RelativeLayout.LayoutParams(iconSize, iconSize).also { params ->
-            params.addRule(RelativeLayout.CENTER_HORIZONTAL, RelativeLayout.TRUE)
-        }
-        imageView.id = ++id_
-        relativeLayout.addView(imageView)
-        if (text != null) {
-            val textView = TextView(context)
-            textView.maxLines = 2
-            if (textSize > 0) {
-                textView.setTextSize(TypedValue.COMPLEX_UNIT_PX, textSize)
-            }
-            if (textColor != NO_ID) {
-                textView.setTextColor(textColor)
-            }
-            textView.text = text
-            textView.gravity = Gravity.CENTER
-            val textViewParams =
-                RelativeLayout.LayoutParams(itemWidth, ViewGroup.LayoutParams.WRAP_CONTENT)
-            textViewParams.addRule(RelativeLayout.BELOW, id_)
-            textViewParams.topMargin = textTopMargin
-            relativeLayout.addView(textView, textViewParams)
-        }
-        frameLayout.setOnTouchListener(this)
-        frameLayout.addView(relativeLayout)
-        return frameLayout
     }
 
     private fun createLinearLayout(gravity: Int): LinearLayout {
