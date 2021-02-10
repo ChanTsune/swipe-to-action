@@ -22,7 +22,7 @@ import kotlin.math.abs
 open class SwipeLayout(context: Context, attrs: AttributeSet? = null) :
     FrameLayout(
         context, attrs
-    ), OnTouchListener, View.OnClickListener {
+    ), OnTouchListener {
     private var contentLayoutId = 0
 
     var leftColors: List<Int> = emptyList()
@@ -194,7 +194,9 @@ open class SwipeLayout(context: Context, attrs: AttributeSet? = null) :
                 ).also { itemView ->
                     itemView.isClickable = true
                     itemView.isFocusable = true
-                    itemView.setOnClickListener(this)
+                    itemView.setOnClickListener {
+                        onSwipeItemClickListener?.onSwipeItemClick(left, i)
+                    }
                 }
             views.add(swipeItem)
             if (i == icons.size - (if (!left) 1 else icons.size)) {
@@ -775,27 +777,6 @@ open class SwipeLayout(context: Context, attrs: AttributeSet? = null) :
         get() = leftLinear != null && leftLinear!!.width >= leftLayoutMaxWidth
     val isExpanded: Boolean
         get() = isLeftExpanded || isRightExpanded
-
-    override fun onClick(view: View) {
-        if (onSwipeItemClickListener != null) {
-            for ((i, v) in leftViews.withIndex()) {
-                if (v === view) {
-                    if (leftViews.size == 1 || leftLinearWithoutFirst!!.viewWeight > 0) {
-                        onSwipeItemClickListener!!.onSwipeItemClick(true, i)
-                    }
-                    return
-                }
-            }
-            for ((i, v) in rightViews.withIndex()) {
-                if (v === view) {
-                    if (rightViews.size == 1 || rightLinearWithoutLast!!.viewWeight > 0) {
-                        onSwipeItemClickListener!!.onSwipeItemClick(false, i)
-                    }
-                    return
-                }
-            }
-        }
-    }
 
     fun collapseAll(animated: Boolean) {
         val parent = parent
