@@ -16,5 +16,5 @@
     app:rightItemIcons="@array/rightDrawables"
     app:rightStrings="@array/rightTexts"
     app:rightTextColors="@array/rightTextColors"
-    app:swipeItemWidth="20dp"
-    app:textSize="20sp" />
+    app:swipeItemWidth="80dp"
+    app:textSize="18sp" />
