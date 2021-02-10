@@ -4,14 +4,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.View.OnLongClickListener
 import android.view.ViewGroup
-import android.widget.TextView
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.github.chantsune.swipetoaction.demo.databinding.RecyclerViewItemBinding
 import com.github.chantsune.swipetoaction.demo.databinding.SampleItemBinding
 import com.github.chantsune.swipetoaction.views.SwipeLayout
 import com.github.chantsune.swipetoaction.views.SwipeLayout.OnSwipeItemClickListener
-import java.util.*
 
 class RecyclerAdapter : RecyclerView.Adapter<RecyclerAdapter.ViewHolder>() {
     private val strings = MutableList(30) { it.toString() }
@@ -62,6 +60,7 @@ class RecyclerAdapter : RecyclerView.Adapter<RecyclerAdapter.ViewHolder>() {
                     if (swipeLayout.isEnabledAtIndex(true, index)) {
                         swipeLayout.setAlphaAtIndex(true, index, 0.5f)
                         swipeLayout.setEnableAtIndex(true, index, false)
+                        swipeLayout.collapseAll(true)
                     } else {
                         swipeLayout.setAlphaAtIndex(true, index, 1f)
                         swipeLayout.setEnableAtIndex(true, index, true)
