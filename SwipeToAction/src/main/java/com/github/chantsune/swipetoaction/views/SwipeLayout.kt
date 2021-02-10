@@ -27,17 +27,20 @@ class SwipeLayout @JvmOverloads constructor(context: Context, attrs: AttributeSe
         context, attrs
     ), OnTouchListener, View.OnClickListener {
     private var contentLayoutId = 0
-    private var leftColors: List<Int> = emptyList()
+
+    var leftColors: List<Int> = emptyList()
     var leftIcons: List<Int> = emptyList()
     var leftIconColors: List<Int> = emptyList()
+    var leftTextColors: List<Int> = emptyList()
+
     var rightColors: List<Int> = emptyList()
     var rightIcons: List<Int> = emptyList()
     var rightIconColors: List<Int> = emptyList()
     var rightTextColors: List<Int> = emptyList()
 
-    var leftTextColors: List<Int> = emptyList()
     var leftTexts: List<String> = emptyList()
     var rightTexts: List<String> = emptyList()
+
     private var itemWidth = 0
     private var rightLayoutMaxWidth = 0
     private var leftLayoutMaxWidth = 0
