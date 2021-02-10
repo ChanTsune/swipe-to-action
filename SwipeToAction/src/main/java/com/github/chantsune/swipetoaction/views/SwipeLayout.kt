@@ -734,16 +734,18 @@ open class SwipeLayout(context: Context, attrs: AttributeSet? = null) :
         this.autoHideSwipe = autoHideSwipe
         val parent = parent
         if (parent != null && parent is RecyclerView) {
-            if (onScrollListener != null) parent.removeOnScrollListener(onScrollListener!!)
-            if (autoHideSwipe) parent.addOnScrollListener(object :
-                RecyclerView.OnScrollListener() {
-                override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
-                    super.onScrollStateChanged(recyclerView, newState)
-                    if (newState == RecyclerView.SCROLL_STATE_DRAGGING && contentView!!.translationX != 0f) {
-                        setItemState(ITEM_STATE_COLLAPSED, true)
+            onScrollListener?.let { parent.removeOnScrollListener(it) }
+            if (autoHideSwipe) {
+                parent.addOnScrollListener(object :
+                    RecyclerView.OnScrollListener() {
+                    override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                        super.onScrollStateChanged(recyclerView, newState)
+                        if (newState == RecyclerView.SCROLL_STATE_DRAGGING && contentView!!.translationX != 0f) {
+                            setItemState(ITEM_STATE_COLLAPSED, true)
+                        }
                     }
-                }
-            }.also { onScrollListener = it })
+                }.also { onScrollListener = it })
+            }
         } else {
             Log.e(TAG, "For autoHideSwipe parent must be a RecyclerView")
         }
