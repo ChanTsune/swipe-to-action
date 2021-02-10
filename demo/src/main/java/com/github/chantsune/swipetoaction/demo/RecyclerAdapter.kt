@@ -14,7 +14,7 @@ import com.github.chantsune.swipetoaction.views.SwipeLayout.OnSwipeItemClickList
 import java.util.*
 
 class RecyclerAdapter : RecyclerView.Adapter<RecyclerAdapter.ViewHolder>() {
-    private val strings = ArrayList<String>()
+    private val strings = MutableList(30) { it.toString() }
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val v =
             RecyclerViewItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -32,6 +32,13 @@ class RecyclerAdapter : RecyclerView.Adapter<RecyclerAdapter.ViewHolder>() {
         RecyclerView.ViewHolder(binding.root),
         View.OnClickListener, OnLongClickListener, OnSwipeItemClickListener {
         val contentBinding = SampleItemBinding.bind(binding.swipeLayout.contentView!!)
+
+        init {
+            binding.swipeLayout.setOnClickListener(this)
+            binding.swipeLayout.setOnLongClickListener(this)
+            binding.swipeLayout.setOnSwipeItemClickListener(this)
+        }
+
         override fun onClick(view: View) {
             Toast.makeText(
                 view.context,
@@ -76,18 +83,6 @@ class RecyclerAdapter : RecyclerView.Adapter<RecyclerAdapter.ViewHolder>() {
                     }
                 }
             }
-        }
-
-        init {
-            binding.swipeLayout.setOnClickListener(this)
-            binding.swipeLayout.setOnLongClickListener(this)
-            binding.swipeLayout.setOnSwipeItemClickListener(this)
-        }
-    }
-
-    init {
-        for (i in 0..29) {
-            strings.add(i.toString() + "")
         }
     }
 }
