@@ -850,7 +850,7 @@ class SwipeLayout @JvmOverloads constructor(context: Context, attrs: AttributeSe
 
     companion object {
         val TAG = SwipeLayout::class.simpleName
-        private const val NO_ID = 0
+        const val NO_ID = 0
         const val ITEM_STATE_LEFT_EXPAND = 0
         const val ITEM_STATE_RIGHT_EXPAND = 1
         const val ITEM_STATE_COLLAPSED = 2
