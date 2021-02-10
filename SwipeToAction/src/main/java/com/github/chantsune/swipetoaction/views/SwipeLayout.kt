@@ -175,16 +175,17 @@ class SwipeLayout @JvmOverloads constructor(context: Context, attrs: AttributeSe
         views: MutableList<View>,
         left: Boolean
     ) {
-        for (i in icons.indices) {
+        for ((i, icon) in icons.withIndex()) {
             val backgroundColor = backgroundColors.getOrNull(i) ?: NO_ID
             val iconColor = iconColors.getOrNull(i) ?: NO_ID
             val txt: String? = texts.getOrNull(i)
             val textColor = textColors.getOrNull(i) ?: NO_ID
             val swipeItem =
-                createSwipeItem(icons[i], iconColor, backgroundColor, txt, textColor, left)
-            swipeItem.isClickable = true
-            swipeItem.isFocusable = true
-            swipeItem.setOnClickListener(this)
+                createSwipeItem(icon, iconColor, backgroundColor, txt, textColor, left).also { itemView ->
+                    itemView.isClickable = true
+                    itemView.isFocusable = true
+                    itemView.setOnClickListener(this)
+                }
             views.add(swipeItem)
             if (i == icons.size - (if (!left) 1 else icons.size)) {
                 layout!!.addView(swipeItem)
