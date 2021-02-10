@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <integer-array name="rightColors">
-        <item>@color/design_default_color_error</item>
-        <item>@color/design_default_color_error</item>
-        <item>@color/design_default_color_error</item>
+        <item>@color/purple_200</item>
+        <item>@color/purple_500</item>
+        <item>@color/purple_700</item>
     </integer-array>
 
     <integer-array name="leftColors">
-        <item>@color/design_default_color_error</item>
-        <item>@color/design_default_color_error</item>
-        <item>@color/design_default_color_error</item>
+        <item>@color/purple_200</item>
+        <item>@color/purple_500</item>
+        <item>@color/purple_700</item>
     </integer-array>
 
     <integer-array name="rightTextColors">
