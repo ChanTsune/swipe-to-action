@@ -193,30 +193,22 @@ class SwipeLayout @JvmOverloads constructor(context: Context, attrs: AttributeSe
 
     fun setAlphaAtIndex(left: Boolean, index: Int, alpha: Float) {
         val views = if (left) leftViews else rightViews
-        if (index <= views.size - 1) {
-            views[index].alpha = alpha
-        }
+        views.getOrNull(index)?.alpha = alpha
     }
 
     fun setEnableAtIndex(left: Boolean, index: Int, enabled: Boolean) {
         val views = if (left) leftViews else rightViews
-        if (index <= views.size - 1) {
-            views[index].isEnabled = enabled
-        }
+        views.getOrNull(index)?.isEnabled = enabled
     }
 
     fun getAlphaAtIndex(left: Boolean, index: Int): Float {
         val views = if (left) leftViews else rightViews
-        return if (index <= views.size - 1) {
-            views[index].alpha
-        } else 1f
+        return views.getOrNull(index)?.alpha ?: 1f
     }
 
     fun isEnabledAtIndex(left: Boolean, index: Int): Boolean {
         val views = if (left) leftViews else rightViews
-        return if (index <= views.size - 1) {
-            views[index].isEnabled
-        } else true
+        return views.getOrNull(index)?.isEnabled ?: true
     }
 
     override fun setOnClickListener(listener: OnClickListener?) {
