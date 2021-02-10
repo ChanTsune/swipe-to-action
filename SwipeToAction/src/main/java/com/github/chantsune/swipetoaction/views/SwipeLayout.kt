@@ -791,7 +791,7 @@ open class SwipeLayout(context: Context, attrs: AttributeSet? = null) :
                     if (rightViews.size == 1 || rightLinearWithoutLast!!.viewWeight > 0) {
                         onSwipeItemClickListener!!.onSwipeItemClick(false, i)
                     }
-                    break
+                    return
                 }
             }
         }
