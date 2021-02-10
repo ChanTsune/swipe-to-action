@@ -35,7 +35,7 @@ class RecyclerAdapter : RecyclerView.Adapter<RecyclerAdapter.ViewHolder>() {
         override fun onClick(view: View) {
             Toast.makeText(
                 view.context,
-                "Clicked at " + strings[adapterPosition],
+                "Clicked at ${strings[adapterPosition]}",
                 Toast.LENGTH_SHORT
             ).show()
         }
@@ -43,7 +43,7 @@ class RecyclerAdapter : RecyclerView.Adapter<RecyclerAdapter.ViewHolder>() {
         override fun onLongClick(view: View): Boolean {
             Toast.makeText(
                 view.context,
-                "Long Clicked at " + strings[adapterPosition],
+                "Long Clicked at ${strings[adapterPosition]}",
                 Toast.LENGTH_SHORT
             ).show()
             return true
