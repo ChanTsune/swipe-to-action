@@ -24,11 +24,3 @@ var View.viewHeight: Int
         layoutParams.height = value
         requestLayout()
     }
-
-object Utils {
-    @JvmStatic
-    fun setViewWidth(view: View, width: Int) {
-        view.layoutParams.width = width
-        view.requestLayout()
-    }
-}

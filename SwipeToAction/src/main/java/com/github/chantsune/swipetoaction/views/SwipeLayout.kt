@@ -18,8 +18,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.github.chantsune.swipetoaction.R
 import com.github.chantsune.swipetoaction.animations.SwipeAnimation
 import com.github.chantsune.swipetoaction.animations.WeightAnimation
-import com.github.chantsune.swipetoaction.extensions.Utils.setViewWidth
 import com.github.chantsune.swipetoaction.extensions.viewWeight
+import com.github.chantsune.swipetoaction.extensions.viewWidth
 import kotlin.math.abs
 
 class SwipeLayout @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null) :
@@ -84,13 +84,10 @@ class SwipeLayout @JvmOverloads constructor(context: Context, attrs: AttributeSe
         super.onDetachedFromWindow()
     }
 
-    override fun addView(child: View, index: Int, params: ViewGroup.LayoutParams) {
-        if (contentView != null) {
-            super.addView(child, index, params)
-        } else {
-            contentView = child
-            setUpView()
-        }
+    fun setContentView(view: View) {
+        contentView?.let { removeView(it) }
+        contentView = view
+        addView(view)
     }
 
     private fun setUpView() {
@@ -531,11 +528,11 @@ class SwipeLayout @JvmOverloads constructor(context: Context, attrs: AttributeSe
                         contentView!!.translationX = left
                         if (rightLinear != null) {
                             rightLayoutWidth = abs(left).toInt()
-                            setViewWidth(rightLinear!!, rightLayoutWidth)
+                            rightLinear!!.viewWidth = rightLayoutWidth
                         }
                         if (leftLinear != null && left > 0) {
                             leftLayoutWidth = abs(contentView!!.translationX).toInt()
-                            setViewWidth(leftLinear!!, leftLayoutWidth)
+                            leftLinear!!.viewWidth = leftLayoutWidth
                         }
                     } else {
                         var right = contentView!!.translationX + delta
@@ -573,11 +570,11 @@ class SwipeLayout @JvmOverloads constructor(context: Context, attrs: AttributeSe
                         contentView!!.translationX = right
                         if (leftLinear != null && right > 0) {
                             leftLayoutWidth = abs(right).toInt()
-                            setViewWidth(leftLinear!!, leftLayoutWidth)
+                            leftLinear!!.viewWidth = leftLayoutWidth
                         }
                         if (rightLinear != null) {
                             rightLayoutWidth = abs(contentView!!.translationX).toInt()
-                            setViewWidth(rightLinear!!, rightLayoutWidth)
+                            rightLinear!!.viewWidth = rightLayoutWidth
                         }
                     }
                     if (abs(contentView!!.translationX) > itemWidth / 5) {
@@ -647,7 +644,9 @@ class SwipeLayout @JvmOverloads constructor(context: Context, attrs: AttributeSe
             if (leftLinear != null) {
                 val reqWidth =
                     if (directionLeft) leftLayoutMaxWidth - leftLayoutMaxWidth / 3 else leftLayoutMaxWidth / 3
-                if (rightLinear != null) setViewWidth(rightLinear!!, 0)
+                if (rightLinear != null) {
+                    rightLinear!!.viewWidth = 0
+                }
                 if (leftLinear!!.width >= reqWidth) {
                     requiredWidth = leftLayoutMaxWidth
                 }
@@ -663,7 +662,9 @@ class SwipeLayout @JvmOverloads constructor(context: Context, attrs: AttributeSe
             left = false
             animateView = rightLinear
             if (rightLinear != null) {
-                if (leftLinear != null) setViewWidth(leftLinear!!, 0)
+                if (leftLinear != null) {
+                    leftLinear!!.viewWidth = 0
+                }
                 val reqWidth =
                     if (directionLeft) rightLayoutMaxWidth / 3 else rightLayoutMaxWidth - rightLayoutMaxWidth / 3
                 if (rightLinear!!.width >= reqWidth) {
@@ -718,22 +719,22 @@ class SwipeLayout @JvmOverloads constructor(context: Context, attrs: AttributeSe
 
     private fun collapseItem(animated: Boolean) {
         if (leftLinear != null && leftLinear!!.width > 0) {
-            setViewWidth(leftLinearWithoutFirst!!, leftViews.size - 1)
+            leftLinearWithoutFirst!!.viewWidth = leftViews.size - 1
             if (animated) {
                 val swipeAnim = SwipeAnimation(leftLinear!!, 0, contentView!!, true)
                 leftLinear!!.startAnimation(swipeAnim)
             } else {
                 contentView!!.translationX = 0f
-                setViewWidth(leftLinear!!, 0)
+                leftLinear!!.viewWidth = 0
             }
         } else if (rightLinear != null && rightLinear!!.width > 0) {
-            setViewWidth(rightLinearWithoutLast!!, rightViews.size - 1)
+            rightLinearWithoutLast!!.viewWidth = rightViews.size - 1
             if (animated) {
                 val swipeAnim = SwipeAnimation(rightLinear!!, 0, contentView!!, false)
                 rightLinear!!.startAnimation(swipeAnim)
             } else {
                 contentView!!.translationX = 0f
-                setViewWidth(rightLinear!!, 0)
+                rightLinear!!.viewWidth = 0
             }
         }
     }
@@ -749,7 +750,7 @@ class SwipeLayout @JvmOverloads constructor(context: Context, attrs: AttributeSe
                     leftLinear!!.startAnimation(swipeAnim)
                 } else {
                     contentView!!.translationX = requiredWidthLeft.toFloat()
-                    setViewWidth(leftLinear!!, requiredWidthLeft)
+                    leftLinear!!.viewWidth = requiredWidthLeft
                 }
             }
             ITEM_STATE_RIGHT_EXPAND -> {
@@ -760,7 +761,7 @@ class SwipeLayout @JvmOverloads constructor(context: Context, attrs: AttributeSe
                     rightLinear!!.startAnimation(swipeAnim)
                 } else {
                     contentView!!.translationX = -requiredWidthRight.toFloat()
-                    setViewWidth(rightLinear!!, requiredWidthRight)
+                    rightLinear!!.viewWidth = requiredWidthRight
                 }
             }
         }

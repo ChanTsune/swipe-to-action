@@ -8,6 +8,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.github.chantsune.swipetoaction.demo.databinding.RecyclerViewItemBinding
+import com.github.chantsune.swipetoaction.demo.databinding.SampleItemBinding
 import com.github.chantsune.swipetoaction.views.SwipeLayout
 import com.github.chantsune.swipetoaction.views.SwipeLayout.OnSwipeItemClickListener
 import java.util.*
@@ -21,7 +22,7 @@ class RecyclerAdapter : RecyclerView.Adapter<RecyclerAdapter.ViewHolder>() {
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.textView.text = "Item # ${strings[position]}"
+        holder.contentBinding.recyclerItemTv.text = "Item # ${strings[position]}"
         (holder.itemView as SwipeLayout).setItemState(SwipeLayout.ITEM_STATE_COLLAPSED, false)
     }
 
@@ -30,7 +31,7 @@ class RecyclerAdapter : RecyclerView.Adapter<RecyclerAdapter.ViewHolder>() {
     inner class ViewHolder(val binding: RecyclerViewItemBinding) :
         RecyclerView.ViewHolder(binding.root),
         View.OnClickListener, OnLongClickListener, OnSwipeItemClickListener {
-        var textView: TextView = itemView.findViewById<View>(R.id.recycler_item_tv) as TextView
+        val contentBinding = SampleItemBinding.bind(binding.swipeLayout.contentView!!)
         override fun onClick(view: View) {
             Toast.makeText(
                 view.context,
@@ -50,12 +51,14 @@ class RecyclerAdapter : RecyclerView.Adapter<RecyclerAdapter.ViewHolder>() {
 
         override fun onSwipeItemClick(left: Boolean, index: Int) {
             if (left) {
-                if ((itemView as SwipeLayout).isEnabledAtIndex(true, 0)) {
-                    itemView.setAlphaAtIndex(true, 0, 0.5f)
-                    itemView.setEnableAtIndex(true, 0, false)
-                } else {
-                    itemView.setAlphaAtIndex(true, 0, 1f)
-                    itemView.setEnableAtIndex(true, 0, true)
+                binding.swipeLayout.also { swipeLayout ->
+                    if (swipeLayout.isEnabledAtIndex(true, 0)) {
+                        swipeLayout.setAlphaAtIndex(true, 0, 0.5f)
+                        swipeLayout.setEnableAtIndex(true, 0, false)
+                    } else {
+                        swipeLayout.setAlphaAtIndex(true, 0, 1f)
+                        swipeLayout.setEnableAtIndex(true, 0, true)
+                    }
                 }
             } else {
                 when (index) {
@@ -76,9 +79,9 @@ class RecyclerAdapter : RecyclerView.Adapter<RecyclerAdapter.ViewHolder>() {
         }
 
         init {
-            itemView.setOnClickListener(this)
-            itemView.setOnLongClickListener(this)
-            (itemView as SwipeLayout).setOnSwipeItemClickListener(this)
+            binding.swipeLayout.setOnClickListener(this)
+            binding.swipeLayout.setOnLongClickListener(this)
+            binding.swipeLayout.setOnSwipeItemClickListener(this)
         }
     }
 
