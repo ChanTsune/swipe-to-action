@@ -401,165 +401,163 @@ open class SwipeLayout(context: Context, attrs: AttributeSet? = null) :
 
     //Set LayoutWithout to weight rightIcons.length - 1
     private var expandAnim: WeightAnimation? = null
+
     override fun onTouch(view: View, event: MotionEvent): Boolean {
-        if (isSwipeEnabled) {
-            when (event.action) {
-                MotionEvent.ACTION_DOWN -> {
-                    downX = event.x
-                    downY = event.y
-                    run {
-                        lastTime = System.currentTimeMillis()
-                        downTime = lastTime
-                    }
-                    run {
-                        prevRawX = event.rawX
-                        downRawX = prevRawX
-                    }
-                    if (contentView!!.translationX == 0f) {
-                        rightLinearWithoutLast?.viewWeight = (rightViews.size - 1).toFloat()
-                        leftLinearWithoutFirst?.viewWeight = (leftViews.size - 1).toFloat()
-                    }
-                    return true
-                }
-                MotionEvent.ACTION_MOVE -> {
-                    if (abs(prevRawX - event.rawX) < 20 && !movementStarted) {
-                        if (System.currentTimeMillis() - lastTime >= 50 && !isPressed && !isExpanding && !longClickPerformed) {
-                            view.isPressed = true
-                            if (!shouldPerformLongClick) {
-                                shouldPerformLongClick = true
-                                longClickHandler.postDelayed(
-                                    longClickRunnable,
-                                    ViewConfiguration.getLongPressTimeout().toLong()
-                                )
-                            }
-                        }
-                        return false
-                    }
-                    if (view.isPressed) view.isPressed = false
-                    shouldPerformLongClick = false
-                    movementStarted = true
-                    collapseOthersIfNeeded()
-                    clearAnimations()
-                    directionLeft = prevRawX - event.rawX > 0
-                    val delta = abs(prevRawX - event.rawX)
-                    speed = (System.currentTimeMillis() - lastTime) / delta
-                    var rightLayoutWidth = 0
-                    var leftLayoutWidth = 0
-                    if (directionLeft) {
-                        var left = contentView!!.translationX - delta
-                        if (left < -rightLayoutMaxWidth) {
-                            if (!canFullSwipeFromRight) {
-                                left = -rightLayoutMaxWidth.toFloat()
-                            } else if (left < -width) {
-                                left = -width.toFloat()
-                            }
-                        }
-                        if (canFullSwipeFromRight) {
-                            if (contentView!!.translationX <= -(width - fullSwipeEdgePadding)) {
-                                if (rightLinearWithoutLast!!.viewWeight > 0 &&
-                                    (collapseAnim == null || collapseAnim!!.hasEnded())
-                                ) {
-                                    view.isPressed = false
-                                    rightLinearWithoutLast!!.clearAnimation()
-                                    if (expandAnim != null) expandAnim = null
-                                    collapseAnim = WeightAnimation(0f, rightLinearWithoutLast!!)
-                                    Log.d("WeightAnim", "onTouch - Collapse")
-                                    startAnimation(collapseAnim)
-                                }
-                            } else {
-                                if (rightLinearWithoutLast!!.viewWeight < rightIcons.size - 1f &&
-                                    (expandAnim == null || expandAnim!!.hasEnded())
-                                ) {
-                                    Log.d("WeightAnim", "onTouch - Expand")
-                                    view.isPressed = false
-                                    rightLinearWithoutLast!!.clearAnimation()
-                                    if (collapseAnim != null) collapseAnim = null
-                                    expandAnim = WeightAnimation(
-                                        (rightIcons.size - 1).toFloat(),
-                                        rightLinearWithoutLast!!
-                                    )
-                                    startAnimation(expandAnim)
-                                }
-                            }
-                        }
-                        contentView!!.translationX = left
-                        if (rightLinear != null) {
-                            rightLayoutWidth = abs(left).toInt()
-                            rightLinear!!.viewWidth = rightLayoutWidth
-                        }
-                        if (leftLinear != null && left > 0) {
-                            leftLayoutWidth = abs(contentView!!.translationX).toInt()
-                            leftLinear!!.viewWidth = leftLayoutWidth
-                        }
-                    } else {
-                        var right = contentView!!.translationX + delta
-                        if (right > leftLayoutMaxWidth) {
-                            if (!canFullSwipeFromLeft) {
-                                right = leftLayoutMaxWidth.toFloat()
-                            } else if (right >= width) {
-                                right = width.toFloat()
-                            }
-                        }
-                        if (canFullSwipeFromLeft) {
-                            if (contentView!!.translationX >= width - fullSwipeEdgePadding) {
-                                if (leftLinearWithoutFirst!!.viewWeight > 0 &&
-                                    (collapseAnim == null || collapseAnim!!.hasEnded())
-                                ) {
-                                    leftLinearWithoutFirst!!.clearAnimation()
-                                    if (expandAnim != null) expandAnim = null
-                                    collapseAnim = WeightAnimation(0f, leftLinearWithoutFirst!!)
-                                    startAnimation(collapseAnim)
-                                }
-                            } else {
-                                if (leftLinearWithoutFirst!!.viewWeight < leftIcons.size - 1f &&
-                                    (expandAnim == null || expandAnim!!.hasEnded())
-                                ) {
-                                    leftLinearWithoutFirst!!.clearAnimation()
-                                    if (collapseAnim != null) collapseAnim = null
-                                    expandAnim = WeightAnimation(
-                                        (leftIcons.size - 1).toFloat(),
-                                        leftLinearWithoutFirst!!
-                                    )
-                                    startAnimation(expandAnim)
-                                }
-                            }
-                        }
-                        contentView!!.translationX = right
-                        if (leftLinear != null && right > 0) {
-                            leftLayoutWidth = abs(right).toInt()
-                            leftLinear!!.viewWidth = leftLayoutWidth
-                        }
-                        if (rightLinear != null) {
-                            rightLayoutWidth = abs(contentView!!.translationX).toInt()
-                            rightLinear!!.viewWidth = rightLayoutWidth
-                        }
-                    }
-                    if (abs(contentView!!.translationX) > itemWidth / 5) {
-                        parent.requestDisallowInterceptTouchEvent(true)
-                    }
-                    prevRawX = event.rawX
+        if (!isSwipeEnabled) return false
+        when (event.action) {
+            MotionEvent.ACTION_DOWN -> {
+                downX = event.x
+                downY = event.y
+                run {
                     lastTime = System.currentTimeMillis()
-                    return true
+                    downTime = lastTime
                 }
-                MotionEvent.ACTION_UP -> {
-                    finishMotion(event)
-                    if (movementStarted) {
-                        finishSwipeAnimated()
-                    } else {
-                        view.isPressed = false
-                        if (System.currentTimeMillis() - downTime < ViewConfiguration.getTapTimeout()) {
-                            view.isPressed = true
-                            view.performClick()
-                            view.isPressed = false
+                run {
+                    prevRawX = event.rawX
+                    downRawX = prevRawX
+                }
+                if (contentView!!.translationX == 0f) {
+                    rightLinearWithoutLast?.viewWeight = (rightViews.size - 1).toFloat()
+                    leftLinearWithoutFirst?.viewWeight = (leftViews.size - 1).toFloat()
+                }
+                return true
+            }
+            MotionEvent.ACTION_MOVE -> {
+                if (abs(prevRawX - event.rawX) < 20 && !movementStarted) {
+                    if (System.currentTimeMillis() - lastTime >= 50 && !isPressed && !isExpanding && !longClickPerformed) {
+                        view.isPressed = true
+                        if (!shouldPerformLongClick) {
+                            shouldPerformLongClick = true
+                            longClickHandler.postDelayed(
+                                longClickRunnable,
+                                ViewConfiguration.getLongPressTimeout().toLong()
+                            )
                         }
                     }
                     return false
                 }
-                MotionEvent.ACTION_CANCEL -> {
-                    finishMotion(event)
-                    if (movementStarted) finishSwipeAnimated()
-                    return false
+                if (view.isPressed) view.isPressed = false
+                shouldPerformLongClick = false
+                movementStarted = true
+                collapseOthersIfNeeded()
+                clearAnimations()
+                directionLeft = prevRawX - event.rawX > 0
+                val delta = abs(prevRawX - event.rawX)
+                speed = (System.currentTimeMillis() - lastTime) / delta
+                if (directionLeft) {
+                    var left = contentView!!.translationX - delta
+                    if (left < -rightLayoutMaxWidth) {
+                        if (!canFullSwipeFromRight) {
+                            left = -rightLayoutMaxWidth.toFloat()
+                        } else if (left < -width) {
+                            left = -width.toFloat()
+                        }
+                    }
+                    if (canFullSwipeFromRight) {
+                        if (contentView!!.translationX <= -(width - fullSwipeEdgePadding)) {
+                            if (rightLinearWithoutLast!!.viewWeight > 0 &&
+                                (collapseAnim == null || collapseAnim!!.hasEnded())
+                            ) {
+                                view.isPressed = false
+                                rightLinearWithoutLast!!.clearAnimation()
+                                if (expandAnim != null) expandAnim = null
+                                collapseAnim = WeightAnimation(0f, rightLinearWithoutLast!!)
+                                Log.d("WeightAnim", "onTouch - Collapse")
+                                startAnimation(collapseAnim)
+                            }
+                        } else {
+                            if (rightLinearWithoutLast!!.viewWeight < rightIcons.size - 1f &&
+                                (expandAnim == null || expandAnim!!.hasEnded())
+                            ) {
+                                Log.d("WeightAnim", "onTouch - Expand")
+                                view.isPressed = false
+                                rightLinearWithoutLast!!.clearAnimation()
+                                if (collapseAnim != null) collapseAnim = null
+                                expandAnim = WeightAnimation(
+                                    (rightIcons.size - 1).toFloat(),
+                                    rightLinearWithoutLast!!
+                                )
+                                startAnimation(expandAnim)
+                            }
+                        }
+                    }
+                    contentView!!.translationX = left
+                    if (rightLinear != null) {
+                        val rightLayoutWidth = abs(left).toInt()
+                        rightLinear!!.viewWidth = rightLayoutWidth
+                    }
+                    if (leftLinear != null && left > 0) {
+                        val leftLayoutWidth = abs(contentView!!.translationX).toInt()
+                        leftLinear!!.viewWidth = leftLayoutWidth
+                    }
+                } else {
+                    var right = contentView!!.translationX + delta
+                    if (right > leftLayoutMaxWidth) {
+                        if (!canFullSwipeFromLeft) {
+                            right = leftLayoutMaxWidth.toFloat()
+                        } else if (right >= width) {
+                            right = width.toFloat()
+                        }
+                    }
+                    if (canFullSwipeFromLeft) {
+                        if (contentView!!.translationX >= width - fullSwipeEdgePadding) {
+                            if (leftLinearWithoutFirst!!.viewWeight > 0 &&
+                                (collapseAnim == null || collapseAnim!!.hasEnded())
+                            ) {
+                                leftLinearWithoutFirst!!.clearAnimation()
+                                if (expandAnim != null) expandAnim = null
+                                collapseAnim = WeightAnimation(0f, leftLinearWithoutFirst!!)
+                                startAnimation(collapseAnim)
+                            }
+                        } else {
+                            if (leftLinearWithoutFirst!!.viewWeight < leftIcons.size - 1f &&
+                                (expandAnim == null || expandAnim!!.hasEnded())
+                            ) {
+                                leftLinearWithoutFirst!!.clearAnimation()
+                                if (collapseAnim != null) collapseAnim = null
+                                expandAnim = WeightAnimation(
+                                    (leftIcons.size - 1).toFloat(),
+                                    leftLinearWithoutFirst!!
+                                )
+                                startAnimation(expandAnim)
+                            }
+                        }
+                    }
+                    contentView!!.translationX = right
+                    if (leftLinear != null && right > 0) {
+                        val leftLayoutWidth = abs(right).toInt()
+                        leftLinear!!.viewWidth = leftLayoutWidth
+                    }
+                    if (rightLinear != null) {
+                        val rightLayoutWidth = abs(contentView!!.translationX).toInt()
+                        rightLinear!!.viewWidth = rightLayoutWidth
+                    }
                 }
+                if (abs(contentView!!.translationX) > itemWidth / 5) {
+                    parent.requestDisallowInterceptTouchEvent(true)
+                }
+                prevRawX = event.rawX
+                lastTime = System.currentTimeMillis()
+                return true
+            }
+            MotionEvent.ACTION_UP -> {
+                finishMotion(event)
+                if (movementStarted) {
+                    finishSwipeAnimated()
+                } else {
+                    view.isPressed = false
+                    if (System.currentTimeMillis() - downTime < ViewConfiguration.getTapTimeout()) {
+                        view.isPressed = true
+                        view.performClick()
+                        view.isPressed = false
+                    }
+                }
+                return false
+            }
+            MotionEvent.ACTION_CANCEL -> {
+                finishMotion(event)
+                if (movementStarted) finishSwipeAnimated()
+                return false
             }
         }
         return false
