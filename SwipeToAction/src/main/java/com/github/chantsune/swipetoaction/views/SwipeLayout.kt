@@ -19,7 +19,7 @@ import com.github.chantsune.swipetoaction.extensions.viewWeight
 import com.github.chantsune.swipetoaction.extensions.viewWidth
 import kotlin.math.abs
 
-class SwipeLayout @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null) :
+open class SwipeLayout(context: Context, attrs: AttributeSet? = null) :
     FrameLayout(
         context, attrs
     ), OnTouchListener, View.OnClickListener {
