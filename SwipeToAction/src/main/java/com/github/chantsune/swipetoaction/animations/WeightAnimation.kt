@@ -5,7 +5,7 @@ import android.view.animation.Animation
 import android.view.animation.Transformation
 import com.github.chantsune.swipetoaction.extensions.viewWeight
 
-class WeightAnimation(private val endWeight: Float, val view: View) : Animation() {
+class WeightAnimation(private val endWeight: Float, private val view: View) : Animation() {
     private var startWeight = -1f
     private var deltaWeight = -1f
 
