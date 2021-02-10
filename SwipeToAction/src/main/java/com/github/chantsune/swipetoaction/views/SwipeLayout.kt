@@ -338,13 +338,9 @@ open class SwipeLayout(context: Context, attrs: AttributeSet? = null) :
     }
 
     private fun fillDrawables(ta: TypedArray): IntArray {
-        val drawableArr = IntArray(ta.length())
-        ta.use {
-            for (i in 0 until ta.length()) {
-                drawableArr[i] = ta.getResourceId(i, NO_ID)
-            }
+        return ta.use {
+            IntArray(ta.length()) { ta.getResourceId(it, NO_ID) }
         }
-        return drawableArr
     }
 
     var prevRawX = -1f
