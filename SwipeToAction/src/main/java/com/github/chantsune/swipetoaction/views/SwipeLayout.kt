@@ -115,7 +115,12 @@ open class SwipeLayout(context: Context, attrs: AttributeSet? = null) :
     }
 
     private fun createItemLayouts() {
-        if (rightLinear != null) removeView(rightLinear)
+        createRightItemLayout()
+        createLeftItemLayout()
+    }
+
+    private fun createRightItemLayout() {
+        rightLinear?.let { removeView(it) }
         rightLinear = createLinearLayout(Gravity.END)
         rightLinearWithoutLast = createLinearLayout(Gravity.END)
         rightLinearWithoutLast!!.layoutParams = LinearLayout.LayoutParams(
@@ -136,7 +141,10 @@ open class SwipeLayout(context: Context, attrs: AttributeSet? = null) :
             rightViews,
             false
         )
-        if (leftLinear != null) removeView(leftLinear)
+    }
+
+    private fun createLeftItemLayout() {
+        leftLinear?.let { removeView(it) }
         leftLinear = createLinearLayout(Gravity.START)
         leftLinearWithoutFirst = createLinearLayout(Gravity.START)
         leftLinearWithoutFirst!!.layoutParams = LinearLayout.LayoutParams(
