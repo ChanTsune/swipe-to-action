@@ -122,12 +122,13 @@ open class SwipeLayout(context: Context, attrs: AttributeSet? = null) :
     private fun createRightItemLayout() {
         rightLinear?.let { removeView(it) }
         rightLinear = createLinearLayout(Gravity.END)
-        rightLinearWithoutLast = createLinearLayout(Gravity.END)
-        rightLinearWithoutLast!!.layoutParams = LinearLayout.LayoutParams(
-            0,
-            ViewGroup.LayoutParams.MATCH_PARENT,
-            (rightIcons.size - 1).toFloat()
-        )
+        rightLinearWithoutLast = createLinearLayout(Gravity.END).also { linearLayout ->
+            linearLayout.layoutParams = LinearLayout.LayoutParams(
+                0,
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                (rightIcons.size - 1).toFloat()
+            )
+        }
         addView(rightLinear)
         rightLinear!!.addView(rightLinearWithoutLast)
         addSwipeItems(
@@ -146,12 +147,13 @@ open class SwipeLayout(context: Context, attrs: AttributeSet? = null) :
     private fun createLeftItemLayout() {
         leftLinear?.let { removeView(it) }
         leftLinear = createLinearLayout(Gravity.START)
-        leftLinearWithoutFirst = createLinearLayout(Gravity.START)
-        leftLinearWithoutFirst!!.layoutParams = LinearLayout.LayoutParams(
-            0,
-            ViewGroup.LayoutParams.MATCH_PARENT,
-            (leftIcons.size - 1).toFloat()
-        )
+        leftLinearWithoutFirst = createLinearLayout(Gravity.START).also { linearLayout ->
+            linearLayout.layoutParams = LinearLayout.LayoutParams(
+                0,
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                (leftIcons.size - 1).toFloat()
+            )
+        }
         addView(leftLinear)
         addSwipeItems(
             leftIcons,
