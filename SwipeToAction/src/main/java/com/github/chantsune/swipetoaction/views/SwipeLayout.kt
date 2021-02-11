@@ -260,7 +260,8 @@ open class SwipeLayout(context: Context, attrs: AttributeSet? = null) :
     private fun createLinearLayout(gravity: Int): LinearLayout {
         return LinearLayout(context).also { linearLayout ->
             linearLayout.orientation = LinearLayout.HORIZONTAL
-            linearLayout.layoutParams = LayoutParams(0, ViewGroup.LayoutParams.MATCH_PARENT, gravity)
+            linearLayout.layoutParams =
+                LayoutParams(0, ViewGroup.LayoutParams.MATCH_PARENT, gravity)
         }
     }
 
