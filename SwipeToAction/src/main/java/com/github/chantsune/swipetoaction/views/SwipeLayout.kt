@@ -201,7 +201,7 @@ open class SwipeLayout(context: Context, attrs: AttributeSet? = null) :
                     }
                 }
             views.add(swipeItem)
-            if (i == icons.size - (if (!left) 1 else icons.size)) {
+            if (i == icons.size - (if (left) icons.size else 1)) {
                 layout!!.addView(swipeItem)
             } else {
                 layoutWithout!!.addView(swipeItem)
