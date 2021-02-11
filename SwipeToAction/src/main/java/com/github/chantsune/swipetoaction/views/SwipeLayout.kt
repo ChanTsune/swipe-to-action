@@ -138,9 +138,6 @@ open class SwipeLayout(context: Context, attrs: AttributeSet? = null) :
             rightColors,
             rightTexts,
             rightTextColors,
-            rightLinear,
-            rightLinearWithoutLast,
-            rightViews,
             false
         )
     }
@@ -162,9 +159,6 @@ open class SwipeLayout(context: Context, attrs: AttributeSet? = null) :
             leftColors,
             leftTexts,
             leftTextColors,
-            leftLinear,
-            leftLinearWithoutFirst,
-            leftViews,
             true
         )
         leftLinear!!.addView(leftLinearWithoutFirst)
@@ -184,9 +178,6 @@ open class SwipeLayout(context: Context, attrs: AttributeSet? = null) :
         backgroundColors: List<Int>,
         texts: List<String>,
         textColors: List<Int>,
-        layout: LinearLayout?,
-        layoutWithout: LinearLayout?,
-        views: MutableList<View>,
         left: Boolean
     ) {
         val p = icons.zipLongest(iconColors).zipLongest(backgroundColors).zipLongest(texts)
@@ -217,15 +208,21 @@ open class SwipeLayout(context: Context, attrs: AttributeSet? = null) :
 
         if (left) {
             leftViews = views.toMutableList()
+            for ((i, swipeItem) in views.withIndex()) {
+                if (i == 0) {
+                    leftLinear!!.addView(swipeItem)
+                } else {
+                    leftLinearWithoutFirst!!.addView(swipeItem)
+                }
+            }
         } else {
             rightViews = views.toMutableList()
-        }
-
-        for ((i, swipeItem) in views.withIndex()) {
-            if (i == icons.size - (if (left) icons.size else 1)) {
-                layout!!.addView(swipeItem)
-            } else {
-                layoutWithout!!.addView(swipeItem)
+            for ((i, swipeItem) in views.withIndex()) {
+                if (i == icons.size - 1) {
+                    rightLinear!!.addView(swipeItem)
+                } else {
+                    rightLinearWithoutLast!!.addView(swipeItem)
+                }
             }
         }
     }
