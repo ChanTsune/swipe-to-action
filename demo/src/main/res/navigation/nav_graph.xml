@@ -3,11 +3,28 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/simpleSwipeLayoutFragment">
+    app:startDestination="@id/mainFragment">
 
     <fragment
         android:id="@+id/simpleSwipeLayoutFragment"
         android:name="com.github.chantsune.swipetoaction.demo.fragments.simple.SimpleSwipeLayoutFragment"
         android:label="fragment_simple_swipe_layout"
         tools:layout="@layout/fragment_simple_swipe_layout" />
+    <fragment
+        android:id="@+id/customSwipeLayoutFragment"
+        android:name="com.github.chantsune.swipetoaction.demo.fragments.custom.CustomSwipeLayoutFragment"
+        android:label="fragment_custom_swipe_layout"
+        tools:layout="@layout/fragment_custom_swipe_layout" />
+    <fragment
+        android:id="@+id/mainFragment"
+        android:name="com.github.chantsune.swipetoaction.demo.fragments.main.MainFragment"
+        android:label="fragment_main"
+        tools:layout="@layout/fragment_main" >
+        <action
+            android:id="@+id/action_mainFragment_to_customSwipeLayoutFragment"
+            app:destination="@id/customSwipeLayoutFragment" />
+        <action
+            android:id="@+id/action_mainFragment_to_simpleSwipeLayoutFragment"
+            app:destination="@id/simpleSwipeLayoutFragment" />
+    </fragment>
 </navigation>
