@@ -182,13 +182,13 @@ open class SwipeLayout(context: Context, attrs: AttributeSet? = null) :
     ) {
         val p = icons.zipLongest(iconColors).zipLongest(backgroundColors).zipLongest(texts)
             .zipLongest(textColors).map {
-            val icon = it.first?.first ?: NO_ID
-            val iconColor = it.first?.second ?: NO_ID
-            val bgColor = it.first?.third ?: NO_ID
-            val txt = it.second
-            val txtColor = it.third ?: NO_ID
-            SwipeItemParams(icon, iconColor, bgColor, txt, txtColor)
-        }
+                val icon = it.first?.first ?: NO_ID
+                val iconColor = it.first?.second ?: NO_ID
+                val bgColor = it.first?.third ?: NO_ID
+                val txt = it.second
+                val txtColor = it.third ?: NO_ID
+                SwipeItemParams(icon, iconColor, bgColor, txt, txtColor)
+            }
         val views = p.mapIndexed { i, itemParam ->
             createSwipeItem(
                 itemParam.icon,
