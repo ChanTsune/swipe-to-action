@@ -101,7 +101,6 @@ open class SwipeLayout(context: Context, attrs: AttributeSet? = null) :
         compareArrays(rightColors, rightIcons)
         compareArrays(leftIconColors, leftIcons)
         compareArrays(rightIconColors, rightIcons)
-        addView(contentView)
         createItemLayouts()
         contentView.bringToFront()
         contentView.setOnTouchListener(this)
