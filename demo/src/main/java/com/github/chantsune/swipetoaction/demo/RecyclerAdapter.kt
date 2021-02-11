@@ -29,7 +29,7 @@ class RecyclerAdapter : RecyclerView.Adapter<RecyclerAdapter.ViewHolder>() {
     inner class ViewHolder(val binding: RecyclerViewItemBinding) :
         RecyclerView.ViewHolder(binding.root),
         View.OnClickListener, OnLongClickListener, OnSwipeItemClickListener {
-        val contentBinding = SampleItemBinding.bind(binding.swipeLayout.contentView!!)
+        val contentBinding = SampleItemBinding.bind(binding.swipeLayout.contentView)
 
         init {
             binding.swipeLayout.setOnClickListener(this)
