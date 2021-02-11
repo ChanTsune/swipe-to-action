@@ -208,18 +208,18 @@ open class SwipeLayout(context: Context, attrs: AttributeSet? = null) :
             leftViews = views.toMutableList()
             for ((i, swipeItem) in views.withIndex()) {
                 if (i == 0) {
-                    leftLinear!!.addView(swipeItem)
+                    leftLinear.addView(swipeItem)
                 } else {
-                    leftLinearWithoutFirst!!.addView(swipeItem)
+                    leftLinearWithoutFirst.addView(swipeItem)
                 }
             }
         } else {
             rightViews = views.toMutableList()
             for ((i, swipeItem) in views.withIndex()) {
                 if (i == icons.size - 1) {
-                    rightLinear!!.addView(swipeItem)
+                    rightLinear.addView(swipeItem)
                 } else {
-                    rightLinearWithoutLast!!.addView(swipeItem)
+                    rightLinearWithoutLast.addView(swipeItem)
                 }
             }
         }
@@ -370,10 +370,10 @@ open class SwipeLayout(context: Context, attrs: AttributeSet? = null) :
     var downY = 0f
     private fun clearAnimations() {
         contentView?.clearAnimation()
-        rightLinear?.clearAnimation()
-        leftLinear?.clearAnimation()
-        rightLinearWithoutLast?.clearAnimation()
-        leftLinearWithoutFirst?.clearAnimation()
+        rightLinear.clearAnimation()
+        leftLinear.clearAnimation()
+        rightLinearWithoutLast.clearAnimation()
+        leftLinearWithoutFirst.clearAnimation()
     }
 
     var shouldPerformLongClick = false
@@ -433,8 +433,8 @@ open class SwipeLayout(context: Context, attrs: AttributeSet? = null) :
                     downRawX = prevRawX
                 }
                 if (contentView!!.translationX == 0f) {
-                    rightLinearWithoutLast?.viewWeight = (rightViews.size - 1).toFloat()
-                    leftLinearWithoutFirst?.viewWeight = (leftViews.size - 1).toFloat()
+                    rightLinearWithoutLast.viewWeight = (rightViews.size - 1).toFloat()
+                    leftLinearWithoutFirst.viewWeight = (leftViews.size - 1).toFloat()
                 }
                 return true
             }
@@ -471,40 +471,39 @@ open class SwipeLayout(context: Context, attrs: AttributeSet? = null) :
                     }
                     if (canFullSwipeFromRight) {
                         if (contentView!!.translationX <= -(width - fullSwipeEdgePadding)) {
-                            if (rightLinearWithoutLast!!.viewWeight > 0 &&
+                            if (rightLinearWithoutLast.viewWeight > 0 &&
                                 (collapseAnim == null || collapseAnim!!.hasEnded())
                             ) {
                                 view.isPressed = false
-                                rightLinearWithoutLast!!.clearAnimation()
+                                rightLinearWithoutLast.clearAnimation()
                                 if (expandAnim != null) expandAnim = null
-                                collapseAnim = WeightAnimation(0f, rightLinearWithoutLast!!)
+                                collapseAnim = WeightAnimation(0f, rightLinearWithoutLast)
                                 Log.d("WeightAnim", "onTouch - Collapse")
                                 startAnimation(collapseAnim)
                             }
                         } else {
-                            if (rightLinearWithoutLast!!.viewWeight < rightIcons.size - 1f &&
+                            if (rightLinearWithoutLast.viewWeight < rightIcons.size - 1f &&
                                 (expandAnim == null || expandAnim!!.hasEnded())
                             ) {
                                 Log.d("WeightAnim", "onTouch - Expand")
                                 view.isPressed = false
-                                rightLinearWithoutLast!!.clearAnimation()
+                                rightLinearWithoutLast.clearAnimation()
                                 if (collapseAnim != null) collapseAnim = null
                                 expandAnim = WeightAnimation(
                                     (rightIcons.size - 1).toFloat(),
-                                    rightLinearWithoutLast!!
+                                    rightLinearWithoutLast
                                 )
                                 startAnimation(expandAnim)
                             }
                         }
                     }
                     contentView!!.translationX = left
-                    if (rightLinear != null) {
-                        val rightLayoutWidth = abs(left).toInt()
-                        rightLinear!!.viewWidth = rightLayoutWidth
-                    }
-                    if (leftLinear != null && left > 0) {
+                    if (left > 0) {
                         val leftLayoutWidth = abs(contentView!!.translationX).toInt()
-                        leftLinear!!.viewWidth = leftLayoutWidth
+                        leftLinear.viewWidth = leftLayoutWidth
+                    } else {
+                        val rightLayoutWidth = abs(left).toInt()
+                        rightLinear.viewWidth = rightLayoutWidth
                     }
                 } else {
                     var right = contentView!!.translationX + delta
@@ -517,36 +516,35 @@ open class SwipeLayout(context: Context, attrs: AttributeSet? = null) :
                     }
                     if (canFullSwipeFromLeft) {
                         if (contentView!!.translationX >= width - fullSwipeEdgePadding) {
-                            if (leftLinearWithoutFirst!!.viewWeight > 0 &&
+                            if (leftLinearWithoutFirst.viewWeight > 0 &&
                                 (collapseAnim == null || collapseAnim!!.hasEnded())
                             ) {
-                                leftLinearWithoutFirst!!.clearAnimation()
+                                leftLinearWithoutFirst.clearAnimation()
                                 if (expandAnim != null) expandAnim = null
-                                collapseAnim = WeightAnimation(0f, leftLinearWithoutFirst!!)
+                                collapseAnim = WeightAnimation(0f, leftLinearWithoutFirst)
                                 startAnimation(collapseAnim)
                             }
                         } else {
-                            if (leftLinearWithoutFirst!!.viewWeight < leftIcons.size - 1f &&
+                            if (leftLinearWithoutFirst.viewWeight < leftIcons.size - 1f &&
                                 (expandAnim == null || expandAnim!!.hasEnded())
                             ) {
-                                leftLinearWithoutFirst!!.clearAnimation()
+                                leftLinearWithoutFirst.clearAnimation()
                                 if (collapseAnim != null) collapseAnim = null
                                 expandAnim = WeightAnimation(
                                     (leftIcons.size - 1).toFloat(),
-                                    leftLinearWithoutFirst!!
+                                    leftLinearWithoutFirst
                                 )
                                 startAnimation(expandAnim)
                             }
                         }
                     }
                     contentView!!.translationX = right
-                    if (leftLinear != null && right > 0) {
+                    if (right > 0) {
                         val leftLayoutWidth = abs(right).toInt()
-                        leftLinear!!.viewWidth = leftLayoutWidth
-                    }
-                    if (rightLinear != null) {
+                        leftLinear.viewWidth = leftLayoutWidth
+                    } else {
                         val rightLayoutWidth = abs(contentView!!.translationX).toInt()
-                        rightLinear!!.viewWidth = rightLayoutWidth
+                        rightLinear.viewWidth = rightLayoutWidth
                     }
                 }
                 if (abs(contentView!!.translationX) > itemWidth / 5) {
@@ -612,43 +610,35 @@ open class SwipeLayout(context: Context, attrs: AttributeSet? = null) :
         if (contentView!!.translationX > 0) {
             animateView = leftLinear
             left = true
-            if (leftLinear != null) {
-                val reqWidth =
-                    if (directionLeft) leftLayoutMaxWidth - leftLayoutMaxWidth / 3 else leftLayoutMaxWidth / 3
-                if (rightLinear != null) {
-                    rightLinear!!.viewWidth = 0
-                }
-                if (leftLinear!!.width >= reqWidth) {
-                    requiredWidth = leftLayoutMaxWidth
-                }
-                if (requiredWidth == leftLayoutMaxWidth && !directionLeft) {
-                    if (contentView!!.translationX >= width - fullSwipeEdgePadding) {
-                        requiredWidth = width
-                        invokedFromLeft = true
-                    }
-                }
-                contentView!!.translationX = leftLinear!!.width.toFloat()
+            val reqWidth =
+                if (directionLeft) leftLayoutMaxWidth - leftLayoutMaxWidth / 3 else leftLayoutMaxWidth / 3
+            rightLinear.viewWidth = 0
+            if (leftLinear.width >= reqWidth) {
+                requiredWidth = leftLayoutMaxWidth
             }
+            if (requiredWidth == leftLayoutMaxWidth && !directionLeft) {
+                if (contentView!!.translationX >= width - fullSwipeEdgePadding) {
+                    requiredWidth = width
+                    invokedFromLeft = true
+                }
+            }
+            contentView!!.translationX = leftLinear.width.toFloat()
         } else if (contentView!!.translationX < 0) {
             left = false
             animateView = rightLinear
-            if (rightLinear != null) {
-                if (leftLinear != null) {
-                    leftLinear!!.viewWidth = 0
-                }
-                val reqWidth =
-                    if (directionLeft) rightLayoutMaxWidth / 3 else rightLayoutMaxWidth - rightLayoutMaxWidth / 3
-                if (rightLinear!!.width >= reqWidth) {
-                    requiredWidth = rightLayoutMaxWidth
-                }
-                if (requiredWidth == rightLayoutMaxWidth && directionLeft) {
-                    if (contentView!!.translationX <= -(width - fullSwipeEdgePadding)) {
-                        requiredWidth = width
-                        invokedFromLeft = false
-                    }
-                }
-                contentView!!.translationX = -rightLinear!!.width.toFloat()
+            leftLinear.viewWidth = 0
+            val reqWidth =
+                if (directionLeft) rightLayoutMaxWidth / 3 else rightLayoutMaxWidth - rightLayoutMaxWidth / 3
+            if (rightLinear.width >= reqWidth) {
+                requiredWidth = rightLayoutMaxWidth
             }
+            if (requiredWidth == rightLayoutMaxWidth && directionLeft) {
+                if (contentView!!.translationX <= -(width - fullSwipeEdgePadding)) {
+                    requiredWidth = width
+                    invokedFromLeft = false
+                }
+            }
+            contentView!!.translationX = -rightLinear.width.toFloat()
         }
         var duration = (100 * speed).toLong()
         if (animateView != null) {
@@ -662,7 +652,7 @@ open class SwipeLayout(context: Context, attrs: AttributeSet? = null) :
             val views = if (animateView === leftLinear) leftViews else rightViews
             invokedFromLeft = animateView === leftLinear
             if (requiredWidth == width) {
-                if (layoutWithout!!.viewWeight == 0f && width.toFloat() != abs(contentView!!.translationX))
+                if (layoutWithout.viewWeight == 0f && width.toFloat() != abs(contentView!!.translationX))
                     swipeAnim.setAnimationListener(collapseListener)
                 else if (collapseAnim != null && !collapseAnim!!.hasEnded()) {
                     collapseAnim!!.setAnimationListener(collapseListener)
@@ -676,7 +666,7 @@ open class SwipeLayout(context: Context, attrs: AttributeSet? = null) :
                     layoutWithout.startAnimation(collapseAnim)
                 }
             } else {
-                val weightAnimation = WeightAnimation((views.size - 1).toFloat(), layoutWithout!!)
+                val weightAnimation = WeightAnimation((views.size - 1).toFloat(), layoutWithout)
                 layoutWithout.startAnimation(weightAnimation)
             }
             animateView.startAnimation(swipeAnim)
@@ -689,23 +679,23 @@ open class SwipeLayout(context: Context, attrs: AttributeSet? = null) :
     }
 
     private fun collapseItem(animated: Boolean) {
-        if (leftLinear != null && leftLinear!!.width > 0) {
-            leftLinearWithoutFirst!!.viewWidth = leftViews.size - 1
+        if (leftLinear.width > 0) {
+            leftLinearWithoutFirst.viewWidth = leftViews.size - 1
             if (animated) {
-                val swipeAnim = SwipeAnimation(leftLinear!!, 0, contentView!!, true)
-                leftLinear!!.startAnimation(swipeAnim)
+                val swipeAnim = SwipeAnimation(leftLinear, 0, contentView!!, true)
+                leftLinear.startAnimation(swipeAnim)
             } else {
                 contentView!!.translationX = 0f
-                leftLinear!!.viewWidth = 0
+                leftLinear.viewWidth = 0
             }
-        } else if (rightLinear != null && rightLinear!!.width > 0) {
-            rightLinearWithoutLast!!.viewWidth = rightViews.size - 1
+        } else if (rightLinear.width > 0) {
+            rightLinearWithoutLast.viewWidth = rightViews.size - 1
             if (animated) {
-                val swipeAnim = SwipeAnimation(rightLinear!!, 0, contentView!!, false)
-                rightLinear!!.startAnimation(swipeAnim)
+                val swipeAnim = SwipeAnimation(rightLinear, 0, contentView!!, false)
+                rightLinear.startAnimation(swipeAnim)
             } else {
                 contentView!!.translationX = 0f
-                rightLinear!!.viewWidth = 0
+                rightLinear.viewWidth = 0
             }
         }
     }
@@ -717,35 +707,33 @@ open class SwipeLayout(context: Context, attrs: AttributeSet? = null) :
                 val requiredWidthLeft = leftIcons.size * itemWidth
                 if (animated) {
                     val swipeAnim =
-                        SwipeAnimation(leftLinear!!, requiredWidthLeft, contentView!!, true)
-                    leftLinear!!.startAnimation(swipeAnim)
+                        SwipeAnimation(leftLinear, requiredWidthLeft, contentView!!, true)
+                    leftLinear.startAnimation(swipeAnim)
                 } else {
                     contentView!!.translationX = requiredWidthLeft.toFloat()
-                    leftLinear!!.viewWidth = requiredWidthLeft
+                    leftLinear.viewWidth = requiredWidthLeft
                 }
             }
             ITEM_STATE_RIGHT_EXPAND -> {
                 val requiredWidthRight = rightIcons.size * itemWidth
                 if (animated) {
                     val swipeAnim =
-                        SwipeAnimation(rightLinear!!, requiredWidthRight, contentView!!, false)
-                    rightLinear!!.startAnimation(swipeAnim)
+                        SwipeAnimation(rightLinear, requiredWidthRight, contentView!!, false)
+                    rightLinear.startAnimation(swipeAnim)
                 } else {
                     contentView!!.translationX = -requiredWidthRight.toFloat()
-                    rightLinear!!.viewWidth = requiredWidthRight
+                    rightLinear.viewWidth = requiredWidthRight
                 }
             }
         }
     }
 
     fun inAnimatedState(): Boolean {
-        if (leftLinear != null) {
-            val anim = leftLinear!!.animation
-            if (anim != null && !anim.hasEnded()) return true
+        leftLinear.animation?.also { anim ->
+            if (!anim.hasEnded()) return true
         }
-        if (rightLinear != null) {
-            val anim = rightLinear!!.animation
-            if (anim != null && !anim.hasEnded()) return true
+        rightLinear.animation?.also { anim ->
+            if (!anim.hasEnded()) return true
         }
         return false
     }
@@ -782,9 +770,9 @@ open class SwipeLayout(context: Context, attrs: AttributeSet? = null) :
     val isExpanding: Boolean
         get() = isRightExpanding || isLeftExpanding
     val isRightExpanded: Boolean
-        get() = rightLinear != null && rightLinear!!.width >= rightLayoutMaxWidth
+        get() = rightLinear.width >= rightLayoutMaxWidth
     val isLeftExpanded: Boolean
-        get() = leftLinear != null && leftLinear!!.width >= leftLayoutMaxWidth
+        get() = leftLinear.width >= leftLayoutMaxWidth
     val isExpanded: Boolean
         get() = isLeftExpanded || isRightExpanded
 
