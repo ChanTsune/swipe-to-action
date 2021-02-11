@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/simpleSwipeLayoutFragment">
+
+    <fragment
+        android:id="@+id/simpleSwipeLayoutFragment"
+        android:name="com.github.chantsune.swipetoaction.demo.fragments.simple.SimpleSwipeLayoutFragment"
+        android:label="fragment_simple_swipe_layout"
+        tools:layout="@layout/fragment_simple_swipe_layout" />
+</navigation>
