@@ -169,6 +169,14 @@ open class SwipeLayout(context: Context, attrs: AttributeSet? = null) :
         leftLinear!!.addView(leftLinearWithoutFirst)
     }
 
+    data class SwipeItemParams(
+        val icon: Int,
+        val iconColor: Int,
+        val backgroundColor: Int,
+        val txt: String?,
+        val textColor: Int,
+    )
+
     private fun addSwipeItems(
         icons: List<Int>,
         iconColors: List<Int>,
@@ -180,27 +188,39 @@ open class SwipeLayout(context: Context, attrs: AttributeSet? = null) :
         views: MutableList<View>,
         left: Boolean
     ) {
-        for ((i, icon) in icons.withIndex()) {
-            val backgroundColor = backgroundColors.getOrNull(i) ?: NO_ID
-            val iconColor = iconColors.getOrNull(i) ?: NO_ID
-            val txt: String? = texts.getOrNull(i)
-            val textColor = textColors.getOrNull(i) ?: NO_ID
-            val swipeItem =
-                createSwipeItem(
-                    icon,
-                    iconColor,
-                    backgroundColor,
-                    txt,
-                    textColor,
-                    left
-                ).also { itemView ->
-                    itemView.isClickable = true
-                    itemView.isFocusable = true
-                    itemView.setOnClickListener {
-                        onSwipeItemClickListener?.onSwipeItemClick(left, i)
-                    }
+        val p = icons.zipLongest(iconColors).zipLongest(backgroundColors).zipLongest(texts)
+            .zipLongest(textColors).map {
+            val icon = it.first?.first ?: NO_ID
+            val iconColor = it.first?.second ?: NO_ID
+            val bgColor = it.first?.third ?: NO_ID
+            val txt = it.second
+            val txtColor = it.third ?: NO_ID
+            SwipeItemParams(icon, iconColor, bgColor, txt, txtColor)
+        }
+        val views = p.mapIndexed { i, itemParam ->
+            createSwipeItem(
+                itemParam.icon,
+                itemParam.iconColor,
+                itemParam.backgroundColor,
+                itemParam.txt,
+                itemParam.textColor,
+                left
+            ).also { itemView ->
+                itemView.isClickable = true
+                itemView.isFocusable = true
+                itemView.setOnClickListener {
+                    onSwipeItemClickListener?.onSwipeItemClick(left, i)
                 }
-            views.add(swipeItem)
+            }
+        }
+
+        if (left) {
+            leftViews = views.toMutableList()
+        } else {
+            rightViews = views.toMutableList()
+        }
+
+        for ((i, swipeItem) in views.withIndex()) {
             if (i == icons.size - (if (left) icons.size else 1)) {
                 layout!!.addView(swipeItem)
             } else {
