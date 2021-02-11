@@ -44,10 +44,10 @@ open class SwipeLayout(context: Context, attrs: AttributeSet? = null) :
     private val leftLayoutMaxWidth: Int get() = itemWidth * leftIcons.size
     var contentView: View? = null
         private set
-    private var rightLinear: LinearLayout? = null
-    private var leftLinear: LinearLayout? = null
-    private var rightLinearWithoutLast: LinearLayout? = null
-    private var leftLinearWithoutFirst: LinearLayout? = null
+    private val rightLinear: LinearLayout = createLinearLayout(Gravity.END)
+    private val leftLinear: LinearLayout = createLinearLayout(Gravity.START)
+    private val rightLinearWithoutLast: LinearLayout = createLinearLayout(Gravity.END)
+    private val leftLinearWithoutFirst: LinearLayout = createLinearLayout(Gravity.START)
     private var iconSize = 0
     private var textSize = 0f
     private var textTopMargin = 0
@@ -121,17 +121,15 @@ open class SwipeLayout(context: Context, attrs: AttributeSet? = null) :
     }
 
     private fun createRightItemLayout() {
-        rightLinear?.let { removeView(it) }
-        rightLinear = createLinearLayout(Gravity.END)
-        rightLinearWithoutLast = createLinearLayout(Gravity.END).also { linearLayout ->
-            linearLayout.layoutParams = LinearLayout.LayoutParams(
-                0,
-                ViewGroup.LayoutParams.MATCH_PARENT,
-                (rightIcons.size - 1).toFloat()
-            )
-        }
-        addView(rightLinear)
-        rightLinear!!.addView(rightLinearWithoutLast)
+        addView(rightLinear.also { rightLinear ->
+            rightLinear.addView(rightLinearWithoutLast.also { linearLayout ->
+                linearLayout.layoutParams = LinearLayout.LayoutParams(
+                    0,
+                    ViewGroup.LayoutParams.MATCH_PARENT,
+                    (rightIcons.size - 1).toFloat()
+                )
+            })
+        })
         addSwipeItems(
             rightIcons,
             rightIconColors,
@@ -143,25 +141,25 @@ open class SwipeLayout(context: Context, attrs: AttributeSet? = null) :
     }
 
     private fun createLeftItemLayout() {
-        leftLinear?.let { removeView(it) }
-        leftLinear = createLinearLayout(Gravity.START)
-        leftLinearWithoutFirst = createLinearLayout(Gravity.START).also { linearLayout ->
-            linearLayout.layoutParams = LinearLayout.LayoutParams(
-                0,
-                ViewGroup.LayoutParams.MATCH_PARENT,
-                (leftIcons.size - 1).toFloat()
+        addView(leftLinear.also { leftLinear ->
+
+            addSwipeItems(
+                leftIcons,
+                leftIconColors,
+                leftColors,
+                leftTexts,
+                leftTextColors,
+                true
             )
-        }
-        addView(leftLinear)
-        addSwipeItems(
-            leftIcons,
-            leftIconColors,
-            leftColors,
-            leftTexts,
-            leftTextColors,
-            true
-        )
-        leftLinear!!.addView(leftLinearWithoutFirst)
+
+            leftLinear.addView(leftLinearWithoutFirst.also { linearLayout ->
+                linearLayout.layoutParams = LinearLayout.LayoutParams(
+                    0,
+                    ViewGroup.LayoutParams.MATCH_PARENT,
+                    (leftIcons.size - 1).toFloat()
+                )
+            })
+        })
     }
 
     data class SwipeItemParams(
