@@ -17,6 +17,7 @@ import com.github.chantsune.swipetoaction.animations.SwipeAnimation
 import com.github.chantsune.swipetoaction.animations.WeightAnimation
 import com.github.chantsune.swipetoaction.extensions.viewWeight
 import com.github.chantsune.swipetoaction.extensions.viewWidth
+import com.github.chantsune.swipetoaction.extensions.zipLongest
 import kotlin.math.abs
 
 open class SwipeLayout(context: Context, attrs: AttributeSet? = null) :
