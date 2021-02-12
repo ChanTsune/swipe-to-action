@@ -129,7 +129,7 @@ open class SwipeLayout(context: Context, attrs: AttributeSet? = null) :
                 )
             })
         })
-        addSwipeItems(
+        val views = createSwipeItems(
             rightIcons,
             rightIconColors,
             rightColors,
@@ -137,12 +137,13 @@ open class SwipeLayout(context: Context, attrs: AttributeSet? = null) :
             rightTextColors,
             false
         )
+        setRightSwipeItems(views)
     }
 
     private fun createLeftItemLayout() {
         addView(leftLinear.also { leftLinear ->
 
-            addSwipeItems(
+            val views = createSwipeItems(
                 leftIcons,
                 leftIconColors,
                 leftColors,
@@ -150,6 +151,7 @@ open class SwipeLayout(context: Context, attrs: AttributeSet? = null) :
                 leftTextColors,
                 true
             )
+            setLeftSwipeItems(views)
 
             leftLinear.addView(leftLinearWithoutFirst.also { linearLayout ->
                 linearLayout.layoutParams = LinearLayout.LayoutParams(
@@ -169,14 +171,14 @@ open class SwipeLayout(context: Context, attrs: AttributeSet? = null) :
         val textColor: Int,
     )
 
-    private fun addSwipeItems(
+    private fun createSwipeItems(
         icons: List<Int>,
         iconColors: List<Int>,
         backgroundColors: List<Int>,
         texts: List<String>,
         textColors: List<Int>,
         left: Boolean
-    ) {
+    ): List<View> {
         val p = icons.zipLongest(iconColors).zipLongest(backgroundColors).zipLongest(texts)
             .zipLongest(textColors).map {
                 val icon = it.first?.first ?: NO_ID
@@ -186,7 +188,7 @@ open class SwipeLayout(context: Context, attrs: AttributeSet? = null) :
                 val txtColor = it.third ?: NO_ID
                 SwipeItemParams(icon, iconColor, bgColor, txt, txtColor)
             }
-        val views = p.mapIndexed { i, itemParam ->
+        return p.mapIndexed { i, itemParam ->
             createSwipeItem(
                 itemParam.icon,
                 itemParam.iconColor,
@@ -195,12 +197,6 @@ open class SwipeLayout(context: Context, attrs: AttributeSet? = null) :
                 itemParam.textColor,
                 left
             )
-        }
-
-        if (left) {
-            setLeftSwipeItems(views)
-        } else {
-            setRightSwipeItems(views)
         }
     }
 
