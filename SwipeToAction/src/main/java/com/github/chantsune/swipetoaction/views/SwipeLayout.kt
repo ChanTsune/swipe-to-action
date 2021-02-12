@@ -204,7 +204,7 @@ open class SwipeLayout(context: Context, attrs: AttributeSet? = null) :
         }
 
         if (left) {
-            leftViews = views.toMutableList()
+            leftViews = views
             for ((i, swipeItem) in views.withIndex()) {
                 if (i == 0) {
                     leftLinear.addView(swipeItem)
@@ -213,7 +213,7 @@ open class SwipeLayout(context: Context, attrs: AttributeSet? = null) :
                 }
             }
         } else {
-            rightViews = views.toMutableList()
+            rightViews = views
             for ((i, swipeItem) in views.withIndex()) {
                 if (i == icons.size - 1) {
                     rightLinear.addView(swipeItem)
