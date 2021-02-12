@@ -215,7 +215,7 @@ open class SwipeLayout(context: Context, attrs: AttributeSet? = null) :
         } else {
             rightViews = views
             for ((i, swipeItem) in views.withIndex()) {
-                if (i == views.size - 1) {
+                if (i == views.lastIndex) {
                     rightLinear.addView(swipeItem)
                 } else {
                     rightLinearWithoutLast.addView(swipeItem)
