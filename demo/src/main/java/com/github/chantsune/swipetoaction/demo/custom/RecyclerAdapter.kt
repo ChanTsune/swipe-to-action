@@ -1,4 +1,4 @@
-package com.github.chantsune.swipetoaction.demo
+package com.github.chantsune.swipetoaction.demo.custom
 
 import android.view.LayoutInflater
 import android.view.View
@@ -6,6 +6,7 @@ import android.view.View.OnLongClickListener
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
+import com.github.chantsune.swipetoaction.demo.R
 import com.github.chantsune.swipetoaction.demo.databinding.RecyclerViewItemBinding
 import com.github.chantsune.swipetoaction.demo.databinding.SampleItemBinding
 import com.github.chantsune.swipetoaction.views.SwipeLayout
@@ -16,6 +17,8 @@ class RecyclerAdapter : RecyclerView.Adapter<RecyclerAdapter.ViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val v =
             RecyclerViewItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val rightViewItem = LayoutInflater.from(v.swipeLayout.context).inflate(R.layout.right_swipe_item, null)
+        v.swipeLayout.setRightSwipeItems(listOf(rightViewItem))
         return ViewHolder(v)
     }
 

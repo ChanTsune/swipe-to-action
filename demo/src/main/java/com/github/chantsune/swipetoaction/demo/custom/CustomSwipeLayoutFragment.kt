@@ -8,7 +8,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.github.chantsune.swipetoaction.demo.RecyclerAdapter
 import com.github.chantsune.swipetoaction.demo.databinding.FragmentCustomSwipeLayoutBinding
 
 class CustomSwipeLayoutFragment : Fragment() {
