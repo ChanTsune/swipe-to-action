@@ -168,7 +168,7 @@ open class SwipeLayout(context: Context, attrs: AttributeSet? = null) :
     }
 
     private fun createRightItemLayout() {
-        val views = addSwipeItems(
+        val views = createSwipeItems(
             rightIcons,
             rightIconColors,
             rightColors,
@@ -180,7 +180,7 @@ open class SwipeLayout(context: Context, attrs: AttributeSet? = null) :
     }
 
     private fun createLeftItemLayout() {
-        val views = addSwipeItems(
+        val views = createSwipeItems(
             leftIcons,
             leftIconColors,
             leftColors,
@@ -199,7 +199,7 @@ open class SwipeLayout(context: Context, attrs: AttributeSet? = null) :
         val textColor: Int,
     )
 
-    private fun addSwipeItems(
+    private fun createSwipeItems(
         icons: List<Int>,
         iconColors: List<Int>,
         backgroundColors: List<Int>,
@@ -224,26 +224,40 @@ open class SwipeLayout(context: Context, attrs: AttributeSet? = null) :
                 itemParam.txt,
                 itemParam.textColor,
                 left
-            ).also { itemView ->
+            )
+        }
+    }
+
+    fun setLeftSwipeItems(views: List<View>, bindSwipeItemOnClick: Boolean = true) {
+        leftViews = views
+
+        placementLeftItemViewLayout()
+
+        if (bindSwipeItemOnClick) {
+            for ((i, itemView) in leftViews.withIndex()) {
                 itemView.isClickable = true
                 itemView.isFocusable = true
                 itemView.setOnClickListener {
-                    onSwipeItemClickListener?.onSwipeItemClick(left, i)
+                    onSwipeItemClickListener?.onSwipeItemClick(true, i)
                 }
             }
         }
     }
 
-    fun setLeftSwipeItems(views: List<View>) {
-        leftViews = views
-
-        placementLeftItemViewLayout()
-    }
-
-    fun setRightSwipeItems(views: List<View>) {
+    fun setRightSwipeItems(views: List<View>, bindSwipeItemOnClick: Boolean = true) {
         rightViews = views
 
         placementRightItemViewLayout()
+
+        if (bindSwipeItemOnClick) {
+            for ((i, itemView) in rightViews.withIndex()) {
+                itemView.isClickable = true
+                itemView.isFocusable = true
+                itemView.setOnClickListener {
+                    onSwipeItemClickListener?.onSwipeItemClick(false, i)
+                }
+            }
+        }
     }
 
     fun setAlphaAtIndex(left: Boolean, index: Int, alpha: Float) {
