@@ -1,4 +1,4 @@
-package com.github.chantsune.swipetoaction.demo.fragments.main
+package com.github.chantsune.swipetoaction.demo.main
 
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
@@ -7,7 +7,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
-import com.github.chantsune.swipetoaction.demo.R
 import com.github.chantsune.swipetoaction.demo.databinding.FragmentMainBinding
 
 class MainFragment : Fragment() {

@@ -1,4 +1,4 @@
-package com.github.chantsune.swipetoaction.demo.fragments.simple
+package com.github.chantsune.swipetoaction.demo.simple
 
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
@@ -8,7 +8,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.github.chantsune.swipetoaction.demo.R
 import com.github.chantsune.swipetoaction.demo.RecyclerAdapter
 import com.github.chantsune.swipetoaction.demo.databinding.FragmentSimpleSwipeLayoutBinding
 import com.github.chantsune.swipetoaction.views.SwipeLayout

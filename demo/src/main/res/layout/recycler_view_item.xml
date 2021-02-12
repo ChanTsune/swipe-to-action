@@ -7,7 +7,7 @@
     app:canFullSwipeFromLeft="true"
     app:canFullSwipeFromRight="true"
     app:foregroundLayout="@layout/sample_item"
-    app:iconSize="20dp"
+    app:iconSize="40dp"
     app:leftIconColors="@array/leftDrawableColors"
     app:leftItemColors="@array/leftColors"
     app:leftItemIcons="@array/leftDrawables"

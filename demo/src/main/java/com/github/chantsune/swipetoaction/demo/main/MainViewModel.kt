@@ -1,4 +1,4 @@
-package com.github.chantsune.swipetoaction.demo.fragments.main
+package com.github.chantsune.swipetoaction.demo.main
 
 import androidx.lifecycle.ViewModel
 

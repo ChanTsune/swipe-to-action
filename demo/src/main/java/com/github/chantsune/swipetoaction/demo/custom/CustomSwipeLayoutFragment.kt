@@ -1,4 +1,4 @@
-package com.github.chantsune.swipetoaction.demo.fragments.custom
+package com.github.chantsune.swipetoaction.demo.custom
 
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
@@ -6,7 +6,9 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.github.chantsune.swipetoaction.demo.R
+import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.github.chantsune.swipetoaction.demo.RecyclerAdapter
 import com.github.chantsune.swipetoaction.demo.databinding.FragmentCustomSwipeLayoutBinding
 
 class CustomSwipeLayoutFragment : Fragment() {
@@ -25,7 +27,16 @@ class CustomSwipeLayoutFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         viewModel = ViewModelProvider(this).get(CustomSwipeLayoutViewModel::class.java)
-        // TODO: Use the ViewModel
+        binding.recyclerView.apply {
+            adapter = RecyclerAdapter()
+            layoutManager = LinearLayoutManager(requireContext())
+            addItemDecoration(
+                DividerItemDecoration(
+                    requireContext(),
+                    DividerItemDecoration.VERTICAL
+                )
+            )
+        }
     }
 
 }
