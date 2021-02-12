@@ -44,8 +44,8 @@ open class SwipeLayout(context: Context, attrs: AttributeSet? = null) :
     private val leftLayoutMaxWidth: Int get() = itemWidth * leftViews.size
     var contentView: View = View(context).also { addView(it) }
         private set
-    private val rightLinear: LinearLayout = createLinearLayout(Gravity.END)
-    private val leftLinear: LinearLayout = createLinearLayout(Gravity.START)
+    private val rightLinear: LinearLayout = createLinearLayout(Gravity.END).also { addView(it) }
+    private val leftLinear: LinearLayout = createLinearLayout(Gravity.START).also { addView(it) }
     private val rightLinearWithoutLast: LinearLayout = createLinearLayout(Gravity.END)
     private val leftLinearWithoutFirst: LinearLayout = createLinearLayout(Gravity.START)
     private var iconSize = 0
@@ -119,17 +119,56 @@ open class SwipeLayout(context: Context, attrs: AttributeSet? = null) :
         createLeftItemLayout()
     }
 
-    private fun createRightItemLayout() {
-        addView(rightLinear.also { rightLinear ->
+    private fun placementRightItemViewLayout() {
+        // clear views
+        rightLinear.removeAllViews()
+        rightLinearWithoutLast.removeAllViews()
+
+        // placement item views
+        rightLinear.also { rightLinear ->
             rightLinear.addView(rightLinearWithoutLast.also { linearLayout ->
                 linearLayout.layoutParams = LinearLayout.LayoutParams(
                     0,
                     ViewGroup.LayoutParams.MATCH_PARENT,
-                    (rightIcons.size - 1).toFloat()
+                    (rightViews.size - 1).toFloat()
                 )
             })
-        })
-        addSwipeItems(
+        }
+        for ((i, swipeItem) in rightViews.withIndex()) {
+            if (i == rightViews.lastIndex) {
+                rightLinear.addView(swipeItem)
+            } else {
+                rightLinearWithoutLast.addView(swipeItem)
+            }
+        }
+    }
+
+    private fun placementLeftItemViewLayout() {
+        // clear views
+        leftLinear.removeAllViews()
+        leftLinearWithoutFirst.removeAllViews()
+
+        // placement item views
+        leftLinear.also { leftLinear ->
+            for ((i, swipeItem) in leftViews.withIndex()) {
+                if (i == 0) {
+                    leftLinear.addView(swipeItem)
+                } else {
+                    leftLinearWithoutFirst.addView(swipeItem)
+                }
+            }
+            leftLinear.addView(leftLinearWithoutFirst.also { linearLayout ->
+                linearLayout.layoutParams = LinearLayout.LayoutParams(
+                    0,
+                    ViewGroup.LayoutParams.MATCH_PARENT,
+                    (leftViews.size - 1).toFloat()
+                )
+            })
+        }
+    }
+
+    private fun createRightItemLayout() {
+        val views = addSwipeItems(
             rightIcons,
             rightIconColors,
             rightColors,
@@ -137,28 +176,19 @@ open class SwipeLayout(context: Context, attrs: AttributeSet? = null) :
             rightTextColors,
             false
         )
+        setRightSwipeItems(views)
     }
 
     private fun createLeftItemLayout() {
-        addView(leftLinear.also { leftLinear ->
-
-            addSwipeItems(
-                leftIcons,
-                leftIconColors,
-                leftColors,
-                leftTexts,
-                leftTextColors,
-                true
-            )
-
-            leftLinear.addView(leftLinearWithoutFirst.also { linearLayout ->
-                linearLayout.layoutParams = LinearLayout.LayoutParams(
-                    0,
-                    ViewGroup.LayoutParams.MATCH_PARENT,
-                    (leftIcons.size - 1).toFloat()
-                )
-            })
-        })
+        val views = addSwipeItems(
+            leftIcons,
+            leftIconColors,
+            leftColors,
+            leftTexts,
+            leftTextColors,
+            true
+        )
+        setLeftSwipeItems(views)
     }
 
     data class SwipeItemParams(
@@ -176,7 +206,7 @@ open class SwipeLayout(context: Context, attrs: AttributeSet? = null) :
         texts: List<String>,
         textColors: List<Int>,
         left: Boolean
-    ) {
+    ): List<View> {
         val p = icons.zipLongest(iconColors).zipLongest(backgroundColors).zipLongest(texts)
             .zipLongest(textColors).map {
                 val icon = it.first?.first ?: NO_ID
@@ -186,7 +216,7 @@ open class SwipeLayout(context: Context, attrs: AttributeSet? = null) :
                 val txtColor = it.third ?: NO_ID
                 SwipeItemParams(icon, iconColor, bgColor, txt, txtColor)
             }
-        val views = p.mapIndexed { i, itemParam ->
+        return p.mapIndexed { i, itemParam ->
             createSwipeItem(
                 itemParam.icon,
                 itemParam.iconColor,
@@ -202,26 +232,18 @@ open class SwipeLayout(context: Context, attrs: AttributeSet? = null) :
                 }
             }
         }
+    }
 
-        if (left) {
-            leftViews = views
-            for ((i, swipeItem) in views.withIndex()) {
-                if (i == 0) {
-                    leftLinear.addView(swipeItem)
-                } else {
-                    leftLinearWithoutFirst.addView(swipeItem)
-                }
-            }
-        } else {
-            rightViews = views
-            for ((i, swipeItem) in views.withIndex()) {
-                if (i == views.lastIndex) {
-                    rightLinear.addView(swipeItem)
-                } else {
-                    rightLinearWithoutLast.addView(swipeItem)
-                }
-            }
-        }
+    fun setLeftSwipeItems(views: List<View>) {
+        leftViews = views
+
+        placementLeftItemViewLayout()
+    }
+
+    fun setRightSwipeItems(views: List<View>) {
+        rightViews = views
+
+        placementRightItemViewLayout()
     }
 
     fun setAlphaAtIndex(left: Boolean, index: Int, alpha: Float) {
