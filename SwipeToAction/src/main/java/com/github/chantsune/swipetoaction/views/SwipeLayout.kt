@@ -63,7 +63,7 @@ open class SwipeLayout(context: Context, attrs: AttributeSet? = null) :
     var canFullSwipeFromRight = false
     var canFullSwipeFromLeft = false
     private var autoHideSwipe = true
-    private var onlyOneSwipe = true
+    var onlyOneSwipe = true
     private var onScrollListener: RecyclerView.OnScrollListener? = null
 
     init {
@@ -78,7 +78,6 @@ open class SwipeLayout(context: Context, attrs: AttributeSet? = null) :
     override fun onAttachedToWindow() {
         super.onAttachedToWindow()
         setAutoHideSwipe(autoHideSwipe)
-        setOnlyOneSwipe(onlyOneSwipe)
     }
 
     override fun onDetachedFromWindow() {
@@ -793,10 +792,6 @@ open class SwipeLayout(context: Context, attrs: AttributeSet? = null) :
         } else {
             Log.e(TAG, "For autoHideSwipe parent must be a RecyclerView")
         }
-    }
-
-    fun setOnlyOneSwipe(onlyOneSwipe: Boolean) {
-        this.onlyOneSwipe = onlyOneSwipe
     }
 
     val isLeftExpanding: Boolean
