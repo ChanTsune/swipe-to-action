@@ -39,6 +39,10 @@ open class SwipeLayout(context: Context, attrs: AttributeSet? = null) :
     var leftTexts: List<String> = emptyList()
     var rightTexts: List<String> = emptyList()
 
+    private var iconSize = 0
+    private var textSize = 0f
+    private var textTopMargin = 0
+
     private var itemWidth = 0
     private val rightLayoutMaxWidth: Int get() = itemWidth * rightViews.size
     private val leftLayoutMaxWidth: Int get() = itemWidth * leftViews.size
@@ -48,9 +52,6 @@ open class SwipeLayout(context: Context, attrs: AttributeSet? = null) :
     private val leftLinear: LinearLayout = createLinearLayout(Gravity.START).also { addView(it) }
     private val rightLinearWithoutLast: LinearLayout = createLinearLayout(Gravity.END)
     private val leftLinearWithoutFirst: LinearLayout = createLinearLayout(Gravity.START)
-    private var iconSize = 0
-    private var textSize = 0f
-    private var textTopMargin = 0
     private val fullSwipeEdgePadding: Int =
         resources.getDimensionPixelSize(R.dimen.full_swipe_edge_padding)
     var rightViews: List<View> = listOf()
