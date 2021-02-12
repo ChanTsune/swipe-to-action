@@ -53,9 +53,9 @@ open class SwipeLayout(context: Context, attrs: AttributeSet? = null) :
     private var textTopMargin = 0
     private val fullSwipeEdgePadding: Int =
         resources.getDimensionPixelSize(R.dimen.full_swipe_edge_padding)
-    var rightViews: MutableList<View> = mutableListOf()
+    var rightViews: List<View> = listOf()
         private set
-    var leftViews: MutableList<View> = mutableListOf()
+    var leftViews: List<View> = listOf()
         private set
     private var onSwipeItemClickListener: OnSwipeItemClickListener? = null
     var isSwipeEnabled = true
