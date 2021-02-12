@@ -15,9 +15,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.github.chantsune.swipetoaction.R
 import com.github.chantsune.swipetoaction.animations.SwipeAnimation
 import com.github.chantsune.swipetoaction.animations.WeightAnimation
-import com.github.chantsune.swipetoaction.extensions.viewWeight
-import com.github.chantsune.swipetoaction.extensions.viewWidth
-import com.github.chantsune.swipetoaction.extensions.zipLongest
+import com.github.chantsune.swipetoaction.ktx.viewWeight
+import com.github.chantsune.swipetoaction.ktx.viewWidth
+import com.github.chantsune.swipetoaction.ktx.zipLongest
 import kotlin.math.abs
 
 open class SwipeLayout(context: Context, attrs: AttributeSet? = null) :

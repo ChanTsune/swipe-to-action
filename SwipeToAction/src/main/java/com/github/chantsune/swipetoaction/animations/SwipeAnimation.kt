@@ -4,7 +4,7 @@ import android.view.View
 import android.view.animation.Animation
 import android.view.animation.DecelerateInterpolator
 import android.view.animation.Transformation
-import com.github.chantsune.swipetoaction.extensions.viewWidth
+import com.github.chantsune.swipetoaction.ktx.viewWidth
 
 class SwipeAnimation(
     private val resizeView: View,

@@ -1,4 +1,4 @@
-package com.github.chantsune.swipetoaction.extensions
+package com.github.chantsune.swipetoaction.ktx
 
 import android.view.View
 import android.widget.LinearLayout

@@ -1,4 +1,4 @@
-package com.github.chantsune.swipetoaction.extensions
+package com.github.chantsune.swipetoaction.ktx
 
 fun <T, R, V> Iterable<T>.zipLongest(other: Iterable<R>, transform: (a: T?, b: R?) -> V): List<V> {
     val first = iterator()
