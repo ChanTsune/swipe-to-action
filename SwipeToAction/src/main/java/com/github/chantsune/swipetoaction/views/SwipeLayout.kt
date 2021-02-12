@@ -194,32 +194,56 @@ open class SwipeLayout(context: Context, attrs: AttributeSet? = null) :
                 itemParam.txt,
                 itemParam.textColor,
                 left
-            ).also { itemView ->
-                itemView.isClickable = true
-                itemView.isFocusable = true
-                itemView.setOnClickListener {
-                    onSwipeItemClickListener?.onSwipeItemClick(left, i)
-                }
-            }
+            )
         }
 
         if (left) {
-            leftViews = views.toMutableList()
-            for ((i, swipeItem) in views.withIndex()) {
-                if (i == 0) {
-                    leftLinear.addView(swipeItem)
-                } else {
-                    leftLinearWithoutFirst.addView(swipeItem)
+            setLeftSwipeItems(views)
+        } else {
+            setRightSwipeItems(views)
+        }
+    }
+
+    fun setRightSwipeItems(views: List<View>) {
+
+        rightLinear.removeAllViews()
+        rightLinearWithoutLast.removeAllViews()
+
+        rightViews = views
+        for ((i, swipeItem) in views.withIndex()) {
+            swipeItem.also { itemView ->
+                itemView.isClickable = true
+                itemView.isFocusable = true
+                itemView.setOnClickListener {
+                    onSwipeItemClickListener?.onSwipeItemClick(false, i)
                 }
             }
-        } else {
-            rightViews = views.toMutableList()
-            for ((i, swipeItem) in views.withIndex()) {
-                if (i == icons.size - 1) {
-                    rightLinear.addView(swipeItem)
-                } else {
-                    rightLinearWithoutLast.addView(swipeItem)
+            if (i == views.lastIndex) {
+                rightLinear.addView(swipeItem)
+            } else {
+                rightLinearWithoutLast.addView(swipeItem)
+            }
+        }
+    }
+
+    fun setLeftSwipeItems(views: List<View>) {
+
+        leftLinear.removeAllViews()
+        leftLinearWithoutFirst.removeAllViews()
+
+        leftViews = views
+        for ((i, swipeItem) in views.withIndex()) {
+            swipeItem.also { itemView ->
+                itemView.isClickable = true
+                itemView.isFocusable = true
+                itemView.setOnClickListener {
+                    onSwipeItemClickListener?.onSwipeItemClick(true, i)
                 }
+            }
+            if (i == 0) {
+                leftLinear.addView(swipeItem)
+            } else {
+                leftLinearWithoutFirst.addView(swipeItem)
             }
         }
     }
