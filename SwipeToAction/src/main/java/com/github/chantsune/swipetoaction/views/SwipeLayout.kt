@@ -40,8 +40,8 @@ open class SwipeLayout(context: Context, attrs: AttributeSet? = null) :
     var rightTexts: List<String> = emptyList()
 
     private var itemWidth = 0
-    private val rightLayoutMaxWidth: Int get() = itemWidth * rightIcons.size
-    private val leftLayoutMaxWidth: Int get() = itemWidth * leftIcons.size
+    private val rightLayoutMaxWidth: Int get() = itemWidth * rightViews.size
+    private val leftLayoutMaxWidth: Int get() = itemWidth * leftViews.size
     var contentView: View = View(context).also { addView(it) }
         private set
     private val rightLinear: LinearLayout = createLinearLayout(Gravity.END)
