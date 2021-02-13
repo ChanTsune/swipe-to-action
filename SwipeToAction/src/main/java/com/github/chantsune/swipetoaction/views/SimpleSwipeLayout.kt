@@ -5,7 +5,6 @@ import android.content.res.TypedArray
 import android.util.AttributeSet
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.content.res.getResourceIdOrThrow
 import androidx.core.content.res.use
 import com.github.chantsune.swipetoaction.R
 import com.github.chantsune.swipetoaction.ktx.getIntArrayOrNull
@@ -42,12 +41,12 @@ open class SimpleSwipeLayout(c: Context, attrs: AttributeSet? = null) : SwipeLay
                     R.styleable.SimpleSwipeLayout_layout_swipeAutoHideSwipe,
                     100
                 )
-            canFullSwipeFromRight =
+            canFullSwipeRightToLeft =
                 array.getBoolean(
                     R.styleable.SimpleSwipeLayout_layout_swipeCanFullSwipeRightToLeft,
                     false
                 )
-            canFullSwipeFromLeft =
+            canFullSwipeLeftToRight =
                 array.getBoolean(
                     R.styleable.SimpleSwipeLayout_layout_swipeCanFullSwipeLeftToRight,
                     false

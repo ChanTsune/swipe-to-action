@@ -1,7 +1,6 @@
 package com.github.chantsune.swipetoaction.views
 
 import android.content.Context
-import android.content.res.TypedArray
 import android.os.Handler
 import android.util.AttributeSet
 import android.util.Log
@@ -17,7 +16,6 @@ import com.github.chantsune.swipetoaction.animations.SwipeAnimation
 import com.github.chantsune.swipetoaction.animations.WeightAnimation
 import com.github.chantsune.swipetoaction.ktx.viewWeight
 import com.github.chantsune.swipetoaction.ktx.viewWidth
-import com.github.chantsune.swipetoaction.ktx.zipLongest
 import kotlin.math.abs
 
 open class SwipeLayout(context: Context, attrs: AttributeSet? = null) :
@@ -26,8 +24,8 @@ open class SwipeLayout(context: Context, attrs: AttributeSet? = null) :
     ), OnTouchListener {
     protected var contentLayoutId = 0
     var isSwipeEnabled = true
-    var canFullSwipeFromRight = false
-    var canFullSwipeFromLeft = false
+    var canFullSwipeRightToLeft = false
+    var canFullSwipeLeftToRight = false
     protected var autoHideSwipe = true
         set(value) {
             field = value
@@ -215,9 +213,9 @@ open class SwipeLayout(context: Context, attrs: AttributeSet? = null) :
             contentLayoutId = array.getResourceId(R.styleable.SwipeLayout_foregroundLayout, NO_ID)
             itemWidth =
                 array.getDimensionPixelSize(R.styleable.SwipeLayout_layout_swipeSwipeItemWidth, 100)
-            canFullSwipeFromRight =
+            canFullSwipeRightToLeft =
                 array.getBoolean(R.styleable.SwipeLayout_layout_swipeCanFullSwipeRightToLeft, false)
-            canFullSwipeFromLeft =
+            canFullSwipeLeftToRight =
                 array.getBoolean(
                     R.styleable.SimpleSwipeLayout_layout_swipeCanFullSwipeLeftToRight,
                     false
@@ -333,13 +331,13 @@ open class SwipeLayout(context: Context, attrs: AttributeSet? = null) :
                 if (directionLeft) {
                     var left = contentView.translationX - delta
                     if (left < -rightLayoutMaxWidth) {
-                        if (!canFullSwipeFromRight) {
+                        if (!canFullSwipeRightToLeft) {
                             left = -rightLayoutMaxWidth.toFloat()
                         } else if (left < -width) {
                             left = -width.toFloat()
                         }
                     }
-                    if (canFullSwipeFromRight) {
+                    if (canFullSwipeRightToLeft) {
                         if (contentView.translationX <= -(width - fullSwipeEdgePadding)) {
                             if (rightLinearWithoutLast.viewWeight > 0 &&
                                 (collapseAnim == null || collapseAnim!!.hasEnded())
@@ -378,13 +376,13 @@ open class SwipeLayout(context: Context, attrs: AttributeSet? = null) :
                 } else {
                     var right = contentView.translationX + delta
                     if (right > leftLayoutMaxWidth) {
-                        if (!canFullSwipeFromLeft) {
+                        if (!canFullSwipeLeftToRight) {
                             right = leftLayoutMaxWidth.toFloat()
                         } else if (right >= width) {
                             right = width.toFloat()
                         }
                     }
-                    if (canFullSwipeFromLeft) {
+                    if (canFullSwipeLeftToRight) {
                         if (contentView.translationX >= width - fullSwipeEdgePadding) {
                             if (leftLinearWithoutFirst.viewWeight > 0 &&
                                 (collapseAnim == null || collapseAnim!!.hasEnded())
