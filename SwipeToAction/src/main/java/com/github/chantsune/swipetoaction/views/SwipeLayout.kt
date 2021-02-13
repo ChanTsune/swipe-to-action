@@ -675,12 +675,11 @@ open class SwipeLayout(context: Context, attrs: AttributeSet? = null) :
             }
             contentView.translationX = -rightLinear.width.toFloat()
         }
-        var duration = (100 * speed).toLong()
+        val duration = (100 * speed).toLong()
+            .coerceAtLeast(ANIMATION_MIN_DURATION)
+            .coerceAtMost(ANIMATION_MAX_DURATION)
         if (animateView != null) {
             val swipeAnim = SwipeAnimation(animateView, requiredWidth, contentView, left)
-            if (duration < ANIMATION_MIN_DURATION) duration =
-                ANIMATION_MIN_DURATION else if (duration > ANIMATION_MAX_DURATION) duration =
-                ANIMATION_MAX_DURATION
             swipeAnim.duration = duration
             val layoutWithout =
                 if (animateView === leftLinear) leftLinearWithoutFirst else rightLinearWithoutLast
