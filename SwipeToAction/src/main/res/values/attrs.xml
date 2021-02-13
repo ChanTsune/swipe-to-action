@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <attr name="layout_swipeLeftItemColors" format="reference" />
+    <attr name="layout_swipeLeftItemIcons" format="reference" />
+    <attr name="layout_swipeLeftTextColors" format="reference" />
+    <attr name="layout_swipeLeftIconColors" format="reference" />
+    <attr name="layout_swipeLeftStrings" format="reference" />
+    <attr name="layout_swipeRightItemColors" format="reference" />
+    <attr name="layout_swipeRightIconColors" format="reference" />
+    <attr name="layout_swipeRightTextColors" format="reference" />
+    <attr name="layout_swipeRightItemIcons" format="reference" />
+    <attr name="layout_swipeRightStrings" format="reference" />
+    <attr name="layout_swipeIconSize" format="dimension" />
+    <attr name="layout_swipeTextSize" format="dimension" />
+    <attr name="layout_swipeTextTopMargin" format="dimension" />
+    <attr name="layout_swipeSwipeItemWidth" format="dimension" />
+    <attr name="layout_swipeContentLayout" format="reference" />
+    <attr name="layout_swipeCanFullSwipeRightToLeft" format="boolean" />
+    <attr name="layout_swipeCanFullSwipeLeftToRight" format="boolean" />
+    <attr name="layout_swipeAutoHideSwipe" format="boolean" />
+    <attr name="layout_swipeOnlyOneSwipe" format="boolean" />
+
+    <declare-styleable name="SwipeLayout">
+
+        <attr name="layout_swipeSwipeItemWidth" />
+        <attr name="layout_swipeContentLayout" />
+        <attr name="layout_swipeCanFullSwipeLeftToRight" />
+        <attr name="layout_swipeCanFullSwipeRightToLeft" />
+        <attr name="layout_swipeAutoHideSwipe" />
+        <attr name="layout_swipeOnlyOneSwipe" />
+
+    </declare-styleable>
+
+    <declare-styleable name="SimpleSwipeLayout">
+
+        <attr name="layout_swipeLeftItemColors" />
+        <attr name="layout_swipeLeftItemIcons" />
+        <attr name="layout_swipeLeftTextColors" />
+        <attr name="layout_swipeLeftIconColors" />
+        <attr name="layout_swipeLeftStrings" />
+        <attr name="layout_swipeRightItemColors" />
+        <attr name="layout_swipeRightIconColors" />
+        <attr name="layout_swipeRightTextColors" />
+        <attr name="layout_swipeRightItemIcons" />
+        <attr name="layout_swipeRightStrings" />
+        <attr name="layout_swipeIconSize" />
+        <attr name="layout_swipeTextSize" />
+        <attr name="layout_swipeTextTopMargin" />
+        <attr name="layout_swipeSwipeItemWidth" />
+        <attr name="layout_swipeContentLayout" />
+        <attr name="layout_swipeCanFullSwipeLeftToRight" />
+        <attr name="layout_swipeCanFullSwipeRightToLeft" />
+        <attr name="layout_swipeAutoHideSwipe" />
+        <attr name="layout_swipeOnlyOneSwipe" />
+
+    </declare-styleable>
+</resources>

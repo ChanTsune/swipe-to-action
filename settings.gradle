@@ -1,0 +1,3 @@
+include ':SwipeToAction'
+include ':demo'
+rootProject.name = "SwipeToAction"

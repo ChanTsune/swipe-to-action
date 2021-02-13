@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">SwipeToActionDemo</string>
+    <string name="simple_swipe_layout">Simple Swipe Layout</string>
+    <string name="custom_swipe_layout">custom Swipe Layout</string>
+</resources>
