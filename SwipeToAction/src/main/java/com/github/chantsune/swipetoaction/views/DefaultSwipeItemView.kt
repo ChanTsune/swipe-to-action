@@ -48,7 +48,7 @@ class DefaultSwipeItemView(
                 relativeLayout.addView(ImageView(context).also { imageView ->
                     imageView.setImageDrawable(
                         ContextCompat.getDrawable(context, icon)?.also { drawable ->
-                            if (iconColor != null && iconColor != SwipeLayout.NO_ID) {
+                            if (iconColor != null) {
                                 drawable.setTint(iconColor)
                             }
                         })
@@ -65,7 +65,7 @@ class DefaultSwipeItemView(
                             if (textSize > 0) {
                                 textView.setTextSize(TypedValue.COMPLEX_UNIT_PX, textSize)
                             }
-                            if (textColor != null && textColor != SwipeLayout.NO_ID) {
+                            if (textColor != null) {
                                 textView.setTextColor(textColor)
                             }
                             textView.text = text
