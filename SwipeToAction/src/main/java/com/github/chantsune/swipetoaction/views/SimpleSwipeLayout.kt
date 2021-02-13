@@ -161,37 +161,34 @@ open class SimpleSwipeLayout(c: Context, attrs: AttributeSet? = null) : SwipeLay
         textColors: List<Int>,
         left: Boolean
     ): List<View> {
-        val p = icons
+        return icons
             .zipLongest(iconColors)
             .zipLongest(backgroundColors)
             .zipLongest(texts)
             .zipLongest(textColors)
             .map {
                 val icon = it.first?.first ?: NO_ID
-                val iconColor = it.first?.second ?: NO_ID
+                val iconColor = it.first?.second
                 val bgColor = it.first?.third ?: NO_ID
                 val txt = it.second
-                val txtColor = it.third ?: NO_ID
-                SwipeItemParams(icon, iconColor, bgColor, txt, txtColor)
+                val txtColor = it.third
+                createSwipeItem(
+                    icon,
+                    iconColor,
+                    bgColor,
+                    txt,
+                    txtColor,
+                    left
+                )
             }
-        return p.map { itemParam ->
-            createSwipeItem(
-                itemParam.icon,
-                itemParam.iconColor,
-                itemParam.backgroundColor,
-                itemParam.txt,
-                itemParam.textColor,
-                left
-            )
-        }
     }
 
     private fun createSwipeItem(
         icon: Int,
-        iconColor: Int,
+        iconColor: Int?,
         backgroundColor: Int,
         text: String?,
-        textColor: Int,
+        textColor: Int?,
         left: Boolean
     ): ViewGroup {
         return DefaultSwipeItemView(
@@ -209,12 +206,4 @@ open class SimpleSwipeLayout(c: Context, attrs: AttributeSet? = null) : SwipeLay
             this
         )
     }
-
-    private data class SwipeItemParams(
-        val icon: Int,
-        val iconColor: Int,
-        val backgroundColor: Int,
-        val txt: String?,
-        val textColor: Int,
-    )
 }

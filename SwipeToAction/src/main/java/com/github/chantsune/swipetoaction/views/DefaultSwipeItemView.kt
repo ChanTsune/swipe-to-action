@@ -13,10 +13,10 @@ import androidx.core.content.res.use
 class DefaultSwipeItemView(
     context: Context,
     icon: Int,
-    iconColor: Int,
+    iconColor: Int?,
     backgroundColor: Int,
     text: String?,
-    textColor: Int,
+    textColor: Int?,
     left: Boolean,
     // internal params
     itemWidth: Int,
@@ -48,7 +48,7 @@ class DefaultSwipeItemView(
                 relativeLayout.addView(ImageView(context).also { imageView ->
                     imageView.setImageDrawable(
                         ContextCompat.getDrawable(context, icon)?.also { drawable ->
-                            if (iconColor != SwipeLayout.NO_ID) {
+                            if (iconColor != null && iconColor != SwipeLayout.NO_ID) {
                                 drawable.setTint(iconColor)
                             }
                         })
@@ -65,7 +65,7 @@ class DefaultSwipeItemView(
                             if (textSize > 0) {
                                 textView.setTextSize(TypedValue.COMPLEX_UNIT_PX, textSize)
                             }
-                            if (textColor != SwipeLayout.NO_ID) {
+                            if (textColor != null && textColor != SwipeLayout.NO_ID) {
                                 textView.setTextColor(textColor)
                             }
                             textView.text = text
