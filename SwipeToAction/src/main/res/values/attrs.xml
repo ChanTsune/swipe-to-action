@@ -14,7 +14,7 @@
     <attr name="layout_swipeTextSize" format="dimension" />
     <attr name="layout_swipeTextTopMargin" format="dimension" />
     <attr name="layout_swipeSwipeItemWidth" format="dimension" />
-    <attr name="foregroundLayout" format="reference" />
+    <attr name="layout_swipeContentLayout" format="reference" />
     <attr name="layout_swipeCanFullSwipeRightToLeft" format="boolean" />
     <attr name="layout_swipeCanFullSwipeLeftToRight" format="boolean" />
     <attr name="layout_swipeAutoHideSwipe" format="boolean" />
@@ -23,7 +23,7 @@
     <declare-styleable name="SwipeLayout">
 
         <attr name="layout_swipeSwipeItemWidth" />
-        <attr name="foregroundLayout" />
+        <attr name="layout_swipeContentLayout" />
         <attr name="layout_swipeCanFullSwipeLeftToRight" />
         <attr name="layout_swipeCanFullSwipeRightToLeft" />
         <attr name="layout_swipeAutoHideSwipe" />
@@ -47,7 +47,7 @@
         <attr name="layout_swipeTextSize" />
         <attr name="layout_swipeTextTopMargin" />
         <attr name="layout_swipeSwipeItemWidth" />
-        <attr name="foregroundLayout" />
+        <attr name="layout_swipeContentLayout" />
         <attr name="layout_swipeCanFullSwipeLeftToRight" />
         <attr name="layout_swipeCanFullSwipeRightToLeft" />
         <attr name="layout_swipeAutoHideSwipe" />

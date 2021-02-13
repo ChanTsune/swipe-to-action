@@ -35,7 +35,7 @@ open class SimpleSwipeLayout(c: Context, attrs: AttributeSet? = null) : SwipeLay
         context.obtainStyledAttributes(attrs, R.styleable.SimpleSwipeLayout).use { array ->
 
             contentLayoutId =
-                array.getResourceId(R.styleable.SimpleSwipeLayout_foregroundLayout, NO_ID)
+                array.getResourceId(R.styleable.SimpleSwipeLayout_layout_swipeContentLayout, NO_ID)
             itemWidth =
                 array.getDimensionPixelSize(
                     R.styleable.SimpleSwipeLayout_layout_swipeAutoHideSwipe,

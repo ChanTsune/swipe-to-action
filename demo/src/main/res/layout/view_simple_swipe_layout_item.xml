@@ -4,7 +4,7 @@
     android:id="@+id/swipe_layout"
     android:layout_width="match_parent"
     android:layout_height="80dp"
-    app:foregroundLayout="@layout/sample_item"
+    app:layout_swipeContentLayout="@layout/sample_item"
     app:layout_swipeCanFullSwipeLeftToRight="true"
     app:layout_swipeCanFullSwipeRightToLeft="true"
     app:layout_swipeSwipeItemWidth="80dp" />

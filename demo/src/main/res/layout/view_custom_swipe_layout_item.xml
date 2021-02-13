@@ -6,7 +6,7 @@
     android:layout_height="80dp"
     app:layout_swipeCanFullSwipeRightToLeft="true"
     app:layout_swipeCanFullSwipeLeftToRight="true"
-    app:foregroundLayout="@layout/sample_item"
+    app:layout_swipeContentLayout="@layout/sample_item"
     app:layout_swipeIconSize="40dp"
     app:layout_swipeLeftIconColors="@array/leftDrawableColors"
     app:layout_swipeLeftItemColors="@array/leftColors"

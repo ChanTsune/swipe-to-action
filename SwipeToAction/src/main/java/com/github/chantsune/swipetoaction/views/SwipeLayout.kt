@@ -210,7 +210,7 @@ open class SwipeLayout(context: Context, attrs: AttributeSet? = null) :
 
     protected open fun setUpAttrs(attrs: AttributeSet) {
         context.obtainStyledAttributes(attrs, R.styleable.SwipeLayout).use { array ->
-            contentLayoutId = array.getResourceId(R.styleable.SwipeLayout_foregroundLayout, NO_ID)
+            contentLayoutId = array.getResourceId(R.styleable.SwipeLayout_layout_swipeContentLayout, NO_ID)
             itemWidth =
                 array.getDimensionPixelSize(R.styleable.SwipeLayout_layout_swipeSwipeItemWidth, 100)
             canFullSwipeRightToLeft =
