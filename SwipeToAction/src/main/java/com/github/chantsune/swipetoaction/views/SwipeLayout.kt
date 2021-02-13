@@ -273,7 +273,7 @@ open class SwipeLayout(context: Context, attrs: AttributeSet? = null) :
     private fun clickBySwipe() {
         onSwipeItemClickListener?.onSwipeItemClick(
             invokedFromLeft,
-            if (invokedFromLeft) 0 else rightViews.size - 1
+            if (invokedFromLeft) 0 else rightViews.lastIndex
         )
     }
 
