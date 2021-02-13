@@ -213,13 +213,18 @@ open class SwipeLayout(context: Context, attrs: AttributeSet? = null) :
     protected open fun setUpAttrs(attrs: AttributeSet) {
         context.obtainStyledAttributes(attrs, R.styleable.SwipeLayout).use { array ->
             contentLayoutId = array.getResourceId(R.styleable.SwipeLayout_foregroundLayout, NO_ID)
-            itemWidth = array.getDimensionPixelSize(R.styleable.SwipeLayout_swipeItemWidth, 100)
+            itemWidth =
+                array.getDimensionPixelSize(R.styleable.SwipeLayout_layout_swipeSwipeItemWidth, 100)
             canFullSwipeFromRight =
-                array.getBoolean(R.styleable.SwipeLayout_canFullSwipeFromRight, false)
+                array.getBoolean(R.styleable.SwipeLayout_layout_swipeCanFullSwipeRightToLeft, false)
             canFullSwipeFromLeft =
-                array.getBoolean(R.styleable.SwipeLayout_canFullSwipeFromLeft, false)
-            onlyOneSwipe = array.getBoolean(R.styleable.SwipeLayout_onlyOneSwipe, true)
-            autoHideSwipe = array.getBoolean(R.styleable.SwipeLayout_autoHideSwipe, true)
+                array.getBoolean(
+                    R.styleable.SimpleSwipeLayout_layout_swipeCanFullSwipeLeftToRight,
+                    false
+                )
+            onlyOneSwipe = array.getBoolean(R.styleable.SwipeLayout_layout_swipeOnlyOneSwipe, true)
+            autoHideSwipe =
+                array.getBoolean(R.styleable.SwipeLayout_layout_swipeAutoHideSwipe, true)
         }
     }
 

@@ -38,63 +38,88 @@ open class SimpleSwipeLayout(c: Context, attrs: AttributeSet? = null) : SwipeLay
             contentLayoutId =
                 array.getResourceId(R.styleable.SimpleSwipeLayout_foregroundLayout, NO_ID)
             itemWidth =
-                array.getDimensionPixelSize(R.styleable.SimpleSwipeLayout_swipeItemWidth, 100)
+                array.getDimensionPixelSize(
+                    R.styleable.SimpleSwipeLayout_layout_swipeAutoHideSwipe,
+                    100
+                )
             canFullSwipeFromRight =
-                array.getBoolean(R.styleable.SimpleSwipeLayout_canFullSwipeFromRight, false)
+                array.getBoolean(
+                    R.styleable.SimpleSwipeLayout_layout_swipeCanFullSwipeRightToLeft,
+                    false
+                )
             canFullSwipeFromLeft =
-                array.getBoolean(R.styleable.SimpleSwipeLayout_canFullSwipeFromLeft, false)
-            onlyOneSwipe = array.getBoolean(R.styleable.SimpleSwipeLayout_onlyOneSwipe, true)
-            autoHideSwipe = array.getBoolean(R.styleable.SimpleSwipeLayout_autoHideSwipe, true)
+                array.getBoolean(
+                    R.styleable.SimpleSwipeLayout_layout_swipeCanFullSwipeLeftToRight,
+                    false
+                )
+            onlyOneSwipe =
+                array.getBoolean(R.styleable.SimpleSwipeLayout_layout_swipeOnlyOneSwipe, true)
+            autoHideSwipe =
+                array.getBoolean(R.styleable.SimpleSwipeLayout_layout_swipeAutoHideSwipe, true)
 
             iconSize = array.getDimensionPixelSize(
-                R.styleable.SimpleSwipeLayout_iconSize,
+                R.styleable.SimpleSwipeLayout_layout_swipeIconSize,
                 ViewGroup.LayoutParams.MATCH_PARENT
             )
             textSize =
-                array.getDimensionPixelSize(R.styleable.SimpleSwipeLayout_textSize, NO_ID).toFloat()
+                array.getDimensionPixelSize(
+                    R.styleable.SimpleSwipeLayout_layout_swipeTextSize,
+                    NO_ID
+                ).toFloat()
             textTopMargin =
-                array.getDimensionPixelSize(R.styleable.SimpleSwipeLayout_textTopMargin, 20)
+                array.getDimensionPixelSize(
+                    R.styleable.SimpleSwipeLayout_layout_swipeTextTopMargin,
+                    20
+                )
             val rightIconsRes =
-                array.getResourceIdOrNull(R.styleable.SimpleSwipeLayout_rightItemIcons)
+                array.getResourceIdOrNull(R.styleable.SimpleSwipeLayout_layout_swipeRightItemIcons)
             val leftIconsRes =
-                array.getResourceIdOrNull(R.styleable.SimpleSwipeLayout_leftItemIcons)
+                array.getResourceIdOrNull(R.styleable.SimpleSwipeLayout_layout_swipeLeftItemIcons)
 
             rightColors =
-                array.getIntArrayOrNull(R.styleable.SimpleSwipeLayout_rightItemColors)?.toList()
+                array.getIntArrayOrNull(R.styleable.SimpleSwipeLayout_layout_swipeRightItemColors)
+                    ?.toList()
                     ?: listOf()
 
             if (rightIconsRes != null && !isInEditMode)
                 rightIcons = fillDrawables(resources.obtainTypedArray(rightIconsRes)).toList()
 
             leftColors =
-                array.getIntArrayOrNull(R.styleable.SimpleSwipeLayout_leftItemColors)?.toList()
+                array.getIntArrayOrNull(R.styleable.SimpleSwipeLayout_layout_swipeLeftItemColors)
+                    ?.toList()
                     ?: listOf()
 
             if (leftIconsRes != null && !isInEditMode)
                 leftIcons = fillDrawables(resources.obtainTypedArray(leftIconsRes)).toList()
 
             leftTexts =
-                array.getStringArrayOrNull(R.styleable.SimpleSwipeLayout_leftStrings)?.toList()
+                array.getStringArrayOrNull(R.styleable.SimpleSwipeLayout_layout_swipeLeftStrings)
+                    ?.toList()
                     ?: listOf()
 
             rightTexts =
-                array.getStringArrayOrNull(R.styleable.SimpleSwipeLayout_rightStrings)?.toList()
+                array.getStringArrayOrNull(R.styleable.SimpleSwipeLayout_layout_swipeRightStrings)
+                    ?.toList()
                     ?: listOf()
 
             leftTextColors =
-                array.getIntArrayOrNull(R.styleable.SimpleSwipeLayout_leftTextColors)?.toList()
+                array.getIntArrayOrNull(R.styleable.SimpleSwipeLayout_layout_swipeLeftTextColors)
+                    ?.toList()
                     ?: listOf()
 
             rightTextColors =
-                array.getIntArrayOrNull(R.styleable.SimpleSwipeLayout_rightTextColors)?.toList()
+                array.getIntArrayOrNull(R.styleable.SimpleSwipeLayout_layout_swipeRightTextColors)
+                    ?.toList()
                     ?: listOf()
 
             leftIconColors =
-                array.getIntArrayOrNull(R.styleable.SimpleSwipeLayout_leftIconColors)?.toList()
+                array.getIntArrayOrNull(R.styleable.SimpleSwipeLayout_layout_swipeLeftIconColors)
+                    ?.toList()
                     ?: listOf()
 
             rightIconColors =
-                array.getIntArrayOrNull(R.styleable.SimpleSwipeLayout_rightIconColors)?.toList()
+                array.getIntArrayOrNull(R.styleable.SimpleSwipeLayout_layout_swipeRightIconColors)
+                    ?.toList()
                     ?: listOf()
 
             validateParams()
