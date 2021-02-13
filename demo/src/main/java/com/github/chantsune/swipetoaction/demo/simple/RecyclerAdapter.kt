@@ -6,8 +6,8 @@ import android.view.View.OnLongClickListener
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
-import com.github.chantsune.swipetoaction.demo.databinding.RecyclerViewItemBinding
 import com.github.chantsune.swipetoaction.demo.databinding.SampleItemBinding
+import com.github.chantsune.swipetoaction.demo.databinding.ViewSimpleSwipeLayoutItemBinding
 import com.github.chantsune.swipetoaction.views.SwipeLayout
 import com.github.chantsune.swipetoaction.views.SwipeLayout.OnSwipeItemClickListener
 
@@ -15,7 +15,7 @@ class RecyclerAdapter : RecyclerView.Adapter<RecyclerAdapter.ViewHolder>() {
     private val strings = MutableList(30) { it.toString() }
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val v =
-            RecyclerViewItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+            ViewSimpleSwipeLayoutItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return ViewHolder(v)
     }
 
@@ -26,7 +26,7 @@ class RecyclerAdapter : RecyclerView.Adapter<RecyclerAdapter.ViewHolder>() {
 
     override fun getItemCount(): Int = strings.size
 
-    inner class ViewHolder(val binding: RecyclerViewItemBinding) :
+    inner class ViewHolder(val binding: ViewSimpleSwipeLayoutItemBinding) :
         RecyclerView.ViewHolder(binding.root),
         View.OnClickListener, OnLongClickListener, OnSwipeItemClickListener {
         val contentBinding = SampleItemBinding.bind(binding.swipeLayout.contentView)
