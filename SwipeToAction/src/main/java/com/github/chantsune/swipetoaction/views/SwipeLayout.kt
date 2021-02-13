@@ -537,11 +537,6 @@ open class SwipeLayout(context: Context, attrs: AttributeSet? = null) :
         }
     }
 
-    @Deprecated("use setItemState()")
-    fun closeItem() {
-        collapseItem(true)
-    }
-
     private fun collapseItem(animated: Boolean) {
         if (leftLinear.width > 0) {
             leftLinearWithoutFirst.viewWidth = leftViews.size - 1
