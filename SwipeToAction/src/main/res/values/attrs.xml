@@ -22,22 +22,6 @@
 
     <declare-styleable name="SwipeLayout">
 
-        <!-- TODO: remove -->
-        <attr name="leftItemColors" />
-        <attr name="leftItemIcons" />
-        <attr name="leftTextColors" />
-        <attr name="leftIconColors" />
-        <attr name="leftStrings" />
-        <attr name="rightItemColors" />
-        <attr name="rightIconColors" />
-        <attr name="rightTextColors" />
-        <attr name="rightItemIcons" />
-        <attr name="rightStrings" />
-        <attr name="iconSize" />
-        <attr name="textSize" />
-        <attr name="textTopMargin" />
-        <!-- TODO: remove -->
-
         <attr name="swipeItemWidth" />
         <attr name="foregroundLayout" />
         <attr name="canFullSwipeFromLeft" />
@@ -46,6 +30,7 @@
         <attr name="onlyOneSwipe" />
 
     </declare-styleable>
+
     <declare-styleable name="SimpleSwipeLayout">
 
         <attr name="leftItemColors" />

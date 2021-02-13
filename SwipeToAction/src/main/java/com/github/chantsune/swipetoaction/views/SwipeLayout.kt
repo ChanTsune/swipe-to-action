@@ -24,26 +24,18 @@ open class SwipeLayout(context: Context, attrs: AttributeSet? = null) :
     FrameLayout(
         context, attrs
     ), OnTouchListener {
-    private var contentLayoutId = 0
+    protected var contentLayoutId = 0
+    var isSwipeEnabled = true
+    var canFullSwipeFromRight = false
+    var canFullSwipeFromLeft = false
+    protected var autoHideSwipe = true
+        set(value) {
+            field = value
+            setUpAutoHide()
+        }
+    var onlyOneSwipe = true
+    protected var itemWidth = 0
 
-    var leftColors: List<Int> = emptyList()
-    var leftIcons: List<Int> = emptyList()
-    var leftIconColors: List<Int> = emptyList()
-    var leftTextColors: List<Int> = emptyList()
-
-    var rightColors: List<Int> = emptyList()
-    var rightIcons: List<Int> = emptyList()
-    var rightIconColors: List<Int> = emptyList()
-    var rightTextColors: List<Int> = emptyList()
-
-    var leftTexts: List<String> = emptyList()
-    var rightTexts: List<String> = emptyList()
-
-    private var iconSize = 0
-    private var textSize = 0f
-    private var textTopMargin = 0
-
-    private var itemWidth = 0
     private val rightLayoutMaxWidth: Int get() = itemWidth * rightViews.size
     private val leftLayoutMaxWidth: Int get() = itemWidth * leftViews.size
     var contentView: View = View(context).also { addView(it) }
@@ -59,11 +51,6 @@ open class SwipeLayout(context: Context, attrs: AttributeSet? = null) :
     var leftViews: List<View> = listOf()
         private set
     private var onSwipeItemClickListener: OnSwipeItemClickListener? = null
-    var isSwipeEnabled = true
-    var canFullSwipeFromRight = false
-    var canFullSwipeFromLeft = false
-    private var autoHideSwipe = true
-    var onlyOneSwipe = true
     private var onScrollListener: RecyclerView.OnScrollListener? = null
 
     init {
@@ -77,7 +64,7 @@ open class SwipeLayout(context: Context, attrs: AttributeSet? = null) :
 
     override fun onAttachedToWindow() {
         super.onAttachedToWindow()
-        setAutoHideSwipe(autoHideSwipe)
+        setUpAutoHide()
     }
 
     override fun onDetachedFromWindow() {
@@ -93,30 +80,20 @@ open class SwipeLayout(context: Context, attrs: AttributeSet? = null) :
         addView(view)
     }
 
-    private fun setUpView() {
+    protected open fun setUpView() {
         if (contentLayoutId != -NO_ID) {
             setContentView(LayoutInflater.from(context).inflate(contentLayoutId, null))
         }
-        compareArrays(leftColors, leftIcons)
-        compareArrays(rightColors, rightIcons)
-        compareArrays(leftIconColors, leftIcons)
-        compareArrays(rightIconColors, rightIcons)
-        createItemLayouts()
+
+        invalidateSwipeItems()
+
         contentView.bringToFront()
         contentView.setOnTouchListener(this)
     }
 
-    private fun compareArrays(arr1: List<Int>, arr2: List<Int>) {
-        check(arr1.size >= arr2.size) { "Drawable array shouldn't be bigger than color array" }
-    }
-
     fun invalidateSwipeItems() {
-        createItemLayouts()
-    }
-
-    private fun createItemLayouts() {
-        createRightItemLayout()
-        createLeftItemLayout()
+        placementRightItemViewLayout()
+        placementLeftItemViewLayout()
     }
 
     private fun placementRightItemViewLayout() {
@@ -167,66 +144,6 @@ open class SwipeLayout(context: Context, attrs: AttributeSet? = null) :
         }
     }
 
-    private fun createRightItemLayout() {
-        val views = createSwipeItems(
-            rightIcons,
-            rightIconColors,
-            rightColors,
-            rightTexts,
-            rightTextColors,
-            false
-        )
-        setRightSwipeItems(views)
-    }
-
-    private fun createLeftItemLayout() {
-        val views = createSwipeItems(
-            leftIcons,
-            leftIconColors,
-            leftColors,
-            leftTexts,
-            leftTextColors,
-            true
-        )
-        setLeftSwipeItems(views)
-    }
-
-    data class SwipeItemParams(
-        val icon: Int,
-        val iconColor: Int,
-        val backgroundColor: Int,
-        val txt: String?,
-        val textColor: Int,
-    )
-
-    private fun createSwipeItems(
-        icons: List<Int>,
-        iconColors: List<Int>,
-        backgroundColors: List<Int>,
-        texts: List<String>,
-        textColors: List<Int>,
-        left: Boolean
-    ): List<View> {
-        val p = icons.zipLongest(iconColors).zipLongest(backgroundColors).zipLongest(texts)
-            .zipLongest(textColors).map {
-                val icon = it.first?.first ?: NO_ID
-                val iconColor = it.first?.second ?: NO_ID
-                val bgColor = it.first?.third ?: NO_ID
-                val txt = it.second
-                val txtColor = it.third ?: NO_ID
-                SwipeItemParams(icon, iconColor, bgColor, txt, txtColor)
-            }
-        return p.mapIndexed { i, itemParam ->
-            createSwipeItem(
-                itemParam.icon,
-                itemParam.iconColor,
-                itemParam.backgroundColor,
-                itemParam.txt,
-                itemParam.textColor,
-                left
-            )
-        }
-    }
 
     fun setLeftSwipeItems(views: List<View>, bindSwipeItemOnClick: Boolean = true) {
         leftViews = views
@@ -284,29 +201,6 @@ open class SwipeLayout(context: Context, attrs: AttributeSet? = null) :
         contentView.setOnClickListener(listener)
     }
 
-    private fun createSwipeItem(
-        icon: Int,
-        iconColor: Int,
-        backgroundColor: Int,
-        text: String?,
-        textColor: Int,
-        left: Boolean
-    ): ViewGroup {
-        return DefaultSwipeItemView(
-            context,
-            icon,
-            iconColor,
-            backgroundColor,
-            text,
-            textColor,
-            left,
-            itemWidth,
-            iconSize,
-            textSize,
-            textTopMargin,
-            this
-        )
-    }
 
     private fun createLinearLayout(gravity: Int): LinearLayout {
         return LinearLayout(context).also { linearLayout ->
@@ -316,83 +210,19 @@ open class SwipeLayout(context: Context, attrs: AttributeSet? = null) :
         }
     }
 
-    private fun setUpAttrs(attrs: AttributeSet) {
+    protected open fun setUpAttrs(attrs: AttributeSet) {
         context.obtainStyledAttributes(attrs, R.styleable.SwipeLayout).use { array ->
             contentLayoutId = array.getResourceId(R.styleable.SwipeLayout_foregroundLayout, NO_ID)
             itemWidth = array.getDimensionPixelSize(R.styleable.SwipeLayout_swipeItemWidth, 100)
-            iconSize = array.getDimensionPixelSize(
-                R.styleable.SwipeLayout_iconSize,
-                ViewGroup.LayoutParams.MATCH_PARENT
-            )
-            textSize =
-                array.getDimensionPixelSize(R.styleable.SwipeLayout_textSize, NO_ID).toFloat()
-            textTopMargin = array.getDimensionPixelSize(R.styleable.SwipeLayout_textTopMargin, 20)
             canFullSwipeFromRight =
                 array.getBoolean(R.styleable.SwipeLayout_canFullSwipeFromRight, false)
             canFullSwipeFromLeft =
                 array.getBoolean(R.styleable.SwipeLayout_canFullSwipeFromLeft, false)
             onlyOneSwipe = array.getBoolean(R.styleable.SwipeLayout_onlyOneSwipe, true)
             autoHideSwipe = array.getBoolean(R.styleable.SwipeLayout_autoHideSwipe, true)
-            val rightColorsRes = array.getResourceId(R.styleable.SwipeLayout_rightItemColors, NO_ID)
-            val rightIconsRes = array.getResourceId(R.styleable.SwipeLayout_rightItemIcons, NO_ID)
-            val leftColorsRes = array.getResourceId(R.styleable.SwipeLayout_leftItemColors, NO_ID)
-            val leftIconsRes = array.getResourceId(R.styleable.SwipeLayout_leftItemIcons, NO_ID)
-            val leftTextRes = array.getResourceId(R.styleable.SwipeLayout_leftStrings, NO_ID)
-            val rightTextRes = array.getResourceId(R.styleable.SwipeLayout_rightStrings, NO_ID)
-            val leftTextColorRes =
-                array.getResourceId(R.styleable.SwipeLayout_leftTextColors, NO_ID)
-            val rightTextColorRes =
-                array.getResourceId(R.styleable.SwipeLayout_rightTextColors, NO_ID)
-            val leftIconColors = array.getResourceId(R.styleable.SwipeLayout_leftIconColors, NO_ID)
-            val rightIconColors =
-                array.getResourceId(R.styleable.SwipeLayout_rightIconColors, NO_ID)
-            initiateArrays(
-                rightColorsRes,
-                rightIconsRes,
-                leftColorsRes,
-                leftIconsRes,
-                leftTextRes,
-                rightTextRes,
-                leftTextColorRes,
-                rightTextColorRes,
-                leftIconColors,
-                rightIconColors
-            )
         }
     }
 
-    private fun initiateArrays(
-        rightColorsRes: Int, rightIconsRes: Int, leftColorsRes: Int, leftIconsRes: Int,
-        leftTextRes: Int, rightTextRes: Int, leftTextColorRes: Int, rightTextColorRes: Int,
-        leftIconColorsRes: Int, rightIconColorsRes: Int
-    ) {
-        if (rightColorsRes != NO_ID)
-            rightColors = resources.getIntArray(rightColorsRes).toList()
-        if (rightIconsRes != NO_ID && !isInEditMode)
-            rightIcons = fillDrawables(resources.obtainTypedArray(rightIconsRes)).toList()
-        if (leftColorsRes != NO_ID)
-            leftColors = resources.getIntArray(leftColorsRes).toList()
-        if (leftIconsRes != NO_ID && !isInEditMode)
-            leftIcons = fillDrawables(resources.obtainTypedArray(leftIconsRes)).toList()
-        if (leftTextRes != NO_ID)
-            leftTexts = resources.getStringArray(leftTextRes).toList()
-        if (rightTextRes != NO_ID)
-            rightTexts = resources.getStringArray(rightTextRes).toList()
-        if (leftTextColorRes != NO_ID)
-            leftTextColors = resources.getIntArray(leftTextColorRes).toList()
-        if (rightTextColorRes != NO_ID)
-            rightTextColors = resources.getIntArray(rightTextColorRes).toList()
-        if (leftIconColorsRes != NO_ID)
-            leftIconColors = resources.getIntArray(leftIconColorsRes).toList()
-        if (rightIconColorsRes != NO_ID)
-            rightIconColors = resources.getIntArray(rightIconColorsRes).toList()
-    }
-
-    private fun fillDrawables(ta: TypedArray): IntArray {
-        return ta.use {
-            IntArray(ta.length()) { ta.getResourceId(it, NO_ID) }
-        }
-    }
 
     var prevRawX = -1f
     var directionLeft = false
@@ -772,8 +602,7 @@ open class SwipeLayout(context: Context, attrs: AttributeSet? = null) :
         return false
     }
 
-    fun setAutoHideSwipe(autoHideSwipe: Boolean) {
-        this.autoHideSwipe = autoHideSwipe
+    private fun setUpAutoHide() {
         val parent = parent
         if (parent != null && parent is RecyclerView) {
             onScrollListener?.let { parent.removeOnScrollListener(it) }
@@ -792,6 +621,7 @@ open class SwipeLayout(context: Context, attrs: AttributeSet? = null) :
             Log.e(TAG, "For autoHideSwipe parent must be a RecyclerView")
         }
     }
+
 
     val isLeftExpanding: Boolean
         get() = contentView.translationX > 0
