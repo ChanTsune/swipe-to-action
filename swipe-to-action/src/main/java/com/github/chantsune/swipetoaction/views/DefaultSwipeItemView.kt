@@ -10,7 +10,7 @@ import android.widget.*
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.use
 
-class DefaultSwipeItemView(
+internal class DefaultSwipeItemView(
     context: Context,
     icon: Int,
     iconColor: Int?,
