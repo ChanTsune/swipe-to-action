@@ -27,7 +27,7 @@ open class SwipeLayout(context: Context, attrs: AttributeSet? = null) :
     var isSwipeEnabled = true
     var canFullSwipeRightToLeft = false
     var canFullSwipeLeftToRight = false
-    protected var autoHideSwipe = true
+    var autoHideSwipe = true
         set(value) {
             field = value
             setUpAutoHide()
