@@ -38,7 +38,7 @@ android {
 
 dependencies {
 
-    implementation(project(":SwipeToAction"))
+    implementation(project(":swipe-to-action"))
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     implementation 'androidx.core:core-ktx:1.3.2'
