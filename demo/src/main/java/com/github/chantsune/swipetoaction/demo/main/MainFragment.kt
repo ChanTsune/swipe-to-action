@@ -30,6 +30,9 @@ class MainFragment : Fragment() {
         binding.goToSimpleButton.setOnClickListener {
             findNavController().navigate(MainFragmentDirections.actionMainFragmentToSimpleSwipeLayoutFragment())
         }
+        binding.goToGridButton.setOnClickListener {
+            findNavController().navigate(MainFragmentDirections.actionMainFragmentToGridLayoutFragment())
+        }
     }
 
 }

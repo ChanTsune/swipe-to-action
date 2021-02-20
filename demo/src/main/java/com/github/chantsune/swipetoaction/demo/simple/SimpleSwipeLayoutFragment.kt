@@ -3,6 +3,7 @@ package com.github.chantsune.swipetoaction.demo.simple
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
 import android.view.View
+import androidx.lifecycle.get
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.github.chantsune.swipetoaction.demo.base.BaseListFragment
@@ -14,7 +15,7 @@ class SimpleSwipeLayoutFragment : BaseListFragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProvider(this).get(SimpleSwipeLayoutViewModel::class.java)
+        viewModel = ViewModelProvider(this).get()
         binding.recyclerView.also { recyclerView ->
             recyclerView.layoutManager = LinearLayoutManager(context)
             recyclerView.adapter = RecyclerAdapter()
