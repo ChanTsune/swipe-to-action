@@ -1,14 +1,9 @@
 package com.github.chantsune.swipetoaction.demo.grid
 
-import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.get
 import androidx.recyclerview.widget.GridLayoutManager
-import com.github.chantsune.swipetoaction.demo.R
 import com.github.chantsune.swipetoaction.demo.base.BaseListFragment
 import com.github.chantsune.swipetoaction.demo.simple.RecyclerAdapter
 
@@ -21,7 +16,17 @@ class GridLayoutFragment : BaseListFragment() {
         viewModel = ViewModelProvider(this).get()
         binding.recyclerView.apply {
             adapter = RecyclerAdapter()
-            layoutManager = GridLayoutManager(requireContext(), 2)
+            layoutManager = GridLayoutManager(requireContext(), 2).apply {
+                spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
+                    override fun getSpanSize(position: Int): Int {
+                        return if (position in 0..3) {
+                            2
+                        } else {
+                            1
+                        }
+                    }
+                }
+            }
         }
     }
 
