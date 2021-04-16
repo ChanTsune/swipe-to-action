@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.get
 import androidx.navigation.fragment.findNavController
 import com.github.chantsune.swipetoaction.demo.databinding.FragmentMainBinding
 
@@ -23,7 +24,7 @@ class MainFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
+        viewModel = ViewModelProvider(this).get()
 
         binding.goToSimpleButton.setOnClickListener {
             findNavController().navigate(MainFragmentDirections.actionMainFragmentToSimpleSwipeLayoutFragment())
