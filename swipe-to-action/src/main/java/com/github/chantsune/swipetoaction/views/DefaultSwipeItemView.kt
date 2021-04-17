@@ -26,38 +26,25 @@ internal class DefaultSwipeItemView(
     listener: OnTouchListener
 ) : FrameLayout(context) {
 
-    private var _id = 0
-
     init {
-        also { frameLayout ->
-            frameLayout.addView(View(context).also { view ->
-                view.layoutParams = LayoutParams(
-                    ViewGroup.LayoutParams.MATCH_PARENT,
-                    ViewGroup.LayoutParams.MATCH_PARENT
+        var _id = 0
+        foreground = rippleDrawable
+        addView(
+            RelativeLayout(context).also { relativeLayout ->
+                relativeLayout.addView(
+                    ImageView(context).also { imageView ->
+                        imageView.setImageDrawable(
+                            ContextCompat.getDrawable(context, icon)?.also { drawable ->
+                                if (iconColor != null) {
+                                    drawable.setTint(iconColor)
+                                }
+                            })
+                        imageView.id = ++_id
+                    },
+                    RelativeLayout.LayoutParams(iconSize, iconSize).also { params ->
+                        params.addRule(RelativeLayout.CENTER_HORIZONTAL, RelativeLayout.TRUE)
+                    }
                 )
-                view.background = rippleDrawable
-            })
-            frameLayout.addView(RelativeLayout(context).also { relativeLayout ->
-                val gravity = if (left) {
-                    Gravity.CENTER_VERTICAL or Gravity.END
-                } else {
-                    Gravity.CENTER_VERTICAL or Gravity.START
-                }
-                relativeLayout.layoutParams =
-                    LayoutParams(itemWidth, ViewGroup.LayoutParams.WRAP_CONTENT, gravity)
-                relativeLayout.addView(ImageView(context).also { imageView ->
-                    imageView.setImageDrawable(
-                        ContextCompat.getDrawable(context, icon)?.also { drawable ->
-                            if (iconColor != null) {
-                                drawable.setTint(iconColor)
-                            }
-                        })
-                    imageView.layoutParams =
-                        RelativeLayout.LayoutParams(iconSize, iconSize).also { params ->
-                            params.addRule(RelativeLayout.CENTER_HORIZONTAL, RelativeLayout.TRUE)
-                        }
-                    imageView.id = ++_id
-                })
                 if (text != null) {
                     relativeLayout.addView(
                         TextView(context).also { textView ->
@@ -78,14 +65,19 @@ internal class DefaultSwipeItemView(
                             }
                     )
                 }
-            })
-            if (backgroundColor != SwipeLayout.NO_ID) {
-                frameLayout.setBackgroundColor(backgroundColor)
-            }
-            frameLayout.layoutParams =
-                LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.MATCH_PARENT, 1f)
-            frameLayout.setOnTouchListener(listener)
+            },
+            LayoutParams(
+                itemWidth,
+                ViewGroup.LayoutParams.WRAP_CONTENT,
+                Gravity.CENTER_VERTICAL or if (left) Gravity.END else Gravity.START
+            )
+        )
+        if (backgroundColor != SwipeLayout.NO_ID) {
+            setBackgroundColor(backgroundColor)
         }
+        layoutParams =
+            LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.MATCH_PARENT, 1f)
+        setOnTouchListener(listener)
     }
 
     private val rippleDrawable: Drawable?
