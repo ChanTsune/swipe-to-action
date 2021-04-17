@@ -12,7 +12,6 @@
     <attr name="layout_swipeRightStrings" format="reference" />
     <attr name="layout_swipeIconSize" format="dimension" />
     <attr name="layout_swipeTextSize" format="dimension" />
-    <attr name="layout_swipeTextTopMargin" format="dimension" />
     <attr name="layout_swipeSwipeItemWidth" format="dimension" />
     <attr name="layout_swipeContentLayout" format="reference" />
     <attr name="layout_swipeCanFullSwipeRightToLeft" format="boolean" />
@@ -45,7 +44,6 @@
         <attr name="layout_swipeRightStrings" />
         <attr name="layout_swipeIconSize" />
         <attr name="layout_swipeTextSize" />
-        <attr name="layout_swipeTextTopMargin" />
         <attr name="layout_swipeSwipeItemWidth" />
         <attr name="layout_swipeContentLayout" />
         <attr name="layout_swipeCanFullSwipeLeftToRight" />

@@ -28,7 +28,6 @@ open class SimpleSwipeLayout(c: Context, attrs: AttributeSet? = null) : SwipeLay
 
     private var iconSize = 0
     private var textSize = 0f
-    private var textTopMargin = 0
 
 
     override fun setUpAttrs(attrs: AttributeSet) {
@@ -65,11 +64,6 @@ open class SimpleSwipeLayout(c: Context, attrs: AttributeSet? = null) : SwipeLay
                     R.styleable.SimpleSwipeLayout_layout_swipeTextSize,
                     NO_ID
                 ).toFloat()
-            textTopMargin =
-                array.getDimensionPixelSize(
-                    R.styleable.SimpleSwipeLayout_layout_swipeTextTopMargin,
-                    20
-                )
             val rightIconsRes =
                 array.getResourceIdOrNull(R.styleable.SimpleSwipeLayout_layout_swipeRightItemIcons)
             val leftIconsRes =
@@ -226,7 +220,6 @@ open class SimpleSwipeLayout(c: Context, attrs: AttributeSet? = null) : SwipeLay
             itemWidth,
             iconSize,
             textSize,
-            textTopMargin,
             this
         )
     }

@@ -22,7 +22,6 @@ internal class DefaultSwipeItemView(
     itemWidth: Int,
     iconSize: Int,
     textSize: Float,
-    textTopMargin: Int,
     listener: OnTouchListener
 ) : FrameLayout(context) {
 
