@@ -4,9 +4,9 @@ import android.content.Context
 import android.graphics.drawable.Drawable
 import android.util.TypedValue
 import android.view.Gravity
-import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.use
 
@@ -27,42 +27,58 @@ internal class DefaultSwipeItemView(
 ) : FrameLayout(context) {
 
     init {
-        var _id = 0
+        var id = 0
         foreground = rippleDrawable
+        val imageView = ImageView(context).also { imageView ->
+            imageView.setImageDrawable(
+                ContextCompat.getDrawable(context, icon)?.also { drawable ->
+                    if (iconColor != null) {
+                        drawable.setTint(iconColor)
+                    }
+                })
+            imageView.id = ++id
+        }
+        val textView = text?.let { text ->
+            TextView(context).also { textView ->
+                textView.maxLines = 2
+                if (textSize > 0) {
+                    textView.setTextSize(TypedValue.COMPLEX_UNIT_PX, textSize)
+                }
+                if (textColor != null) {
+                    textView.setTextColor(textColor)
+                }
+                textView.text = text
+                textView.gravity = Gravity.CENTER
+                textView.id = ++id
+            }
+        }
         addView(
-            RelativeLayout(context).also { relativeLayout ->
-                relativeLayout.addView(
-                    ImageView(context).also { imageView ->
-                        imageView.setImageDrawable(
-                            ContextCompat.getDrawable(context, icon)?.also { drawable ->
-                                if (iconColor != null) {
-                                    drawable.setTint(iconColor)
-                                }
-                            })
-                        imageView.id = ++_id
-                    },
-                    RelativeLayout.LayoutParams(iconSize, iconSize).also { params ->
-                        params.addRule(RelativeLayout.CENTER_HORIZONTAL, RelativeLayout.TRUE)
+            ConstraintLayout(context).also { constraintLayout ->
+                constraintLayout.addView(
+                    imageView,
+                    ConstraintLayout.LayoutParams(iconSize, iconSize).also { params ->
+                        params.startToStart = ConstraintLayout.LayoutParams.PARENT_ID
+                        params.endToEnd = ConstraintLayout.LayoutParams.PARENT_ID
+                        params.topToTop = ConstraintLayout.LayoutParams.PARENT_ID
+                        if (textView != null) {
+                            params.bottomToTop = textView.id
+                        } else {
+                            params.bottomToBottom = ConstraintLayout.LayoutParams.PARENT_ID
+                        }
                     }
                 )
-                if (text != null) {
-                    relativeLayout.addView(
-                        TextView(context).also { textView ->
-                            textView.maxLines = 2
-                            if (textSize > 0) {
-                                textView.setTextSize(TypedValue.COMPLEX_UNIT_PX, textSize)
-                            }
-                            if (textColor != null) {
-                                textView.setTextColor(textColor)
-                            }
-                            textView.text = text
-                            textView.gravity = Gravity.CENTER
-                        },
-                        RelativeLayout.LayoutParams(itemWidth, ViewGroup.LayoutParams.WRAP_CONTENT)
-                            .also { params ->
-                                params.addRule(RelativeLayout.BELOW, _id)
-                                params.topMargin = textTopMargin
-                            }
+                textView?.let { textView ->
+                    constraintLayout.addView(
+                        textView,
+                        ConstraintLayout.LayoutParams(
+                            ConstraintLayout.LayoutParams.MATCH_PARENT,
+                            ConstraintLayout.LayoutParams.WRAP_CONTENT,
+                        ).also { params ->
+                            params.startToStart = ConstraintLayout.LayoutParams.PARENT_ID
+                            params.endToEnd = ConstraintLayout.LayoutParams.PARENT_ID
+                            params.topToBottom = imageView.id
+                            params.bottomToBottom = ConstraintLayout.LayoutParams.PARENT_ID
+                        }
                     )
                 }
             },
