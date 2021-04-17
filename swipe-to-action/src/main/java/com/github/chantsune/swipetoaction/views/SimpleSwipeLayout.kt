@@ -13,18 +13,18 @@ import com.github.chantsune.swipetoaction.ktx.getStringArrayOrNull
 import com.github.chantsune.swipetoaction.ktx.zipLongest
 
 open class SimpleSwipeLayout(c: Context, attrs: AttributeSet? = null) : SwipeLayout(c, attrs) {
-    var leftColors: List<Int> = listOf()
-    var leftIcons: List<Int> = listOf()
-    var leftIconColors: List<Int> = listOf()
-    var leftTextColors: List<Int> = listOf()
+    var leftColors: IntArray = intArrayOf()
+    var leftIcons: IntArray = intArrayOf()
+    var leftIconColors: IntArray = intArrayOf()
+    var leftTextColors: IntArray = intArrayOf()
 
-    var rightColors: List<Int> = listOf()
-    var rightIcons: List<Int> = listOf()
-    var rightIconColors: List<Int> = listOf()
-    var rightTextColors: List<Int> = listOf()
+    var rightColors: IntArray = intArrayOf()
+    var rightIcons: IntArray = intArrayOf()
+    var rightIconColors: IntArray = intArrayOf()
+    var rightTextColors: IntArray = intArrayOf()
 
-    var leftTexts: List<String> = listOf()
-    var rightTexts: List<String> = listOf()
+    var leftTexts: Array<String> = arrayOf()
+    var rightTexts: Array<String> = arrayOf()
 
     private var iconSize = 0
     private var textSize = 0f
@@ -71,49 +71,41 @@ open class SimpleSwipeLayout(c: Context, attrs: AttributeSet? = null) : SwipeLay
 
             rightColors =
                 array.getIntArrayOrNull(R.styleable.SimpleSwipeLayout_layout_swipeRightItemColors)
-                    ?.toList()
-                    ?: listOf()
+                    ?: intArrayOf()
 
             if (rightIconsRes != null && !isInEditMode)
-                rightIcons = fillDrawables(resources.obtainTypedArray(rightIconsRes)).toList()
+                rightIcons = fillDrawables(resources.obtainTypedArray(rightIconsRes))
 
             leftColors =
                 array.getIntArrayOrNull(R.styleable.SimpleSwipeLayout_layout_swipeLeftItemColors)
-                    ?.toList()
-                    ?: listOf()
+                    ?: intArrayOf()
 
             if (leftIconsRes != null && !isInEditMode)
-                leftIcons = fillDrawables(resources.obtainTypedArray(leftIconsRes)).toList()
+                leftIcons = fillDrawables(resources.obtainTypedArray(leftIconsRes))
 
             leftTexts =
                 array.getStringArrayOrNull(R.styleable.SimpleSwipeLayout_layout_swipeLeftStrings)
-                    ?.toList()
-                    ?: listOf()
+                    ?: arrayOf()
 
             rightTexts =
                 array.getStringArrayOrNull(R.styleable.SimpleSwipeLayout_layout_swipeRightStrings)
-                    ?.toList()
-                    ?: listOf()
+                    ?: arrayOf()
 
             leftTextColors =
                 array.getIntArrayOrNull(R.styleable.SimpleSwipeLayout_layout_swipeLeftTextColors)
-                    ?.toList()
-                    ?: listOf()
+                    ?: intArrayOf()
 
             rightTextColors =
                 array.getIntArrayOrNull(R.styleable.SimpleSwipeLayout_layout_swipeRightTextColors)
-                    ?.toList()
-                    ?: listOf()
+                    ?: intArrayOf()
 
             leftIconColors =
                 array.getIntArrayOrNull(R.styleable.SimpleSwipeLayout_layout_swipeLeftIconColors)
-                    ?.toList()
-                    ?: listOf()
+                    ?: intArrayOf()
 
             rightIconColors =
                 array.getIntArrayOrNull(R.styleable.SimpleSwipeLayout_layout_swipeRightIconColors)
-                    ?.toList()
-                    ?: listOf()
+                    ?: intArrayOf()
 
             validateParams()
         }
@@ -138,7 +130,7 @@ open class SimpleSwipeLayout(c: Context, attrs: AttributeSet? = null) : SwipeLay
         compareArrays(rightIconColors, rightIcons)
     }
 
-    private fun compareArrays(arr1: List<Int>, arr2: List<Int>) {
+    private fun compareArrays(arr1: IntArray, arr2: IntArray) {
         check(arr1.size >= arr2.size) { "Drawable array shouldn't be bigger than color array" }
     }
 
@@ -149,11 +141,11 @@ open class SimpleSwipeLayout(c: Context, attrs: AttributeSet? = null) : SwipeLay
 
     private fun createRightItemLayout() {
         val views = createSwipeItems(
-            rightIcons,
-            rightIconColors,
-            rightColors,
-            rightTexts,
-            rightTextColors,
+            rightIcons.toList(),
+            rightIconColors.toList(),
+            rightColors.toList(),
+            rightTexts.toList(),
+            rightTextColors.toList(),
             false
         )
         setRightSwipeItems(views)
@@ -161,11 +153,11 @@ open class SimpleSwipeLayout(c: Context, attrs: AttributeSet? = null) : SwipeLay
 
     private fun createLeftItemLayout() {
         val views = createSwipeItems(
-            leftIcons,
-            leftIconColors,
-            leftColors,
-            leftTexts,
-            leftTextColors,
+            leftIcons.toList(),
+            leftIconColors.toList(),
+            leftColors.toList(),
+            leftTexts.toList(),
+            leftTextColors.toList(),
             true
         )
         setLeftSwipeItems(views)
