@@ -38,7 +38,7 @@ open class SimpleSwipeLayout(c: Context, attrs: AttributeSet? = null) : SwipeLay
                 array.getResourceId(R.styleable.SimpleSwipeLayout_layout_swipeContentLayout, NO_ID)
             itemWidth =
                 array.getDimensionPixelSize(
-                    R.styleable.SimpleSwipeLayout_layout_swipeAutoHideSwipe,
+                    R.styleable.SimpleSwipeLayout_layout_swipeSwipeItemWidth,
                     100
                 )
             canFullSwipeRightToLeft =
