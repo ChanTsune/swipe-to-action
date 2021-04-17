@@ -9,12 +9,12 @@
         android:id="@+id/simpleSwipeLayoutFragment"
         android:name="com.github.chantsune.swipetoaction.demo.simple.SimpleSwipeLayoutFragment"
         android:label="fragment_simple_swipe_layout"
-        tools:layout="@layout/fragment_simple_swipe_layout" />
+        tools:layout="@layout/fragment_list" />
     <fragment
         android:id="@+id/customSwipeLayoutFragment"
         android:name="com.github.chantsune.swipetoaction.demo.custom.CustomSwipeLayoutFragment"
         android:label="fragment_custom_swipe_layout"
-        tools:layout="@layout/fragment_custom_swipe_layout" />
+        tools:layout="@layout/fragment_list" />
     <fragment
         android:id="@+id/mainFragment"
         android:name="com.github.chantsune.swipetoaction.demo.main.MainFragment"
@@ -26,5 +26,12 @@
         <action
             android:id="@+id/action_mainFragment_to_simpleSwipeLayoutFragment"
             app:destination="@id/simpleSwipeLayoutFragment" />
+        <action
+            android:id="@+id/action_mainFragment_to_gridLayoutFragment"
+            app:destination="@id/gridLayoutFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/gridLayoutFragment"
+        android:name="com.github.chantsune.swipetoaction.demo.grid.GridLayoutFragment"
+        android:label="GridLayoutFragment" />
 </navigation>

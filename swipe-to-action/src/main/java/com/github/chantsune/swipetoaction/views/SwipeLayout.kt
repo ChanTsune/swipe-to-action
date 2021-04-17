@@ -2,6 +2,7 @@ package com.github.chantsune.swipetoaction.views
 
 import android.content.Context
 import android.os.Handler
+import android.os.Looper
 import android.util.AttributeSet
 import android.util.Log
 import android.view.*
@@ -26,7 +27,7 @@ open class SwipeLayout(context: Context, attrs: AttributeSet? = null) :
     var isSwipeEnabled = true
     var canFullSwipeRightToLeft = false
     var canFullSwipeLeftToRight = false
-    protected var autoHideSwipe = true
+    var autoHideSwipe = true
         set(value) {
             field = value
             setUpAutoHide()
@@ -246,7 +247,7 @@ open class SwipeLayout(context: Context, attrs: AttributeSet? = null) :
 
     var shouldPerformLongClick = false
     var longClickPerformed = false
-    private val longClickHandler = Handler()
+    private val longClickHandler = Handler(Looper.getMainLooper())
     private val longClickRunnable = Runnable {
         if (shouldPerformLongClick) {
             if (performLongClick()) {

@@ -2,30 +2,18 @@ package com.github.chantsune.swipetoaction.demo.custom
 
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import androidx.lifecycle.get
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.github.chantsune.swipetoaction.demo.databinding.FragmentCustomSwipeLayoutBinding
+import com.github.chantsune.swipetoaction.demo.base.BaseListFragment
 
-class CustomSwipeLayoutFragment : Fragment() {
+class CustomSwipeLayoutFragment : BaseListFragment() {
 
-    private lateinit var binding: FragmentCustomSwipeLayoutBinding
     private lateinit var viewModel: CustomSwipeLayoutViewModel
-
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        binding = FragmentCustomSwipeLayoutBinding.inflate(inflater, container, false)
-        return binding.root
-    }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProvider(this).get(CustomSwipeLayoutViewModel::class.java)
+        viewModel = ViewModelProvider(this).get()
         binding.recyclerView.apply {
             adapter = RecyclerAdapter()
             layoutManager = LinearLayoutManager(requireContext())

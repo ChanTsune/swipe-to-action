@@ -4,13 +4,13 @@ import android.content.Context
 import android.graphics.drawable.Drawable
 import android.util.TypedValue
 import android.view.Gravity
-import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.use
 
-class DefaultSwipeItemView(
+internal class DefaultSwipeItemView(
     context: Context,
     icon: Int,
     iconColor: Int?,
@@ -22,70 +22,77 @@ class DefaultSwipeItemView(
     itemWidth: Int,
     iconSize: Int,
     textSize: Float,
-    textTopMargin: Int,
     listener: OnTouchListener
 ) : FrameLayout(context) {
 
-    private var _id = 0
-
     init {
-        also { frameLayout ->
-            frameLayout.addView(View(context).also { view ->
-                view.layoutParams = LayoutParams(
-                    ViewGroup.LayoutParams.MATCH_PARENT,
-                    ViewGroup.LayoutParams.MATCH_PARENT
-                )
-                view.background = rippleDrawable
-            })
-            frameLayout.addView(RelativeLayout(context).also { relativeLayout ->
-                val gravity = if (left) {
-                    Gravity.CENTER_VERTICAL or Gravity.END
-                } else {
-                    Gravity.CENTER_VERTICAL or Gravity.START
-                }
-                relativeLayout.layoutParams =
-                    LayoutParams(itemWidth, ViewGroup.LayoutParams.WRAP_CONTENT, gravity)
-                relativeLayout.addView(ImageView(context).also { imageView ->
-                    imageView.setImageDrawable(
-                        ContextCompat.getDrawable(context, icon)?.also { drawable ->
-                            if (iconColor != null) {
-                                drawable.setTint(iconColor)
-                            }
-                        })
-                    imageView.layoutParams =
-                        RelativeLayout.LayoutParams(iconSize, iconSize).also { params ->
-                            params.addRule(RelativeLayout.CENTER_HORIZONTAL, RelativeLayout.TRUE)
-                        }
-                    imageView.id = ++_id
+        var id = 0
+        foreground = rippleDrawable
+        val imageView = ImageView(context).also { imageView ->
+            imageView.setImageDrawable(
+                ContextCompat.getDrawable(context, icon)?.also { drawable ->
+                    if (iconColor != null) {
+                        drawable.setTint(iconColor)
+                    }
                 })
-                if (text != null) {
-                    relativeLayout.addView(
-                        TextView(context).also { textView ->
-                            textView.maxLines = 2
-                            if (textSize > 0) {
-                                textView.setTextSize(TypedValue.COMPLEX_UNIT_PX, textSize)
-                            }
-                            if (textColor != null) {
-                                textView.setTextColor(textColor)
-                            }
-                            textView.text = text
-                            textView.gravity = Gravity.CENTER
-                        },
-                        RelativeLayout.LayoutParams(itemWidth, ViewGroup.LayoutParams.WRAP_CONTENT)
-                            .also { params ->
-                                params.addRule(RelativeLayout.BELOW, _id)
-                                params.topMargin = textTopMargin
-                            }
+            imageView.id = ++id
+        }
+        val textView = text?.let { text ->
+            TextView(context).also { textView ->
+                textView.maxLines = 2
+                if (textSize > 0) {
+                    textView.setTextSize(TypedValue.COMPLEX_UNIT_PX, textSize)
+                }
+                if (textColor != null) {
+                    textView.setTextColor(textColor)
+                }
+                textView.text = text
+                textView.gravity = Gravity.CENTER
+                textView.id = ++id
+            }
+        }
+        addView(
+            ConstraintLayout(context).also { constraintLayout ->
+                constraintLayout.addView(
+                    imageView,
+                    ConstraintLayout.LayoutParams(iconSize, iconSize).also { params ->
+                        params.startToStart = ConstraintLayout.LayoutParams.PARENT_ID
+                        params.endToEnd = ConstraintLayout.LayoutParams.PARENT_ID
+                        params.topToTop = ConstraintLayout.LayoutParams.PARENT_ID
+                        if (textView != null) {
+                            params.bottomToTop = textView.id
+                        } else {
+                            params.bottomToBottom = ConstraintLayout.LayoutParams.PARENT_ID
+                        }
+                    }
+                )
+                textView?.let { textView ->
+                    constraintLayout.addView(
+                        textView,
+                        ConstraintLayout.LayoutParams(
+                            ConstraintLayout.LayoutParams.MATCH_PARENT,
+                            ConstraintLayout.LayoutParams.WRAP_CONTENT,
+                        ).also { params ->
+                            params.startToStart = ConstraintLayout.LayoutParams.PARENT_ID
+                            params.endToEnd = ConstraintLayout.LayoutParams.PARENT_ID
+                            params.topToBottom = imageView.id
+                            params.bottomToBottom = ConstraintLayout.LayoutParams.PARENT_ID
+                        }
                     )
                 }
-            })
-            if (backgroundColor != SwipeLayout.NO_ID) {
-                frameLayout.setBackgroundColor(backgroundColor)
-            }
-            frameLayout.layoutParams =
-                LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.MATCH_PARENT, 1f)
-            frameLayout.setOnTouchListener(listener)
+            },
+            LayoutParams(
+                itemWidth,
+                ViewGroup.LayoutParams.WRAP_CONTENT,
+                Gravity.CENTER_VERTICAL or if (left) Gravity.END else Gravity.START
+            )
+        )
+        if (backgroundColor != SwipeLayout.NO_ID) {
+            setBackgroundColor(backgroundColor)
         }
+        layoutParams =
+            LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.MATCH_PARENT, 1f)
+        setOnTouchListener(listener)
     }
 
     private val rippleDrawable: Drawable?

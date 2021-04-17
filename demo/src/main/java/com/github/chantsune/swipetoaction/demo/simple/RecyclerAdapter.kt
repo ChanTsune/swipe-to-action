@@ -12,6 +12,10 @@ import com.github.chantsune.swipetoaction.views.SwipeLayout
 import com.github.chantsune.swipetoaction.views.SwipeLayout.OnSwipeItemClickListener
 
 class RecyclerAdapter : RecyclerView.Adapter<RecyclerAdapter.ViewHolder>() {
+    class ViewHolder(val binding: ViewSimpleSwipeLayoutItemBinding) :
+        RecyclerView.ViewHolder(binding.root) {
+        val contentBinding = SampleItemBinding.bind(binding.swipeLayout.contentView)
+    }
     private val strings = MutableList(30) { it.toString() }
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val v =
@@ -21,67 +25,73 @@ class RecyclerAdapter : RecyclerView.Adapter<RecyclerAdapter.ViewHolder>() {
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.contentBinding.recyclerItemTv.text = "Item # ${strings[position]}"
+
+        when (position % 3) {
+            0 -> {
+                holder.binding.swipeLayout.canFullSwipeLeftToRight = false
+                holder.binding.swipeLayout.canFullSwipeRightToLeft = false
+            }
+            1 -> {
+                holder.binding.swipeLayout.canFullSwipeLeftToRight = true
+                holder.binding.swipeLayout.canFullSwipeRightToLeft = false
+            }
+            else -> {
+                holder.binding.swipeLayout.canFullSwipeLeftToRight = false
+                holder.binding.swipeLayout.canFullSwipeRightToLeft = true
+            }
+        }
+
         holder.binding.swipeLayout.setItemState(SwipeLayout.ITEM_STATE_COLLAPSED, false)
-    }
-
-    override fun getItemCount(): Int = strings.size
-
-    inner class ViewHolder(val binding: ViewSimpleSwipeLayoutItemBinding) :
-        RecyclerView.ViewHolder(binding.root),
-        View.OnClickListener, OnLongClickListener, OnSwipeItemClickListener {
-        val contentBinding = SampleItemBinding.bind(binding.swipeLayout.contentView)
-
-        init {
-            binding.swipeLayout.setOnClickListener(this)
-            binding.swipeLayout.setOnLongClickListener(this)
-            binding.swipeLayout.setOnSwipeItemClickListener(this)
-        }
-
-        override fun onClick(view: View) {
+        holder.binding.swipeLayout.setOnClickListener { view ->
             Toast.makeText(
                 view.context,
-                "Clicked at ${strings[adapterPosition]}",
+                "Clicked at ${strings[holder.adapterPosition]}",
                 Toast.LENGTH_SHORT
             ).show()
         }
-
-        override fun onLongClick(view: View): Boolean {
+        holder.binding.swipeLayout.setOnLongClickListener { view ->
             Toast.makeText(
                 view.context,
-                "Long Clicked at ${strings[adapterPosition]}",
+                "Long Clicked at ${strings[holder.adapterPosition]}",
                 Toast.LENGTH_SHORT
             ).show()
-            return true
+            true
         }
-
-        override fun onSwipeItemClick(left: Boolean, index: Int) {
-            if (left) {
-                binding.swipeLayout.also { swipeLayout ->
-                    if (swipeLayout.isEnabledAtIndex(true, index)) {
-                        swipeLayout.setAlphaAtIndex(true, index, 0.5f)
-                        swipeLayout.setEnableAtIndex(true, index, false)
-                        swipeLayout.collapseAll(true)
-                    } else {
-                        swipeLayout.setAlphaAtIndex(true, index, 1f)
-                        swipeLayout.setEnableAtIndex(true, index, true)
+        holder.binding.swipeLayout.setOnSwipeItemClickListener(object : OnSwipeItemClickListener {
+            override fun onSwipeItemClick(left: Boolean, index: Int) {
+                if (left) {
+                    holder.binding.swipeLayout.also { swipeLayout ->
+                        if (swipeLayout.isEnabledAtIndex(true, index)) {
+                            swipeLayout.setAlphaAtIndex(true, index, 0.5f)
+                            swipeLayout.setEnableAtIndex(true, index, false)
+                            swipeLayout.collapseAll(true)
+                        } else {
+                            swipeLayout.setAlphaAtIndex(true, index, 1f)
+                            swipeLayout.setEnableAtIndex(true, index, true)
+                        }
                     }
-                }
-            } else {
-                when (index) {
-                    0 -> {
-                        Toast.makeText(itemView.context, "Reload", Toast.LENGTH_SHORT).show()
-                    }
-                    1 -> {
-                        Toast.makeText(itemView.context, "Settings", Toast.LENGTH_SHORT).show()
-                    }
-                    2 -> {
-                        val pos = adapterPosition
-                        strings.removeAt(pos)
-                        notifyItemRemoved(pos)
-                        Toast.makeText(itemView.context, "Trash", Toast.LENGTH_SHORT).show()
+                } else {
+                    when (index) {
+                        0 -> {
+                            Toast.makeText(holder.itemView.context, "Reload", Toast.LENGTH_SHORT)
+                                .show()
+                        }
+                        1 -> {
+                            Toast.makeText(holder.itemView.context, "Settings", Toast.LENGTH_SHORT)
+                                .show()
+                        }
+                        2 -> {
+                            val pos = holder.adapterPosition
+                            strings.removeAt(pos)
+                            notifyItemRemoved(pos)
+                            Toast.makeText(holder.itemView.context, "Trash", Toast.LENGTH_SHORT)
+                                .show()
+                        }
                     }
                 }
             }
-        }
+        })
     }
+
+    override fun getItemCount(): Int = strings.size
 }
