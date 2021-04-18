@@ -166,7 +166,7 @@ open class SwipeLayout(context: Context, attrs: AttributeSet? = null) :
                 itemView.isClickable = true
                 itemView.isFocusable = true
                 itemView.setOnClickListener {
-                    onSwipeItemClickListener?.onSwipeItemClick(true, i)
+                    onSwipeItemClickListener?.onSwipeItemClick(it, true, i)
                 }
             }
         }
@@ -182,7 +182,7 @@ open class SwipeLayout(context: Context, attrs: AttributeSet? = null) :
                 itemView.isClickable = true
                 itemView.isFocusable = true
                 itemView.setOnClickListener {
-                    onSwipeItemClickListener?.onSwipeItemClick(false, i)
+                    onSwipeItemClickListener?.onSwipeItemClick(it, false, i)
                 }
             }
         }
@@ -223,7 +223,8 @@ open class SwipeLayout(context: Context, attrs: AttributeSet? = null) :
 
     protected open fun setUpAttrs(attrs: AttributeSet) {
         context.obtainStyledAttributes(attrs, R.styleable.SwipeLayout).use { array ->
-            contentLayoutId = array.getResourceId(R.styleable.SwipeLayout_layout_swipeContentLayout, NO_ID)
+            contentLayoutId =
+                array.getResourceId(R.styleable.SwipeLayout_layout_swipeContentLayout, NO_ID)
             itemWidth =
                 array.getDimensionPixelSize(R.styleable.SwipeLayout_layout_swipeSwipeItemWidth, 100)
             canFullSwipeRightToLeft =
@@ -287,9 +288,12 @@ open class SwipeLayout(context: Context, attrs: AttributeSet? = null) :
         }
 
     private fun clickBySwipe() {
+        val position = if (invokedFromLeft) 0 else rightViews.lastIndex
+        val view = if (invokedFromLeft) leftViews[position] else rightViews[position]
         onSwipeItemClickListener?.onSwipeItemClick(
+            view,
             invokedFromLeft,
-            if (invokedFromLeft) 0 else rightViews.lastIndex
+            position,
         )
     }
 
@@ -660,8 +664,8 @@ open class SwipeLayout(context: Context, attrs: AttributeSet? = null) :
         }
     }
 
-    interface OnSwipeItemClickListener {
-        fun onSwipeItemClick(left: Boolean, index: Int)
+    fun interface OnSwipeItemClickListener {
+        fun onSwipeItemClick(view: View, left: Boolean, index: Int)
     }
 
     companion object {

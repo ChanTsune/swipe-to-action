@@ -58,7 +58,7 @@ class RecyclerAdapter : RecyclerView.Adapter<RecyclerAdapter.ViewHolder>() {
             return true
         }
 
-        override fun onSwipeItemClick(left: Boolean, index: Int) {
+        override fun onSwipeItemClick(view: View, left: Boolean, index: Int) {
             if (left) {
                 binding.swipeLayout.also { swipeLayout ->
                     if (swipeLayout.isEnabledAtIndex(true, index)) {
