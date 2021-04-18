@@ -57,40 +57,38 @@ class RecyclerAdapter : RecyclerView.Adapter<RecyclerAdapter.ViewHolder>() {
             ).show()
             true
         }
-        holder.binding.swipeLayout.setOnSwipeItemClickListener(object : OnSwipeItemClickListener {
-            override fun onSwipeItemClick(left: Boolean, index: Int) {
-                if (left) {
-                    holder.binding.swipeLayout.also { swipeLayout ->
-                        if (swipeLayout.isEnabledAtIndex(true, index)) {
-                            swipeLayout.setAlphaAtIndex(true, index, 0.5f)
-                            swipeLayout.setEnableAtIndex(true, index, false)
-                            swipeLayout.collapseAll(true)
-                        } else {
-                            swipeLayout.setAlphaAtIndex(true, index, 1f)
-                            swipeLayout.setEnableAtIndex(true, index, true)
-                        }
+        holder.binding.swipeLayout.setOnSwipeItemClickListener { view, left, index ->
+            if (left) {
+                holder.binding.swipeLayout.also { swipeLayout ->
+                    if (swipeLayout.isEnabledAtIndex(true, index)) {
+                        swipeLayout.setAlphaAtIndex(true, index, 0.5f)
+                        swipeLayout.setEnableAtIndex(true, index, false)
+                        swipeLayout.collapseAll(true)
+                    } else {
+                        swipeLayout.setAlphaAtIndex(true, index, 1f)
+                        swipeLayout.setEnableAtIndex(true, index, true)
                     }
-                } else {
-                    when (index) {
-                        0 -> {
-                            Toast.makeText(holder.itemView.context, "Reload", Toast.LENGTH_SHORT)
-                                .show()
-                        }
-                        1 -> {
-                            Toast.makeText(holder.itemView.context, "Settings", Toast.LENGTH_SHORT)
-                                .show()
-                        }
-                        2 -> {
-                            val pos = holder.adapterPosition
-                            strings.removeAt(pos)
-                            notifyItemRemoved(pos)
-                            Toast.makeText(holder.itemView.context, "Trash", Toast.LENGTH_SHORT)
-                                .show()
-                        }
+                }
+            } else {
+                when (index) {
+                    0 -> {
+                        Toast.makeText(holder.itemView.context, "Reload", Toast.LENGTH_SHORT)
+                            .show()
+                    }
+                    1 -> {
+                        Toast.makeText(holder.itemView.context, "Settings", Toast.LENGTH_SHORT)
+                            .show()
+                    }
+                    2 -> {
+                        val pos = holder.adapterPosition
+                        strings.removeAt(pos)
+                        notifyItemRemoved(pos)
+                        Toast.makeText(holder.itemView.context, "Trash", Toast.LENGTH_SHORT)
+                            .show()
                     }
                 }
             }
-        })
+        }
     }
 
     override fun getItemCount(): Int = strings.size
