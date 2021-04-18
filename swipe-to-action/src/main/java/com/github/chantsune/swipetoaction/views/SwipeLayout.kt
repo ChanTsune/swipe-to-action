@@ -39,8 +39,14 @@ open class SwipeLayout(context: Context, attrs: AttributeSet? = null) :
     private val leftLayoutMaxWidth: Int get() = itemWidth * leftViews.size
     var contentView: View = View(context).also { addView(it) }
         private set
-    private val rightLinear: LinearLayout = createLinearLayout(Gravity.END).also { addView(it) }
-    private val leftLinear: LinearLayout = createLinearLayout(Gravity.START).also { addView(it) }
+    private val rightLinear: LinearLayout = createLinearLayout(Gravity.END).also {
+        it.id = ID_RIGHT_VIEW
+        addView(it)
+    }
+    private val leftLinear: LinearLayout = createLinearLayout(Gravity.START).also {
+        it.id = ID_LEFT_VIEW
+        addView(it)
+    }
     private val rightLinearWithoutLast: LinearLayout = createLinearLayout(Gravity.END)
     private val leftLinearWithoutFirst: LinearLayout = createLinearLayout(Gravity.START)
     private val fullSwipeEdgePadding: Int =
@@ -71,26 +77,32 @@ open class SwipeLayout(context: Context, attrs: AttributeSet? = null) :
         super.onDetachedFromWindow()
     }
 
-    fun setContentView(view: View) {
+    override fun addView(child: View?, index: Int, params: ViewGroup.LayoutParams?) {
+        if (child != null && child.id !in listOf(ID_LEFT_VIEW, ID_RIGHT_VIEW)) {
+            setContentView(child)
+        }
+        super.addView(child, index, params)
+    }
+
+    private fun setContentView(view: View) {
         if (contentView in children) {
             removeView(contentView)
         }
         contentView = view
-        addView(view)
-    }
-
-    protected open fun setUpView() {
-        if (contentLayoutId != -NO_ID) {
-            setContentView(LayoutInflater.from(context).inflate(contentLayoutId, null))
-        }
-
-        invalidateSwipeItems()
-
         contentView.bringToFront()
         contentView.setOnTouchListener(this)
     }
 
-    fun invalidateSwipeItems() {
+    protected open fun setUpView() {
+
+        invalidateSwipeItems()
+
+        if (contentLayoutId != -NO_ID) {
+            addView(LayoutInflater.from(context).inflate(contentLayoutId, null))
+        }
+    }
+
+    private fun invalidateSwipeItems() {
         placementRightItemViewLayout()
         placementLeftItemViewLayout()
     }
@@ -660,5 +672,7 @@ open class SwipeLayout(context: Context, attrs: AttributeSet? = null) :
         const val ITEM_STATE_COLLAPSED = 2
         private const val ANIMATION_MIN_DURATION: Long = 100
         private const val ANIMATION_MAX_DURATION: Long = 300
+        private const val ID_RIGHT_VIEW = 1507
+        private const val ID_LEFT_VIEW = ID_RIGHT_VIEW + 1
     }
 }
