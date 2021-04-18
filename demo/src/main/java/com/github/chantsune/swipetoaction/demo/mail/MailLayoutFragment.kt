@@ -1,4 +1,4 @@
-package com.github.chantsune.swipetoaction.demo.grid
+package com.github.chantsune.swipetoaction.demo.mail
 
 import android.os.Bundle
 import androidx.lifecycle.ViewModelProvider
@@ -7,9 +7,9 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.github.chantsune.swipetoaction.demo.base.BaseListFragment
 import com.github.chantsune.swipetoaction.demo.simple.RecyclerAdapter
 
-class GridLayoutFragment : BaseListFragment() {
+class MailLayoutFragment : BaseListFragment() {
 
-    private lateinit var viewModel: GridLayoutViewModel
+    private lateinit var viewModel: MailLayoutViewModel
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
