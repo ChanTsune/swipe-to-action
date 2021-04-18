@@ -3,7 +3,7 @@ package com.github.chantsune.swipetoaction.ktx
 import android.view.View
 import android.widget.LinearLayout
 
-var View.viewWeight: Float
+internal var View.viewWeight: Float
     get() = (layoutParams as LinearLayout.LayoutParams).weight
     set(value) {
         layoutParams = (layoutParams as LinearLayout.LayoutParams).apply {
@@ -11,14 +11,14 @@ var View.viewWeight: Float
         }
     }
 
-var View.viewWidth: Int
+internal var View.viewWidth: Int
     get() = layoutParams.width
     set(value) {
         layoutParams.width = value
         requestLayout()
     }
 
-var View.viewHeight: Int
+internal var View.viewHeight: Int
     get() = layoutParams.height
     set(value) {
         layoutParams.height = value
