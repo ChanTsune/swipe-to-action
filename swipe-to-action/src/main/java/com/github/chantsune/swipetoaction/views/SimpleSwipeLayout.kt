@@ -141,11 +141,11 @@ open class SimpleSwipeLayout(c: Context, attrs: AttributeSet? = null) : SwipeLay
 
     private fun createRightItemLayout() {
         val views = createSwipeItems(
-            rightIcons.toList(),
-            rightIconColors.toList(),
-            rightColors.toList(),
-            rightTexts.toList(),
-            rightTextColors.toList(),
+            rightIcons,
+            rightIconColors,
+            rightColors,
+            rightTexts,
+            rightTextColors,
             false
         )
         setRightSwipeItems(views)
@@ -153,22 +153,22 @@ open class SimpleSwipeLayout(c: Context, attrs: AttributeSet? = null) : SwipeLay
 
     private fun createLeftItemLayout() {
         val views = createSwipeItems(
-            leftIcons.toList(),
-            leftIconColors.toList(),
-            leftColors.toList(),
-            leftTexts.toList(),
-            leftTextColors.toList(),
+            leftIcons,
+            leftIconColors,
+            leftColors,
+            leftTexts,
+            leftTextColors,
             true
         )
         setLeftSwipeItems(views)
     }
 
     private fun createSwipeItems(
-        icons: List<Int>,
-        iconColors: List<Int>,
-        backgroundColors: List<Int>,
-        texts: List<String>,
-        textColors: List<Int>,
+        icons: IntArray,
+        iconColors: IntArray,
+        backgroundColors: IntArray,
+        texts: Array<String>,
+        textColors: IntArray,
         left: Boolean
     ): List<View> {
         return icons
