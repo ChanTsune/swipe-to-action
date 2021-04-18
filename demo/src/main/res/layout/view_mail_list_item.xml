@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.github.chantsune.swipetoaction.views.SimpleSwipeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:layout_swipeCanFullSwipeLeftToRight="false"
+    app:layout_swipeCanFullSwipeRightToLeft="true"
+    app:layout_swipeIconSize="40dp"
+    app:layout_swipeLeftIconColors="@array/leftDrawableColors"
+    app:layout_swipeLeftItemColors="@array/leftColors"
+    app:layout_swipeLeftItemIcons="@array/leftDrawables"
+    app:layout_swipeRightIconColors="@array/rightDrawableColors"
+    app:layout_swipeRightItemColors="@array/rightColors"
+    app:layout_swipeRightItemIcons="@array/rightDrawables"
+    app:layout_swipeRightStrings="@array/rightTexts"
+    app:layout_swipeRightTextColors="@array/rightTextColors"
+    app:layout_swipeSwipeItemWidth="70dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.constraintlayout.utils.widget.ImageFilterView
+            android:id="@+id/notification_icon"
+            android:layout_width="8dp"
+            android:layout_height="8dp"
+            android:layout_margin="8dp"
+            android:src="@color/purple_500"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/sender_name"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0"
+            app:round="4dp" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/sender_name"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="2dp"
+            android:ellipsize="end"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/received_time"
+            app:layout_constraintStart_toEndOf="@id/notification_icon"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0"
+            tools:text="App Store" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/received_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="4dp"
+            android:layout_marginEnd="8dp"
+            android:textSize="12sp"
+            app:layout_constraintBottom_toBottomOf="@id/sender_name"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/sender_name"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0"
+            tools:text="18:58" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:textSize="12sp"
+            app:layout_constraintBottom_toTopOf="@id/body"
+            app:layout_constraintEnd_toEndOf="@id/received_time"
+            app:layout_constraintStart_toStartOf="@id/sender_name"
+            app:layout_constraintTop_toBottomOf="@id/sender_name"
+            tools:text="Title" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/body"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="6dp"
+            android:ellipsize="end"
+            android:lines="2"
+            android:maxLines="2"
+            android:textSize="12sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@id/received_time"
+            app:layout_constraintStart_toStartOf="@id/sender_name"
+            app:layout_constraintTop_toBottomOf="@id/title"
+            tools:text="Body" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</com.github.chantsune.swipetoaction.views.SimpleSwipeLayout>

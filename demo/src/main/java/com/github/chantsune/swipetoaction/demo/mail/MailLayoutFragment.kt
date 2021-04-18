@@ -3,9 +3,10 @@ package com.github.chantsune.swipetoaction.demo.mail
 import android.os.Bundle
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.get
-import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.github.chantsune.swipetoaction.demo.base.BaseListFragment
-import com.github.chantsune.swipetoaction.demo.simple.RecyclerAdapter
 
 class MailLayoutFragment : BaseListFragment() {
 
@@ -15,18 +16,12 @@ class MailLayoutFragment : BaseListFragment() {
         super.onActivityCreated(savedInstanceState)
         viewModel = ViewModelProvider(this).get()
         binding.recyclerView.apply {
-            adapter = RecyclerAdapter()
-            layoutManager = GridLayoutManager(requireContext(), 2).apply {
-                spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
-                    override fun getSpanSize(position: Int): Int {
-                        return if (position in 0..3) {
-                            2
-                        } else {
-                            1
-                        }
-                    }
-                }
-            }
+            adapter = MailAdapter(viewModel.mails.value ?: listOf())
+            layoutManager = LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false)
+            addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
+        }
+        viewModel.mails.observe(viewLifecycleOwner) {
+            (binding.recyclerView.adapter as? MailAdapter)?.items = it
         }
     }
 
