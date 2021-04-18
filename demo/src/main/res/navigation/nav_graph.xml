@@ -27,11 +27,11 @@
             android:id="@+id/action_mainFragment_to_simpleSwipeLayoutFragment"
             app:destination="@id/simpleSwipeLayoutFragment" />
         <action
-            android:id="@+id/action_mainFragment_to_gridLayoutFragment"
-            app:destination="@id/gridLayoutFragment" />
+            android:id="@+id/action_mainFragment_to_mailLayoutFragment"
+            app:destination="@id/mailLayoutFragment" />
     </fragment>
     <fragment
-        android:id="@+id/gridLayoutFragment"
-        android:name="com.github.chantsune.swipetoaction.demo.grid.GridLayoutFragment"
+        android:id="@+id/mailLayoutFragment"
+        android:name="com.github.chantsune.swipetoaction.demo.mail.MailLayoutFragment"
         android:label="GridLayoutFragment" />
 </navigation>

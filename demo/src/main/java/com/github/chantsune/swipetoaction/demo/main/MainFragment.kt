@@ -33,7 +33,7 @@ class MainFragment : Fragment() {
             findNavController().navigate(MainFragmentDirections.actionMainFragmentToCustomSwipeLayoutFragment())
         }
         binding.goToGridButton.setOnClickListener {
-            findNavController().navigate(MainFragmentDirections.actionMainFragmentToGridLayoutFragment())
+            findNavController().navigate(MainFragmentDirections.actionMainFragmentToMailLayoutFragment())
         }
     }
 
