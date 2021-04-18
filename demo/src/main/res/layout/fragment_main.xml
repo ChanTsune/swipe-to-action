@@ -12,25 +12,23 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/simple_swipe_layout"
-        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toTopOf="@+id/go_to_custom_button"
-        />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/go_to_custom_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/custom_swipe_layout"
-        app:layout_constraintTop_toBottomOf="@id/go_to_simple_button"
-        app:layout_constraintBottom_toTopOf="@id/go_to_grid_button" />
+        app:layout_constraintBottom_toTopOf="@id/go_to_grid_button"
+        app:layout_constraintTop_toBottomOf="@id/go_to_simple_button" />
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/go_to_grid_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Simple With Grid"
-        app:layout_constraintTop_toBottomOf="@id/go_to_custom_button"
-        app:layout_constraintBottom_toBottomOf="parent" />
-
+        android:text="@string/mail_app_sample"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/go_to_custom_button" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
