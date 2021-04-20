@@ -7,14 +7,10 @@
     app:layout_swipeCanFullSwipeLeftToRight="false"
     app:layout_swipeCanFullSwipeRightToLeft="true"
     app:layout_swipeIconSize="40dp"
-    app:layout_swipeLeftIconColors="@array/leftDrawableColors"
-    app:layout_swipeLeftItemColors="@array/leftColors"
-    app:layout_swipeLeftItemIcons="@array/leftDrawables"
-    app:layout_swipeRightIconColors="@array/rightDrawableColors"
-    app:layout_swipeRightItemColors="@array/rightColors"
+    app:layout_swipeLeftItemColors="@array/mail_left_colors"
+    app:layout_swipeLeftItemIcons="@array/mail_left_icons"
+    app:layout_swipeRightItemColors="@array/mail_right_colors"
     app:layout_swipeRightItemIcons="@array/rightDrawables"
-    app:layout_swipeRightStrings="@array/rightTexts"
-    app:layout_swipeRightTextColors="@array/rightTextColors"
     app:layout_swipeSwipeItemWidth="70dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout

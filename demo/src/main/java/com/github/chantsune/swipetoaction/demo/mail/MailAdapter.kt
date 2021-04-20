@@ -6,8 +6,9 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.github.chantsune.swipetoaction.demo.databinding.ViewMailListItemBinding
 import com.github.chantsune.swipetoaction.demo.mail.model.Mail
+import com.github.chantsune.swipetoaction.views.SwipeLayout
 
-class MailAdapter(
+abstract class MailAdapter(
     var items: List<Mail>
 ) : RecyclerView.Adapter<MailAdapter.ViewHolder>() {
     class ViewHolder(
@@ -31,7 +32,12 @@ class MailAdapter(
         binding.receivedTime.text = item.date
         binding.title.text = item.title
         binding.body.text = item.body
+        binding.root.setOnSwipeItemClickListener { view, left, index ->
+            onItemSwipeItemClicked(binding.root, view, left, index, holder.adapterPosition)
+        }
     }
 
     override fun getItemCount(): Int = items.size
+
+    abstract fun onItemSwipeItemClicked(swipeLayout: SwipeLayout, view: View, isLeft:Boolean, index: Int, position: Int)
 }
