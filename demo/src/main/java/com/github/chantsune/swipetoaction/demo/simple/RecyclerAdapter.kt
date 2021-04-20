@@ -1,21 +1,16 @@
 package com.github.chantsune.swipetoaction.demo.simple
 
 import android.view.LayoutInflater
-import android.view.View
-import android.view.View.OnLongClickListener
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
-import com.github.chantsune.swipetoaction.demo.databinding.SampleItemBinding
 import com.github.chantsune.swipetoaction.demo.databinding.ViewSimpleSwipeLayoutItemBinding
 import com.github.chantsune.swipetoaction.views.SwipeLayout
-import com.github.chantsune.swipetoaction.views.SwipeLayout.OnSwipeItemClickListener
 
 class RecyclerAdapter : RecyclerView.Adapter<RecyclerAdapter.ViewHolder>() {
     class ViewHolder(val binding: ViewSimpleSwipeLayoutItemBinding) :
-        RecyclerView.ViewHolder(binding.root) {
-        val contentBinding = SampleItemBinding.bind(binding.swipeLayout.contentView)
-    }
+        RecyclerView.ViewHolder(binding.root)
+
     private val strings = MutableList(30) { it.toString() }
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val v =
@@ -24,7 +19,7 @@ class RecyclerAdapter : RecyclerView.Adapter<RecyclerAdapter.ViewHolder>() {
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.contentBinding.recyclerItemTv.text = "Item # ${strings[position]}"
+        holder.binding.recyclerItemTv.text = "Item # ${strings[position]}"
 
         when (position % 3) {
             0 -> {

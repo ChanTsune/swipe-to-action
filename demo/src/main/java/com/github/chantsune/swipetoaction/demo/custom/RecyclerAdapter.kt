@@ -7,9 +7,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.github.chantsune.swipetoaction.demo.R
-import com.github.chantsune.swipetoaction.demo.databinding.SampleItemBinding
 import com.github.chantsune.swipetoaction.demo.databinding.ViewCustomSwipeLayoutItemBinding
-import com.github.chantsune.swipetoaction.demo.databinding.ViewSimpleSwipeLayoutItemBinding
 import com.github.chantsune.swipetoaction.views.SwipeLayout
 import com.github.chantsune.swipetoaction.views.SwipeLayout.OnSwipeItemClickListener
 
@@ -24,7 +22,7 @@ class RecyclerAdapter : RecyclerView.Adapter<RecyclerAdapter.ViewHolder>() {
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.contentBinding.recyclerItemTv.text = "Item # ${strings[position]}"
+        holder.binding.recyclerItemTv.text = "Item # ${strings[position]}"
         holder.binding.swipeLayout.setItemState(SwipeLayout.ITEM_STATE_COLLAPSED, false)
     }
 
@@ -33,7 +31,6 @@ class RecyclerAdapter : RecyclerView.Adapter<RecyclerAdapter.ViewHolder>() {
     inner class ViewHolder(val binding: ViewCustomSwipeLayoutItemBinding) :
         RecyclerView.ViewHolder(binding.root),
         View.OnClickListener, OnLongClickListener, OnSwipeItemClickListener {
-        val contentBinding = SampleItemBinding.bind(binding.swipeLayout.contentView)
 
         init {
             binding.swipeLayout.setOnClickListener(this)

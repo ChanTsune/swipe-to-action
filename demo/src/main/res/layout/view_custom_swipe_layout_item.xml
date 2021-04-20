@@ -6,5 +6,23 @@
     android:layout_height="80dp"
     app:layout_swipeCanFullSwipeLeftToRight="true"
     app:layout_swipeCanFullSwipeRightToLeft="true"
-    app:layout_swipeContentLayout="@layout/sample_item"
-    app:layout_swipeSwipeItemWidth="80dp" />
+    app:layout_swipeSwipeItemWidth="80dp">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/recycler_item_tv"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="?attr/selectableItemBackground"
+            android:focusable="true"
+            android:gravity="center"
+            android:text="Item #" />
+
+
+    </FrameLayout>
+
+</com.github.chantsune.swipetoaction.views.SwipeLayout>
