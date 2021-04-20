@@ -131,7 +131,9 @@ open class SimpleSwipeLayout(c: Context, attrs: AttributeSet? = null) : SwipeLay
     }
 
     private fun compareArrays(arr1: IntArray, arr2: IntArray) {
-        check(arr1.size >= arr2.size) { "Drawable array shouldn't be bigger than color array" }
+        if (arr1.isNotEmpty() && arr2.isNotEmpty()) {
+            check(arr1.size >= arr2.size) { "Drawable array shouldn't be bigger than color array" }
+        }
     }
 
     private fun createItemLayouts() {
