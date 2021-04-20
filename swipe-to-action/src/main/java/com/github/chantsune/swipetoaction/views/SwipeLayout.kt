@@ -557,11 +557,12 @@ open class SwipeLayout(context: Context, attrs: AttributeSet? = null) :
         }
     }
 
-    private fun collapseItem(animated: Boolean) {
+    private fun collapseItem(animated: Boolean, animationListener: Animation.AnimationListener?) {
         if (leftLinear.width > 0) {
             leftLinearWithoutFirst.viewWidth = leftViews.size - 1
             if (animated) {
                 val swipeAnim = SwipeAnimation(leftLinear, 0, contentView, true)
+                if (animationListener != null) swipeAnim.setAnimationListener(animationListener)
                 leftLinear.startAnimation(swipeAnim)
             } else {
                 contentView.translationX = 0f
@@ -571,6 +572,7 @@ open class SwipeLayout(context: Context, attrs: AttributeSet? = null) :
             rightLinearWithoutLast.viewWidth = rightViews.size - 1
             if (animated) {
                 val swipeAnim = SwipeAnimation(rightLinear, 0, contentView, false)
+                if (animationListener != null) swipeAnim.setAnimationListener(animationListener)
                 rightLinear.startAnimation(swipeAnim)
             } else {
                 contentView.translationX = 0f
@@ -579,31 +581,44 @@ open class SwipeLayout(context: Context, attrs: AttributeSet? = null) :
         }
     }
 
-    fun setItemState(state: Int, animated: Boolean) {
+    private fun expandRightItem(
+        animated: Boolean,
+        animationListener: Animation.AnimationListener?
+    ) {
+        val requiredWidthRight = rightViews.size * itemWidth
+        if (animated) {
+            val swipeAnim =
+                SwipeAnimation(rightLinear, requiredWidthRight, contentView, false)
+            if (animationListener != null) swipeAnim.setAnimationListener(animationListener)
+            rightLinear.startAnimation(swipeAnim)
+        } else {
+            contentView.translationX = -requiredWidthRight.toFloat()
+            rightLinear.viewWidth = requiredWidthRight
+        }
+    }
+
+    private fun expandLeftItem(animated: Boolean, animationListener: Animation.AnimationListener?) {
+        val requiredWidthLeft = leftViews.size * itemWidth
+        if (animated) {
+            val swipeAnim =
+                SwipeAnimation(leftLinear, requiredWidthLeft, contentView, true)
+            if (animationListener != null) swipeAnim.setAnimationListener(animationListener)
+            leftLinear.startAnimation(swipeAnim)
+        } else {
+            contentView.translationX = requiredWidthLeft.toFloat()
+            leftLinear.viewWidth = requiredWidthLeft
+        }
+    }
+
+    fun setItemState(
+        state: Int,
+        animated: Boolean,
+        animationListener: Animation.AnimationListener? = null
+    ) {
         when (state) {
-            ITEM_STATE_COLLAPSED -> collapseItem(animated)
-            ITEM_STATE_LEFT_EXPAND -> {
-                val requiredWidthLeft = leftViews.size * itemWidth
-                if (animated) {
-                    val swipeAnim =
-                        SwipeAnimation(leftLinear, requiredWidthLeft, contentView, true)
-                    leftLinear.startAnimation(swipeAnim)
-                } else {
-                    contentView.translationX = requiredWidthLeft.toFloat()
-                    leftLinear.viewWidth = requiredWidthLeft
-                }
-            }
-            ITEM_STATE_RIGHT_EXPAND -> {
-                val requiredWidthRight = rightViews.size * itemWidth
-                if (animated) {
-                    val swipeAnim =
-                        SwipeAnimation(rightLinear, requiredWidthRight, contentView, false)
-                    rightLinear.startAnimation(swipeAnim)
-                } else {
-                    contentView.translationX = -requiredWidthRight.toFloat()
-                    rightLinear.viewWidth = requiredWidthRight
-                }
-            }
+            ITEM_STATE_COLLAPSED -> collapseItem(animated, animationListener)
+            ITEM_STATE_LEFT_EXPAND -> expandLeftItem(animated, animationListener)
+            ITEM_STATE_RIGHT_EXPAND -> expandRightItem(animated, animationListener)
         }
     }
 
