@@ -240,16 +240,16 @@ open class SwipeLayout(context: Context, attrs: AttributeSet? = null) :
         }
     }
 
+    private var prevRawX = -1f
+    private var directionLeft = false
+    private var movementStarted = false
+    private var lastTime: Long = 0
+    private var downTime: Long = 0
+    private var speed = 0f
+    private var downRawX = 0f
+    private var downX = 0f
+    private var downY = 0f
 
-    var prevRawX = -1f
-    var directionLeft = false
-    var movementStarted = false
-    var lastTime: Long = 0
-    var downTime: Long = 0
-    var speed = 0f
-    var downRawX = 0f
-    var downX = 0f
-    var downY = 0f
     private fun clearAnimations() {
         contentView.clearAnimation()
         rightLinear.clearAnimation()
@@ -258,8 +258,8 @@ open class SwipeLayout(context: Context, attrs: AttributeSet? = null) :
         leftLinearWithoutFirst.clearAnimation()
     }
 
-    var shouldPerformLongClick = false
-    var longClickPerformed = false
+    private var shouldPerformLongClick = false
+    private var longClickPerformed = false
     private val longClickHandler = Handler(Looper.getMainLooper())
     private val longClickRunnable = Runnable {
         if (shouldPerformLongClick) {
@@ -277,6 +277,7 @@ open class SwipeLayout(context: Context, attrs: AttributeSet? = null) :
 
     private val collapsibleViews: List<View>
         get() = if (invokedFromLeft) leftViews else rightViews
+
     private val collapseListener: Animation.AnimationListener =
         object : Animation.AnimationListener {
             override fun onAnimationStart(animation: Animation) {}
@@ -483,7 +484,8 @@ open class SwipeLayout(context: Context, attrs: AttributeSet? = null) :
         longClickPerformed = false
     }
 
-    var invokedFromLeft = false
+    private var invokedFromLeft = false
+
     private fun finishSwipeAnimated() {
         shouldPerformLongClick = false
         isPressed = false
