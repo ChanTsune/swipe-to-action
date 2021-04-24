@@ -3,4 +3,5 @@
     <string name="simple_swipe_layout">Simple Swipe Layout</string>
     <string name="custom_swipe_layout">custom Swipe Layout</string>
     <string name="mail_app_sample">Mail app sample</string>
+    <string name="github_repo_url">https://github.com/ChanTsune/swipe-to-action</string>
 </resources>

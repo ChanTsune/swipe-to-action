@@ -48,14 +48,22 @@
         <item>trash</item>
     </string-array>
 
+    <integer-array name="mail_right_icons">
+        <item>@drawable/ic_github</item>
+        <item>@drawable/ic_baseline_flag_24</item>
+        <item>@drawable/ic_baseline_delete_24</item>
+    </integer-array>
+
     <integer-array name="mail_right_colors">
         <item>@color/purple_200</item>
         <item>@color/purple_700</item>
         <item>@android:color/holo_red_light</item>
     </integer-array>
+
     <integer-array name="mail_left_colors">
         <item>@color/purple_500</item>
     </integer-array>
+
     <integer-array name="mail_left_icons">
         <item>@drawable/ic_launcher_foreground</item>
     </integer-array>

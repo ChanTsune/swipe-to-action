@@ -31,6 +31,7 @@ abstract class MailAdapter(
         binding.senderName.text = item.sender
         binding.receivedTime.text = item.date
         binding.title.text = item.title
+        binding.flag.visibility = if (item.flag) View.VISIBLE else View.INVISIBLE
         binding.body.text = item.body
         binding.root.setOnSwipeItemClickListener { view, left, index ->
             onItemSwipeItemClicked(binding.root, view, left, index, holder.adapterPosition)
