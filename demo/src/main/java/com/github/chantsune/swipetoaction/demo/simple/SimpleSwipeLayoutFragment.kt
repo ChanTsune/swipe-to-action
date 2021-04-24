@@ -16,6 +16,11 @@ class SimpleSwipeLayoutFragment : BaseListFragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         viewModel = ViewModelProvider(this).get()
+
+        binding.swipeRefreshLayout.setOnRefreshListener {
+            binding.swipeRefreshLayout.isRefreshing = false
+        }
+
         binding.recyclerView.also { recyclerView ->
             recyclerView.layoutManager = LinearLayoutManager(context)
             recyclerView.adapter = RecyclerAdapter()
@@ -25,6 +30,7 @@ class SimpleSwipeLayoutFragment : BaseListFragment() {
                     DividerItemDecoration.VERTICAL
                 )
             )
+            recyclerView.setHasFixedSize(true)
         }
 //        val swipeLayout: SwipeLayout = findViewById<View>(R.id.swipe_layout) as SwipeLayout
 //        swipeLayout.setOnSwipeItemClickListener(object : SwipeLayout.OnSwipeItemClickListener {

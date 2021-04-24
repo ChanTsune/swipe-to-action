@@ -14,6 +14,11 @@ class CustomSwipeLayoutFragment : BaseListFragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         viewModel = ViewModelProvider(this).get()
+
+        binding.swipeRefreshLayout.setOnRefreshListener {
+            binding.swipeRefreshLayout.isRefreshing = false
+        }
+
         binding.recyclerView.apply {
             adapter = RecyclerAdapter()
             layoutManager = LinearLayoutManager(requireContext())
@@ -23,6 +28,7 @@ class CustomSwipeLayoutFragment : BaseListFragment() {
                     DividerItemDecoration.VERTICAL
                 )
             )
+            setHasFixedSize(true)
         }
     }
 

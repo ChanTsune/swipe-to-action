@@ -89,6 +89,7 @@ class MailLayoutFragment : BaseListFragment() {
             }
             layoutManager = LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false)
             addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
+            setHasFixedSize(true)
         }
         viewModel.mails.observe(viewLifecycleOwner) {
             (binding.recyclerView.adapter as? MailAdapter)?.items = it
