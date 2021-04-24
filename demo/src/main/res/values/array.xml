@@ -65,7 +65,11 @@
     </integer-array>
 
     <integer-array name="mail_left_icons">
-        <item>@drawable/ic_launcher_foreground</item>
+        <item>@drawable/ic_baseline_email_24</item>
+    </integer-array>
+
+    <integer-array name="mail_left_icon_colors">
+        <item>@color/white</item>
     </integer-array>
 
 </resources>
