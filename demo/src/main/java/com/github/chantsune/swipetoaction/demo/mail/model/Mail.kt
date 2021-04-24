@@ -6,4 +6,5 @@ data class Mail(
     val body: String,
     val date: String,
     var isOpened: Boolean,
+    var flag: Boolean
 )

@@ -10,7 +10,8 @@
     app:layout_swipeLeftItemColors="@array/mail_left_colors"
     app:layout_swipeLeftItemIcons="@array/mail_left_icons"
     app:layout_swipeRightItemColors="@array/mail_right_colors"
-    app:layout_swipeRightItemIcons="@array/rightDrawables"
+    app:layout_swipeRightItemIcons="@array/mail_right_icons"
+    app:layout_swipeRightIconColors="@array/rightDrawableColors"
     app:layout_swipeSwipeItemWidth="70dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -61,15 +62,29 @@
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/title"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:ellipsize="end"
             android:textSize="12sp"
             app:layout_constraintBottom_toTopOf="@id/body"
-            app:layout_constraintEnd_toEndOf="@id/received_time"
+            app:layout_constraintEnd_toStartOf="@+id/flag"
+            app:layout_constraintHorizontal_chainStyle="spread_inside"
             app:layout_constraintStart_toStartOf="@id/sender_name"
             app:layout_constraintTop_toBottomOf="@id/sender_name"
             tools:text="Title" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/flag"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:scaleType="fitCenter"
+            android:src="@drawable/ic_baseline_flag_24"
+            android:tint="@color/purple_500"
+            app:layout_constraintBottom_toBottomOf="@+id/title"
+            app:layout_constraintDimensionRatio="h,1:1"
+            app:layout_constraintEnd_toEndOf="@id/received_time"
+            app:layout_constraintStart_toEndOf="@+id/title"
+            app:layout_constraintTop_toTopOf="@+id/title" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/body"
