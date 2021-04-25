@@ -10,7 +10,7 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.use
 
-internal class DefaultSwipeItemView(
+internal class SwipeItemView(
     context: Context,
     icon: Int,
     iconColor: Int?,
@@ -22,13 +22,15 @@ internal class DefaultSwipeItemView(
     itemWidth: Int,
     iconSize: Int,
     textSize: Float,
-    listener: OnTouchListener
 ) : FrameLayout(context) {
+
+    private var imageView: ImageView
+    private var textView: TextView?
 
     init {
         var id = 0
         foreground = rippleDrawable
-        val imageView = ImageView(context).also { imageView ->
+        imageView = ImageView(context).also { imageView ->
             imageView.setImageDrawable(
                 ContextCompat.getDrawable(context, icon)?.also { drawable ->
                     if (iconColor != null) {
@@ -37,7 +39,7 @@ internal class DefaultSwipeItemView(
                 })
             imageView.id = ++id
         }
-        val textView = text?.let { text ->
+        textView = text?.let { text ->
             TextView(context).also { textView ->
                 textView.maxLines = 2
                 if (textSize > 0) {
@@ -59,9 +61,9 @@ internal class DefaultSwipeItemView(
                         params.startToStart = ConstraintLayout.LayoutParams.PARENT_ID
                         params.endToEnd = ConstraintLayout.LayoutParams.PARENT_ID
                         params.topToTop = ConstraintLayout.LayoutParams.PARENT_ID
-                        if (textView != null) {
+                        textView?.let { textView ->
                             params.bottomToTop = textView.id
-                        } else {
+                        } ?: kotlin.run {
                             params.bottomToBottom = ConstraintLayout.LayoutParams.PARENT_ID
                         }
                     }
@@ -92,8 +94,15 @@ internal class DefaultSwipeItemView(
         }
         layoutParams =
             LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.MATCH_PARENT, 1f)
-        setOnTouchListener(listener)
     }
+
+    fun setIconDrawable(drawable: Drawable) {
+        imageView.setImageDrawable(drawable)
+    }
+
+    var text: CharSequence?
+        get() = textView?.text
+        set(value) { textView?.text = value } // TODO: gen TextView
 
     private val rippleDrawable: Drawable?
         get() {

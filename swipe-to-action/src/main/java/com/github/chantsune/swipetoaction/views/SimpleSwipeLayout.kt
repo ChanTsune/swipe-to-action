@@ -203,7 +203,7 @@ open class SimpleSwipeLayout(c: Context, attrs: AttributeSet? = null) : SwipeLay
         textColor: Int?,
         left: Boolean
     ): ViewGroup {
-        return DefaultSwipeItemView(
+        return SwipeItemView(
             context,
             icon,
             iconColor,
@@ -214,7 +214,8 @@ open class SimpleSwipeLayout(c: Context, attrs: AttributeSet? = null) : SwipeLay
             itemWidth,
             iconSize,
             textSize,
-            this
-        )
+        ).also {
+            it.setOnTouchListener(this)
+        }
     }
 }
