@@ -19,10 +19,24 @@ import com.github.chantsune.swipetoaction.ktx.viewWeight
 import com.github.chantsune.swipetoaction.ktx.viewWidth
 import kotlin.math.abs
 
-open class SwipeLayout(context: Context, attrs: AttributeSet? = null) :
+open class SwipeLayout(
+    context: Context,
+    attrs: AttributeSet?,
+    defStyleAttr: Int,
+    defStyleRes: Int
+) :
     FrameLayout(
-        context, attrs
+        context, attrs, defStyleAttr, defStyleRes
     ), OnTouchListener {
+    constructor(context: Context): this(context, null)
+    constructor(context: Context, attrs: AttributeSet?) : this(context, attrs, 0)
+    constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : this(
+        context,
+        attrs,
+        defStyleAttr,
+        0
+    )
+
     protected var contentLayoutId = 0
     var isSwipeEnabled = true
     var canFullSwipeRightToLeft = false
