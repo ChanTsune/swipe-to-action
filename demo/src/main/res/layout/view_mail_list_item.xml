@@ -6,7 +6,7 @@
     android:layout_height="wrap_content"
     app:layout_swipeCanFullSwipeLeftToRight="false"
     app:layout_swipeCanFullSwipeRightToLeft="true"
-    app:layout_swipeIconSize="35dp"
+    app:layout_swipeIconSize="25dp"
     app:layout_swipeLeftItemColors="@array/mail_left_colors"
     app:layout_swipeLeftItemIcons="@array/mail_left_icons"
     app:layout_swipeLeftIconColors="@array/mail_left_icon_colors"
