@@ -179,43 +179,44 @@ open class SimpleSwipeLayout(c: Context, attrs: AttributeSet? = null) : SwipeLay
             .zipLongest(texts)
             .zipLongest(textColors)
             .map {
-                val icon = it.first?.first ?: NO_ID
-                val iconColor = it.first?.second
-                val bgColor = it.first?.third ?: NO_ID
-                val txt = it.second
-                val txtColor = it.third
+                val swipeItem = SwipeItem(
+                    icon = it.first?.first ?: NO_ID,
+                    iconColor = it.first?.second,
+                    backgroundColor = it.first?.third ?: NO_ID,
+                    text = it.second,
+                    textColor = it.third,
+                    left = left,
+                    itemWidth = itemWidth,
+                    iconSize = iconSize,
+                    textSize = textSize,
+                )
                 createSwipeItem(
-                    icon,
-                    iconColor,
-                    bgColor,
-                    txt,
-                    txtColor,
-                    left
+                    swipeItem
                 )
             }
     }
 
     private fun createSwipeItem(
-        icon: Int,
-        iconColor: Int?,
-        backgroundColor: Int,
-        text: String?,
-        textColor: Int?,
-        left: Boolean
+        swipeItem: SwipeItem
     ): ViewGroup {
         return SwipeItemView(
             context,
-            icon,
-            iconColor,
-            backgroundColor,
-            text,
-            textColor,
-            left,
-            itemWidth,
-            iconSize,
-            textSize,
+            swipeItem
         ).also {
             it.setOnTouchListener(this)
         }
     }
+
+    internal class SwipeItem(
+        val icon: Int,
+        val iconColor: Int?,
+        val backgroundColor: Int,
+        val text: String?,
+        val textColor: Int?,
+        val left: Boolean,
+        // internal params
+        val itemWidth: Int,
+        val iconSize: Int,
+        val textSize: Float,
+    )
 }

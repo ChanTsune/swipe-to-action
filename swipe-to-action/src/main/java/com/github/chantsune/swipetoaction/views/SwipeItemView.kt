@@ -12,16 +12,7 @@ import androidx.core.content.res.use
 
 internal class SwipeItemView(
     context: Context,
-    icon: Int,
-    iconColor: Int?,
-    backgroundColor: Int,
-    text: String?,
-    textColor: Int?,
-    left: Boolean,
-    // internal params
-    itemWidth: Int,
-    iconSize: Int,
-    textSize: Float,
+    swipeItem: SimpleSwipeLayout.SwipeItem,
 ) : FrameLayout(context) {
 
     private var imageView: ImageView
@@ -32,21 +23,21 @@ internal class SwipeItemView(
         foreground = rippleDrawable
         imageView = ImageView(context).also { imageView ->
             imageView.setImageDrawable(
-                ContextCompat.getDrawable(context, icon)?.also { drawable ->
-                    if (iconColor != null) {
-                        drawable.setTint(iconColor)
+                ContextCompat.getDrawable(context, swipeItem.icon)?.also { drawable ->
+                    if (swipeItem.iconColor != null) {
+                        drawable.setTint(swipeItem.iconColor)
                     }
                 })
             imageView.id = ++id
         }
-        textView = text?.let { text ->
+        textView = swipeItem.text?.let { text ->
             TextView(context).also { textView ->
                 textView.maxLines = 2
-                if (textSize > 0) {
-                    textView.setTextSize(TypedValue.COMPLEX_UNIT_PX, textSize)
+                if (swipeItem.textSize > 0) {
+                    textView.setTextSize(TypedValue.COMPLEX_UNIT_PX, swipeItem.textSize)
                 }
-                if (textColor != null) {
-                    textView.setTextColor(textColor)
+                if (swipeItem.textColor != null) {
+                    textView.setTextColor(swipeItem.textColor)
                 }
                 textView.text = text
                 textView.gravity = Gravity.CENTER
@@ -57,7 +48,7 @@ internal class SwipeItemView(
             ConstraintLayout(context).also { constraintLayout ->
                 constraintLayout.addView(
                     imageView,
-                    ConstraintLayout.LayoutParams(iconSize, iconSize).also { params ->
+                    ConstraintLayout.LayoutParams(swipeItem.iconSize, swipeItem.iconSize).also { params ->
                         params.startToStart = ConstraintLayout.LayoutParams.PARENT_ID
                         params.endToEnd = ConstraintLayout.LayoutParams.PARENT_ID
                         params.topToTop = ConstraintLayout.LayoutParams.PARENT_ID
@@ -84,25 +75,17 @@ internal class SwipeItemView(
                 }
             },
             LayoutParams(
-                itemWidth,
+                swipeItem.itemWidth,
                 ViewGroup.LayoutParams.WRAP_CONTENT,
-                Gravity.CENTER_VERTICAL or if (left) Gravity.END else Gravity.START
+                Gravity.CENTER_VERTICAL or if (swipeItem.left) Gravity.END else Gravity.START
             )
         )
-        if (backgroundColor != SwipeLayout.NO_ID) {
-            setBackgroundColor(backgroundColor)
+        if (swipeItem.backgroundColor != SwipeLayout.NO_ID) {
+            setBackgroundColor(swipeItem.backgroundColor)
         }
         layoutParams =
             LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.MATCH_PARENT, 1f)
     }
-
-    fun setIconDrawable(drawable: Drawable) {
-        imageView.setImageDrawable(drawable)
-    }
-
-    var text: CharSequence?
-        get() = textView?.text
-        set(value) { textView?.text = value } // TODO: gen TextView
 
     private val rippleDrawable: Drawable?
         get() {
