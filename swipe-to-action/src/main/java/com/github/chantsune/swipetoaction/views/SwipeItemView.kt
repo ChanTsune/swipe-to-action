@@ -15,17 +15,16 @@ internal class SwipeItemView(
     swipeItem: SimpleSwipeLayout.SwipeItem,
 ) : FrameLayout(context) {
 
-    private var imageView: ImageView? = null
-    private var textView: TextView? = null
+    private var imageView: ImageView = ImageView(context)
+    private var textView: TextView = TextView(context)
 
     init {
+        foreground = rippleDrawable
         update(swipeItem)
     }
 
-    private fun update(swipeItem: SimpleSwipeLayout.SwipeItem) {
-        removeAllViews() // NOTE: clear views
-        foreground = rippleDrawable
-        imageView = ImageView(context).also { imageView ->
+    private fun getImageViewInternal(swipeItem: SimpleSwipeLayout.SwipeItem): ImageView? =
+        imageView.also { imageView ->
             imageView.setImageDrawable(
                 ContextCompat.getDrawable(context, swipeItem.icon)?.also { drawable ->
                     if (swipeItem.iconColor != null) {
@@ -34,8 +33,10 @@ internal class SwipeItemView(
                 })
             imageView.id = ID_IMAGE_VIEW
         }
-        textView = swipeItem.text?.let { text ->
-            TextView(context).also { textView ->
+
+    private fun getTextViewInternal(swipeItem: SimpleSwipeLayout.SwipeItem): TextView? =
+        swipeItem.text?.let { text ->
+            textView.also { textView ->
                 textView.maxLines = 2
                 if (swipeItem.textSize > 0) {
                     textView.setTextSize(TypedValue.COMPLEX_UNIT_PX, swipeItem.textSize)
@@ -48,9 +49,15 @@ internal class SwipeItemView(
                 textView.id = ID_TEXT_VIEW
             }
         }
+
+    private fun update(swipeItem: SimpleSwipeLayout.SwipeItem) {
+        removeAllViews() // NOTE: clear views
+        val imageView = getImageViewInternal(swipeItem)
+        val textView = getTextViewInternal(swipeItem)
         addView(
             ConstraintLayout(context).also { constraintLayout ->
                 constraintLayout.removeAllViews() // NOTE: clear views
+                imageView?.let { imageView ->
                 constraintLayout.addView(
                     imageView,
                     ConstraintLayout.LayoutParams(swipeItem.iconSize, swipeItem.iconSize).also { params ->
@@ -64,6 +71,7 @@ internal class SwipeItemView(
                         }
                     }
                 )
+                }
                 textView?.let { textView ->
                     constraintLayout.addView(
                         textView,
