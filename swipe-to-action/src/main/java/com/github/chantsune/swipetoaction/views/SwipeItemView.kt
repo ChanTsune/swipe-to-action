@@ -32,7 +32,7 @@ internal class SwipeItemView(
                         drawable.setTint(swipeItem.iconColor)
                     }
                 })
-            imageView.id = ++id
+            imageView.id = ID_IMAGE_VIEW
         }
         textView = swipeItem.text?.let { text ->
             TextView(context).also { textView ->
@@ -45,7 +45,7 @@ internal class SwipeItemView(
                 }
                 textView.text = text
                 textView.gravity = Gravity.CENTER
-                textView.id = ++id
+                textView.id = ID_TEXT_VIEW
             }
         }
         addView(
@@ -103,4 +103,8 @@ internal class SwipeItemView(
                 it.getDrawable(0)
             }
         }
+    companion object {
+        private const val ID_IMAGE_VIEW = 1
+        private const val ID_TEXT_VIEW = 2
+    }
 }
