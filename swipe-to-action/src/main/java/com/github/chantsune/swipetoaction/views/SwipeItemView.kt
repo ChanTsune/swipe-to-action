@@ -15,11 +15,15 @@ internal class SwipeItemView(
     swipeItem: SimpleSwipeLayout.SwipeItem,
 ) : FrameLayout(context) {
 
-    private var imageView: ImageView
-    private var textView: TextView?
+    private var imageView: ImageView? = null
+    private var textView: TextView? = null
 
     init {
-        var id = 0
+        update(swipeItem)
+    }
+
+    private fun update(swipeItem: SimpleSwipeLayout.SwipeItem) {
+        removeAllViews() // NOTE: clear views
         foreground = rippleDrawable
         imageView = ImageView(context).also { imageView ->
             imageView.setImageDrawable(
@@ -46,6 +50,7 @@ internal class SwipeItemView(
         }
         addView(
             ConstraintLayout(context).also { constraintLayout ->
+                constraintLayout.removeAllViews() // NOTE: clear views
                 constraintLayout.addView(
                     imageView,
                     ConstraintLayout.LayoutParams(swipeItem.iconSize, swipeItem.iconSize).also { params ->
@@ -68,7 +73,11 @@ internal class SwipeItemView(
                         ).also { params ->
                             params.startToStart = ConstraintLayout.LayoutParams.PARENT_ID
                             params.endToEnd = ConstraintLayout.LayoutParams.PARENT_ID
-                            params.topToBottom = imageView.id
+                            imageView?.let { imageView ->
+                                params.topToBottom = imageView.id
+                            } ?: kotlin.run {
+                                params.topToTop = ConstraintLayout.LayoutParams.PARENT_ID
+                            }
                             params.bottomToBottom = ConstraintLayout.LayoutParams.PARENT_ID
                         }
                     )
