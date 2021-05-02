@@ -25,14 +25,19 @@ open class SimpleSwipeLayout(c: Context, attrs: AttributeSet? = null) : SwipeLay
     var leftTexts: Array<String> = arrayOf()
     var rightTexts: Array<String> = arrayOf()
 
-    private var rightItems: MutableList<SwipeItem> = mutableListOf()
-    private var leftItems: MutableList<SwipeItem> = mutableListOf()
+    private val rightItems: MutableList<SwipeItem> = mutableListOf()
+    private val leftItems: MutableList<SwipeItem> = mutableListOf()
 
     private var iconSize = 0
     private var textSize = 0f
 
+    init {
+        initAttrs(attrs)
+        createItemLayouts()
+    }
 
-    override fun setUpAttrs(attrs: AttributeSet) {
+    private fun initAttrs(attrs: AttributeSet?) {
+        attrs ?: return
         context.obtainStyledAttributes(attrs, R.styleable.SimpleSwipeLayout).use { array ->
 
             contentLayoutId =
@@ -113,11 +118,6 @@ open class SimpleSwipeLayout(c: Context, attrs: AttributeSet? = null) : SwipeLay
         }
     }
 
-    override fun setUpView() {
-        createItemLayouts()
-        super.setUpView()
-    }
-
     private fun fillDrawables(ta: TypedArray): IntArray {
         return ta.use {
             IntArray(ta.length()) { ta.getResourceId(it, NO_ID) }
@@ -152,7 +152,9 @@ open class SimpleSwipeLayout(c: Context, attrs: AttributeSet? = null) : SwipeLay
             rightTextColors,
             false
         )
-        setRightSwipeItems(items.map { it.view })
+        for (item in items) {
+            addSwipeItem(item)
+        }
     }
 
     private fun createLeftItemLayout() {
@@ -164,7 +166,9 @@ open class SimpleSwipeLayout(c: Context, attrs: AttributeSet? = null) : SwipeLay
             leftTextColors,
             true
         )
-        setLeftSwipeItems(items.map { it.view })
+        for (item in items) {
+            addSwipeItem(item)
+        }
     }
 
     private fun createSwipeItems(
@@ -206,6 +210,16 @@ open class SimpleSwipeLayout(c: Context, attrs: AttributeSet? = null) : SwipeLay
             it.setOnTouchListener(this)
         }
         return swipeItem
+    }
+
+    private fun addSwipeItem(swipeItem: SwipeItem) {
+        if (swipeItem.left) {
+            leftItems.add(swipeItem)
+            setLeftSwipeItems(leftItems.map { it.view })
+        } else {
+            rightItems.add(swipeItem)
+            setRightSwipeItems(rightItems.map { it.view })
+        }
     }
 
     internal class SwipeItem(

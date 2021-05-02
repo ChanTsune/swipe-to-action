@@ -73,7 +73,7 @@ open class SwipeLayout(
     private var onScrollListener: RecyclerView.OnScrollListener? = null
 
     init {
-        attrs?.let { setUpAttrs(it) }
+        initAttrs(attrs)
         setUpView()
     }
 
@@ -107,7 +107,7 @@ open class SwipeLayout(
         contentView.setOnTouchListener(this)
     }
 
-    protected open fun setUpView() {
+    private fun setUpView() {
 
         invalidateSwipeItems()
 
@@ -235,7 +235,8 @@ open class SwipeLayout(
         }
     }
 
-    protected open fun setUpAttrs(attrs: AttributeSet) {
+    private fun initAttrs(attrs: AttributeSet?) {
+        attrs ?: return
         context.obtainStyledAttributes(attrs, R.styleable.SwipeLayout).use { array ->
             contentLayoutId =
                 array.getResourceId(R.styleable.SwipeLayout_layout_swipeContentLayout, NO_ID)
