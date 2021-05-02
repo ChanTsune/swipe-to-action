@@ -3,7 +3,6 @@ package com.github.chantsune.swipetoaction.views
 import android.content.Context
 import android.content.res.TypedArray
 import android.util.AttributeSet
-import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.res.use
 import com.github.chantsune.swipetoaction.R
@@ -25,6 +24,9 @@ open class SimpleSwipeLayout(c: Context, attrs: AttributeSet? = null) : SwipeLay
 
     var leftTexts: Array<String> = arrayOf()
     var rightTexts: Array<String> = arrayOf()
+
+    private var rightItems: MutableList<SwipeItem> = mutableListOf()
+    private var leftItems: MutableList<SwipeItem> = mutableListOf()
 
     private var iconSize = 0
     private var textSize = 0f
@@ -142,7 +144,7 @@ open class SimpleSwipeLayout(c: Context, attrs: AttributeSet? = null) : SwipeLay
     }
 
     private fun createRightItemLayout() {
-        val views = createSwipeItems(
+        val items = createSwipeItems(
             rightIcons,
             rightIconColors,
             rightColors,
@@ -150,11 +152,11 @@ open class SimpleSwipeLayout(c: Context, attrs: AttributeSet? = null) : SwipeLay
             rightTextColors,
             false
         )
-        setRightSwipeItems(views)
+        setRightSwipeItems(items.map { it.view })
     }
 
     private fun createLeftItemLayout() {
-        val views = createSwipeItems(
+        val items = createSwipeItems(
             leftIcons,
             leftIconColors,
             leftColors,
@@ -162,7 +164,7 @@ open class SimpleSwipeLayout(c: Context, attrs: AttributeSet? = null) : SwipeLay
             leftTextColors,
             true
         )
-        setLeftSwipeItems(views)
+        setLeftSwipeItems(items.map { it.view })
     }
 
     private fun createSwipeItems(
@@ -172,7 +174,7 @@ open class SimpleSwipeLayout(c: Context, attrs: AttributeSet? = null) : SwipeLay
         texts: Array<String>,
         textColors: IntArray,
         left: Boolean
-    ): List<View> {
+    ): List<SwipeItem> {
         return icons
             .zipLongest(iconColors)
             .zipLongest(backgroundColors)
@@ -198,14 +200,12 @@ open class SimpleSwipeLayout(c: Context, attrs: AttributeSet? = null) : SwipeLay
 
     private fun createSwipeItem(
         swipeItem: SwipeItem
-    ): ViewGroup {
-        return SwipeItemView(
-            context,
-        ).also {
-            swipeItem.view = it
+    ): SwipeItem {
+        swipeItem.view = SwipeItemView(context).also {
             it.update(swipeItem)
             it.setOnTouchListener(this)
         }
+        return swipeItem
     }
 
     internal class SwipeItem(
