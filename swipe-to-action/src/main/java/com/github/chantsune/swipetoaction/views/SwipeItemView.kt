@@ -25,14 +25,16 @@ internal class SwipeItemView(
     }
 
     private fun getImageViewInternal(swipeItem: SimpleSwipeLayout.SwipeItem): ImageView? =
-        imageView.also { imageView ->
-            imageView.setImageDrawable(
-                ContextCompat.getDrawable(context, swipeItem.icon)?.also { drawable ->
-                    if (swipeItem.iconColor != null) {
-                        drawable.setTint(swipeItem.iconColor)
-                    }
-                })
-            imageView.id = ID_IMAGE_VIEW
+        swipeItem.icon?.let { icon ->
+            imageView.also { imageView ->
+                imageView.setImageDrawable(
+                    ContextCompat.getDrawable(context, icon)?.also { drawable ->
+                        if (swipeItem.iconColor != null) {
+                            drawable.setTint(swipeItem.iconColor)
+                        }
+                    })
+                imageView.id = ID_IMAGE_VIEW
+            }
         }
 
     private fun getTextViewInternal(swipeItem: SimpleSwipeLayout.SwipeItem): TextView? =
@@ -98,7 +100,7 @@ internal class SwipeItemView(
                 Gravity.CENTER_VERTICAL or if (swipeItem.left) Gravity.END else Gravity.START
             )
         )
-        if (swipeItem.backgroundColor != SwipeLayout.NO_ID) {
+        if (swipeItem.backgroundColor != null) {
             setBackgroundColor(swipeItem.backgroundColor)
         }
         layoutParams =
