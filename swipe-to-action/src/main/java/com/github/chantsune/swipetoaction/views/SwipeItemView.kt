@@ -2,6 +2,7 @@ package com.github.chantsune.swipetoaction.views
 
 import android.content.Context
 import android.graphics.drawable.Drawable
+import android.util.AttributeSet
 import android.util.TypedValue
 import android.view.Gravity
 import android.view.ViewGroup
@@ -12,15 +13,15 @@ import androidx.core.content.res.use
 
 internal class SwipeItemView(
     context: Context,
-    swipeItem: SimpleSwipeLayout.SwipeItem,
-) : FrameLayout(context) {
+    attrs: AttributeSet? = null,
+) : FrameLayout(context, attrs) {
 
     private var imageView: ImageView = ImageView(context)
     private var textView: TextView = TextView(context)
+    private var containerView: ConstraintLayout = ConstraintLayout(context)
 
     init {
         foreground = rippleDrawable
-        update(swipeItem)
     }
 
     private fun getImageViewInternal(swipeItem: SimpleSwipeLayout.SwipeItem): ImageView? =
@@ -50,12 +51,12 @@ internal class SwipeItemView(
             }
         }
 
-    private fun update(swipeItem: SimpleSwipeLayout.SwipeItem) {
+    fun update(swipeItem: SimpleSwipeLayout.SwipeItem) {
         removeAllViews() // NOTE: clear views
         val imageView = getImageViewInternal(swipeItem)
         val textView = getTextViewInternal(swipeItem)
         addView(
-            ConstraintLayout(context).also { constraintLayout ->
+            containerView.also { constraintLayout ->
                 constraintLayout.removeAllViews() // NOTE: clear views
                 imageView?.let { imageView ->
                 constraintLayout.addView(

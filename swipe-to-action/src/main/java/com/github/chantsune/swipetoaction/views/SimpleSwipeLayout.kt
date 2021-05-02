@@ -201,8 +201,9 @@ open class SimpleSwipeLayout(c: Context, attrs: AttributeSet? = null) : SwipeLay
     ): ViewGroup {
         return SwipeItemView(
             context,
-            swipeItem
         ).also {
+            swipeItem.view = it
+            it.update(swipeItem)
             it.setOnTouchListener(this)
         }
     }
@@ -218,5 +219,8 @@ open class SimpleSwipeLayout(c: Context, attrs: AttributeSet? = null) : SwipeLay
         val itemWidth: Int,
         val iconSize: Int,
         val textSize: Float,
-    )
+    ) {
+        lateinit var view: SwipeItemView
+        internal set
+    }
 }
