@@ -222,6 +222,16 @@ open class SimpleSwipeLayout(c: Context, attrs: AttributeSet? = null) : SwipeLay
         }
     }
 
+    private fun removeSwipeItem(swipeItem: SwipeItem) {
+        if (swipeItem.left) {
+            leftItems.remove(swipeItem)
+            setLeftSwipeItems(leftItems.map { it.view })
+        } else {
+            rightItems.remove(swipeItem)
+            setRightSwipeItems(rightItems.map { it.view })
+        }
+    }
+
     internal class SwipeItem(
         val icon: Int?,
         val iconColor: Int?,
