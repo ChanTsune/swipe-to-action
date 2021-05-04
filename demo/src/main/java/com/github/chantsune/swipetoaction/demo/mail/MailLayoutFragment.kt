@@ -15,8 +15,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.github.chantsune.swipetoaction.demo.R
 import com.github.chantsune.swipetoaction.demo.base.BaseListFragment
 import com.github.chantsune.swipetoaction.views.SwipeLayout
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.retry
+import kotlinx.coroutines.flow.collectLatest
 
 class MailLayoutFragment : BaseListFragment() {
 
@@ -58,12 +57,18 @@ class MailLayoutFragment : BaseListFragment() {
                     collapseItemAndUpdateView(swipeLayout, position)
                     val item = getItem(position) ?: return
                     item.isOpened = !item.isOpened
+                    lifecycleScope.launchWhenCreated {
+                        viewModel.update(item)
+                    }
                 }
 
                 private fun updateItemFlag(swipeLayout: SwipeLayout, position: Int) {
                     collapseItemAndUpdateView(swipeLayout, position)
                     val item = getItem(position) ?: return
                     item.flag = !item.flag
+                    lifecycleScope.launchWhenCreated {
+                        viewModel.update(item)
+                    }
                 }
 
                 private fun collapseItemAndUpdateView(swipeLayout: SwipeLayout, position: Int) {
@@ -86,12 +91,7 @@ class MailLayoutFragment : BaseListFragment() {
                     val item = getItem(position) ?: return
                     lifecycleScope.launchWhenCreated {
                         viewModel.remove(item)
-                    }
-                    notifyItemRemoved(position)
-                    lifecycleScope.launchWhenCreated {
-                        viewModel.mailList.collect {
-                            (binding.recyclerView.adapter as? MailAdapter)?.submitData(it)
-                        }
+                        (binding.recyclerView.adapter as? MailAdapter)?.refresh()
                     }
                 }
             }
@@ -104,7 +104,7 @@ class MailLayoutFragment : BaseListFragment() {
 
     private fun observeViewModel(viewModel: MailLayoutViewModel) {
         lifecycleScope.launchWhenCreated {
-            viewModel.mailList.collect {
+            viewModel.mailList.collectLatest {
                 (binding.recyclerView.adapter as? MailAdapter)?.submitData(it)
             }
         }
