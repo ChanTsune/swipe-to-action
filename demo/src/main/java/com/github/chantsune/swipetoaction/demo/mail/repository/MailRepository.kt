@@ -14,7 +14,10 @@ class MailRepository : IMailRepository {
     }
 
     override suspend fun getList(page: Int, size: Int): List<Mail> {
-        return mailList.subList(page * size, (page + 1) * size).toList()
+        return mailList.subList(
+            (page * size).coerceAtMost(mailList.size - 1),
+            ((page + 1) * size).coerceAtMost(mailList.size - 1),
+        ).toList()
     }
 
     override suspend fun delete(mail: Mail) {
