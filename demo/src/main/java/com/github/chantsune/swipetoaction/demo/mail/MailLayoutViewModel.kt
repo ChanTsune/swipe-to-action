@@ -1,21 +1,20 @@
 package com.github.chantsune.swipetoaction.demo.mail
 
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.paging.*
 import com.github.chantsune.swipetoaction.demo.mail.model.Mail
+import com.github.chantsune.swipetoaction.demo.mail.paging.MailDataSource
+import kotlinx.coroutines.flow.Flow
 
 class MailLayoutViewModel(
-    var mails: MutableLiveData<List<Mail>> = MutableLiveData(listOf(
-        Mail("Apple Store", "Title", "Body ".repeat(10), "18:58", false, false),
-        Mail("Apple Store", "Title", "Body ".repeat(20), "17:32", false, false),
-        Mail("Apple Store", "Title", "Body ".repeat(30), "15:43", true, true),
-    ))
+    val mailList: Flow<PagingData<Mail>> = Pager(
+        PagingConfig(10),
+        0) {
+        MailDataSource()
+    }.flow
 ) : ViewModel() {
-    fun refresh() {
-        mails.value?.toMutableList()?.let { mailList ->
-            mailList.add(0, Mail("Apple Store", "Title", "Body ".repeat(30), "date", false, false))
-            mails.postValue(mailList)
-        }
+
+    suspend fun remove(mail: Mail) {
+        MailDataSource.remove(mail)
     }
 }
-
