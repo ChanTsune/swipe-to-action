@@ -1,12 +1,12 @@
 package com.github.chantsune.swipetoaction.views
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Handler
 import android.os.Looper
 import android.util.AttributeSet
 import android.util.Log
 import android.view.*
-import android.view.View.OnTouchListener
 import android.view.animation.Animation
 import android.widget.*
 import androidx.core.content.res.use
@@ -27,7 +27,7 @@ open class SwipeLayout(
 ) :
     FrameLayout(
         context, attrs, defStyleAttr, defStyleRes
-    ), OnTouchListener {
+    ), View.OnTouchListener {
     constructor(context: Context): this(context, null)
     constructor(context: Context, attrs: AttributeSet?) : this(context, attrs, 0)
     constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : this(
@@ -698,6 +698,62 @@ open class SwipeLayout(
 
     fun interface OnSwipeItemClickListener {
         fun onSwipeItemClick(view: View, left: Boolean, index: Int)
+    }
+
+    private val rightItems: MutableList<SwipeItem> = mutableListOf()
+    private val leftItems: MutableList<SwipeItem> = mutableListOf()
+
+    internal fun createSwipeItem(
+        swipeItem: SwipeItem
+    ): SwipeItem {
+        swipeItem.view = SwipeItemView(context)
+        swipeItem.update(this)
+        return swipeItem
+    }
+
+    internal fun addSwipeItem(swipeItem: SwipeItem) {
+        if (swipeItem.left) {
+            leftItems.add(swipeItem)
+            setLeftSwipeItems(leftItems.map { it.customView ?: it.view })
+        } else {
+            rightItems.add(swipeItem)
+            setRightSwipeItems(rightItems.map { it.customView ?: it.view })
+        }
+    }
+
+    internal fun removeSwipeItem(swipeItem: SwipeItem) {
+        if (swipeItem.left) {
+            leftItems.remove(swipeItem)
+            setLeftSwipeItems(leftItems.map { it.customView ?: it.view })
+        } else {
+            rightItems.remove(swipeItem)
+            setRightSwipeItems(rightItems.map { it.customView ?: it.view })
+        }
+    }
+
+    internal class SwipeItem(
+        val icon: Int?,
+        val iconColor: Int?,
+        val backgroundColor: Int?,
+        val text: String?,
+        val textColor: Int?,
+        val left: Boolean,
+        // internal params
+        val itemWidth: Int,
+        val iconSize: Int,
+        val textSize: Float,
+    ) {
+        lateinit var view: SwipeItemView
+            internal set
+        var customView: View? = null
+
+        @SuppressLint("ClickableViewAccessibility")
+        internal fun update(l: View.OnTouchListener) {
+            customView?.setOnTouchListener(l) ?: kotlin.run {
+                view.update(this)
+                view.setOnTouchListener(l)
+            }
+        }
     }
 
     companion object {

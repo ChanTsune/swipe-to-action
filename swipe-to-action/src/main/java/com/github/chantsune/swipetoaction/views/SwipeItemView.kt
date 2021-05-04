@@ -24,7 +24,7 @@ internal class SwipeItemView(
         foreground = rippleDrawable
     }
 
-    private fun getImageViewInternal(swipeItem: SimpleSwipeLayout.SwipeItem): ImageView? =
+    private fun getImageViewInternal(swipeItem: SwipeLayout.SwipeItem): ImageView? =
         swipeItem.icon?.let { icon ->
             imageView.also { imageView ->
                 imageView.setImageDrawable(
@@ -37,7 +37,7 @@ internal class SwipeItemView(
             }
         }
 
-    private fun getTextViewInternal(swipeItem: SimpleSwipeLayout.SwipeItem): TextView? =
+    private fun getTextViewInternal(swipeItem: SwipeLayout.SwipeItem): TextView? =
         swipeItem.text?.let { text ->
             textView.also { textView ->
                 textView.maxLines = 2
@@ -53,7 +53,7 @@ internal class SwipeItemView(
             }
         }
 
-    fun update(swipeItem: SimpleSwipeLayout.SwipeItem) {
+    fun update(swipeItem: SwipeLayout.SwipeItem) {
         removeAllViews() // NOTE: clear views
         val imageView = getImageViewInternal(swipeItem)
         val textView = getTextViewInternal(swipeItem)

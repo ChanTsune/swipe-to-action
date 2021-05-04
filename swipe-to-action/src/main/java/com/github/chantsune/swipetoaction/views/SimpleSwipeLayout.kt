@@ -3,6 +3,7 @@ package com.github.chantsune.swipetoaction.views
 import android.content.Context
 import android.content.res.TypedArray
 import android.util.AttributeSet
+import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.res.use
 import com.github.chantsune.swipetoaction.R
@@ -24,9 +25,6 @@ open class SimpleSwipeLayout(c: Context, attrs: AttributeSet? = null) : SwipeLay
 
     var leftTexts: Array<String> = arrayOf()
     var rightTexts: Array<String> = arrayOf()
-
-    private val rightItems: MutableList<SwipeItem> = mutableListOf()
-    private val leftItems: MutableList<SwipeItem> = mutableListOf()
 
     private var iconSize = 0
     private var textSize = 0f
@@ -200,51 +198,5 @@ open class SimpleSwipeLayout(c: Context, attrs: AttributeSet? = null) : SwipeLay
                     swipeItem
                 )
             }
-    }
-
-    private fun createSwipeItem(
-        swipeItem: SwipeItem
-    ): SwipeItem {
-        swipeItem.view = SwipeItemView(context).also {
-            it.update(swipeItem)
-            it.setOnTouchListener(this)
-        }
-        return swipeItem
-    }
-
-    private fun addSwipeItem(swipeItem: SwipeItem) {
-        if (swipeItem.left) {
-            leftItems.add(swipeItem)
-            setLeftSwipeItems(leftItems.map { it.view })
-        } else {
-            rightItems.add(swipeItem)
-            setRightSwipeItems(rightItems.map { it.view })
-        }
-    }
-
-    private fun removeSwipeItem(swipeItem: SwipeItem) {
-        if (swipeItem.left) {
-            leftItems.remove(swipeItem)
-            setLeftSwipeItems(leftItems.map { it.view })
-        } else {
-            rightItems.remove(swipeItem)
-            setRightSwipeItems(rightItems.map { it.view })
-        }
-    }
-
-    internal class SwipeItem(
-        val icon: Int?,
-        val iconColor: Int?,
-        val backgroundColor: Int?,
-        val text: String?,
-        val textColor: Int?,
-        val left: Boolean,
-        // internal params
-        val itemWidth: Int,
-        val iconSize: Int,
-        val textSize: Float,
-    ) {
-        lateinit var view: SwipeItemView
-        internal set
     }
 }
