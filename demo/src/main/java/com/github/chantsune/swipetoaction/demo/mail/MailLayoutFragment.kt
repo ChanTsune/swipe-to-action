@@ -8,12 +8,15 @@ import android.view.animation.Animation
 import androidx.core.view.postDelayed
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.get
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.github.chantsune.swipetoaction.demo.R
 import com.github.chantsune.swipetoaction.demo.base.BaseListFragment
 import com.github.chantsune.swipetoaction.views.SwipeLayout
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.retry
 
 class MailLayoutFragment : BaseListFragment() {
 
@@ -25,14 +28,14 @@ class MailLayoutFragment : BaseListFragment() {
 
         binding.swipeRefreshLayout.setOnRefreshListener {
             binding.swipeRefreshLayout.postDelayed(200) {
-                viewModel.refresh()
+                (binding.recyclerView.adapter as? MailAdapter)?.refresh()
                 binding.swipeRefreshLayout.canChildScrollUp()
                 binding.swipeRefreshLayout.isRefreshing = false
             }
         }
 
         binding.recyclerView.apply {
-            adapter = object : MailAdapter(viewModel.mails.value ?: listOf()) {
+            adapter = object : MailAdapter() {
                 override fun onItemSwipeItemClicked(
                     swipeLayout: SwipeLayout,
                     view: View,
@@ -53,13 +56,13 @@ class MailLayoutFragment : BaseListFragment() {
 
                 private fun updateItemIsOpen(swipeLayout: SwipeLayout, position: Int) {
                     collapseItemAndUpdateView(swipeLayout, position)
-                    val item = items[position]
+                    val item = getItem(position) ?: return
                     item.isOpened = !item.isOpened
                 }
 
                 private fun updateItemFlag(swipeLayout: SwipeLayout, position: Int) {
                     collapseItemAndUpdateView(swipeLayout, position)
-                    val item = items[position]
+                    val item = getItem(position) ?: return
                     item.flag = !item.flag
                 }
 
@@ -80,22 +83,33 @@ class MailLayoutFragment : BaseListFragment() {
                 }
 
                 private fun deleteItem(position: Int) {
-                    val list = items.toMutableList().apply {
-                        removeAt(position)
+                    val item = getItem(position) ?: return
+                    lifecycleScope.launchWhenCreated {
+                        viewModel.remove(item)
                     }
                     notifyItemRemoved(position)
-                    viewModel.mails.postValue(list)
+                    lifecycleScope.launchWhenCreated {
+                        viewModel.mailList.collect {
+                            (binding.recyclerView.adapter as? MailAdapter)?.submitData(it)
+                        }
+                    }
                 }
             }
             layoutManager = LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false)
             addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
             setHasFixedSize(true)
         }
-        viewModel.mails.observe(viewLifecycleOwner) {
-            (binding.recyclerView.adapter as? MailAdapter)?.items = it
-            binding.recyclerView.adapter?.notifyDataSetChanged()
+        observeViewModel(viewModel)
+    }
+
+    private fun observeViewModel(viewModel: MailLayoutViewModel) {
+        lifecycleScope.launchWhenCreated {
+            viewModel.mailList.collect {
+                (binding.recyclerView.adapter as? MailAdapter)?.submitData(it)
+            }
         }
     }
+
     private fun openGitHubRepo() {
         val url = Uri.parse(getString(R.string.github_repo_url))
         startActivity(Intent(Intent.ACTION_VIEW, url))
