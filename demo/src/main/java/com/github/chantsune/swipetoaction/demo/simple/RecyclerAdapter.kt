@@ -40,14 +40,14 @@ class RecyclerAdapter : RecyclerView.Adapter<RecyclerAdapter.ViewHolder>() {
         holder.binding.swipeLayout.setOnClickListener { view ->
             Toast.makeText(
                 view.context,
-                "Clicked at ${strings[holder.adapterPosition]}",
+                "Clicked at ${strings[holder.absoluteAdapterPosition]}",
                 Toast.LENGTH_SHORT
             ).show()
         }
         holder.binding.swipeLayout.setOnLongClickListener { view ->
             Toast.makeText(
                 view.context,
-                "Long Clicked at ${strings[holder.adapterPosition]}",
+                "Long Clicked at ${strings[holder.absoluteAdapterPosition]}",
                 Toast.LENGTH_SHORT
             ).show()
             true
@@ -75,7 +75,7 @@ class RecyclerAdapter : RecyclerView.Adapter<RecyclerAdapter.ViewHolder>() {
                             .show()
                     }
                     2 -> {
-                        val pos = holder.adapterPosition
+                        val pos = holder.absoluteAdapterPosition
                         strings.removeAt(pos)
                         notifyItemRemoved(pos)
                         Toast.makeText(holder.itemView.context, "Trash", Toast.LENGTH_SHORT)
