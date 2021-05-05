@@ -245,10 +245,7 @@ open class SwipeLayout(
             canFullSwipeRightToLeft =
                 array.getBoolean(R.styleable.SwipeLayout_layout_swipeCanFullSwipeRightToLeft, false)
             canFullSwipeLeftToRight =
-                array.getBoolean(
-                    R.styleable.SimpleSwipeLayout_layout_swipeCanFullSwipeLeftToRight,
-                    false
-                )
+                array.getBoolean(R.styleable.SwipeLayout_layout_swipeCanFullSwipeLeftToRight, false)
             onlyOneSwipe = array.getBoolean(R.styleable.SwipeLayout_layout_swipeOnlyOneSwipe, true)
             autoHideSwipe =
                 array.getBoolean(R.styleable.SwipeLayout_layout_swipeAutoHideSwipe, true)
