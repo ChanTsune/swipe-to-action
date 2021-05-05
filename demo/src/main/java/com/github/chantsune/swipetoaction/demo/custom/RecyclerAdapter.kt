@@ -16,14 +16,16 @@ class RecyclerAdapter : RecyclerView.Adapter<RecyclerAdapter.ViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val v =
             ViewCustomSwipeLayoutItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        val rightViewItem = LayoutInflater.from(v.swipeLayout.context).inflate(R.layout.right_swipe_item, null)
-        v.swipeLayout.setRightSwipeItems(listOf(rightViewItem))
         return ViewHolder(v)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.binding.recyclerItemTv.text = "Item # ${strings[position]}"
         holder.binding.swipeLayout.setItemState(SwipeLayout.ITEM_STATE_COLLAPSED, false)
+        val item = holder.binding.swipeLayout.newSwipeItem(false).apply {
+            setCustomView(R.layout.right_swipe_item)
+        }
+        holder.binding.swipeLayout.addSwipeItem(item)
     }
 
     override fun getItemCount(): Int = strings.size

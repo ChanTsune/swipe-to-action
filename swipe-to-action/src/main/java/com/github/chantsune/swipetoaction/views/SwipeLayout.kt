@@ -9,6 +9,7 @@ import android.util.Log
 import android.view.*
 import android.view.animation.Animation
 import android.widget.*
+import androidx.annotation.LayoutRes
 import androidx.core.content.res.use
 import androidx.core.view.children
 import androidx.recyclerview.widget.RecyclerView
@@ -170,7 +171,7 @@ open class SwipeLayout(
     }
 
 
-    fun setLeftSwipeItems(views: List<View>, bindSwipeItemOnClick: Boolean = true) {
+    private fun setLeftSwipeItems(views: List<View>, bindSwipeItemOnClick: Boolean = true) {
         leftViews = views
 
         placementLeftItemViewLayout()
@@ -186,7 +187,7 @@ open class SwipeLayout(
         }
     }
 
-    fun setRightSwipeItems(views: List<View>, bindSwipeItemOnClick: Boolean = true) {
+    private fun setRightSwipeItems(views: List<View>, bindSwipeItemOnClick: Boolean = true) {
         rightViews = views
 
         placementRightItemViewLayout()
@@ -700,15 +701,12 @@ open class SwipeLayout(
     private val rightItems: MutableList<SwipeItem> = mutableListOf()
     private val leftItems: MutableList<SwipeItem> = mutableListOf()
 
-    internal fun createSwipeItem(
-        swipeItem: SwipeItem
-    ): SwipeItem {
-        swipeItem.view = SwipeItemView(context)
-        swipeItem.update(this)
-        return swipeItem
+    fun newSwipeItem(left: Boolean): SwipeItem {
+        return SwipeItem(context, left = left)
     }
 
-    internal fun addSwipeItem(swipeItem: SwipeItem) {
+    fun addSwipeItem(swipeItem: SwipeItem) {
+        swipeItem.update(this)
         if (swipeItem.left) {
             leftItems.add(swipeItem)
             setLeftSwipeItems(leftItems.map { it.customView ?: it.view })
@@ -728,21 +726,26 @@ open class SwipeLayout(
         }
     }
 
-    internal class SwipeItem(
-        val icon: Int?,
-        val iconColor: Int?,
-        val backgroundColor: Int?,
-        val text: String?,
-        val textColor: Int?,
+    class SwipeItem(
+        private val context: Context,
+        val icon: Int? = null,
+        val iconColor: Int? = null,
+        val backgroundColor: Int? = null,
+        val text: String? = null,
+        val textColor: Int? = null,
         val left: Boolean,
         // internal params
-        val itemWidth: Int,
-        val iconSize: Int,
-        val textSize: Float,
+        val itemWidth: Int = 100,
+        val iconSize: Int = 100,
+        val textSize: Float = 14f,
     ) {
-        lateinit var view: SwipeItemView
-            internal set
+        internal val view: SwipeItemView = SwipeItemView(context)
+
         var customView: View? = null
+
+        fun setCustomView(@LayoutRes resource: Int) {
+            customView = LayoutInflater.from(context).inflate(resource, null)
+        }
 
         @SuppressLint("ClickableViewAccessibility")
         internal fun update(l: View.OnTouchListener) {

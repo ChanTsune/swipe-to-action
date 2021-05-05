@@ -183,7 +183,8 @@ open class SimpleSwipeLayout(c: Context, attrs: AttributeSet? = null) : SwipeLay
             .zipLongest(texts)
             .zipLongest(textColors)
             .map {
-                val swipeItem = SwipeItem(
+                SwipeItem(
+                    context,
                     icon = it.first?.first,
                     iconColor = it.first?.second,
                     backgroundColor = it.first?.third,
@@ -193,9 +194,6 @@ open class SimpleSwipeLayout(c: Context, attrs: AttributeSet? = null) : SwipeLay
                     itemWidth = itemWidth,
                     iconSize = iconSize,
                     textSize = textSize,
-                )
-                createSwipeItem(
-                    swipeItem
                 )
             }
     }
