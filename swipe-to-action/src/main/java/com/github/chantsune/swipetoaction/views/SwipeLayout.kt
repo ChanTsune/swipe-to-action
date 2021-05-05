@@ -288,9 +288,6 @@ open class SwipeLayout(
         drawableHotspotChanged(downX, downY)
     }
 
-    private val collapsibleViews: List<View>
-        get() = if (invokedFromLeft) leftViews else rightViews
-
     private val collapseListener: Animation.AnimationListener =
         object : Animation.AnimationListener {
             override fun onAnimationStart(animation: Animation) {}
