@@ -177,11 +177,12 @@ open class SwipeLayout(
         placementLeftItemViewLayout()
 
         if (bindSwipeItemOnClick) {
-            for ((i, itemView) in leftViews.withIndex()) {
-                itemView.isClickable = true
-                itemView.isFocusable = true
-                itemView.setOnClickListener {
-                    onSwipeItemClickListener?.onSwipeItemClick(it, true, i)
+            for ((i, item) in leftItems.withIndex()) {
+                val view = item.customView ?: item.swipeItemView
+                view.isClickable = true
+                view.isFocusable = true
+                view.setOnClickListener {
+                    onSwipeItemClickListener?.onSwipeItemClick(item, i)
                 }
             }
         }
@@ -193,11 +194,12 @@ open class SwipeLayout(
         placementRightItemViewLayout()
 
         if (bindSwipeItemOnClick) {
-            for ((i, itemView) in rightViews.withIndex()) {
-                itemView.isClickable = true
-                itemView.isFocusable = true
-                itemView.setOnClickListener {
-                    onSwipeItemClickListener?.onSwipeItemClick(it, false, i)
+            for ((i, item) in rightItems.withIndex()) {
+                val view = item.customView ?: item.swipeItemView
+                view.isClickable = true
+                view.isFocusable = true
+                view.setOnClickListener {
+                    onSwipeItemClickListener?.onSwipeItemClick(item, i)
                 }
             }
         }
@@ -299,11 +301,10 @@ open class SwipeLayout(
         }
 
     private fun clickBySwipe() {
-        val position = if (invokedFromLeft) 0 else rightViews.lastIndex
-        val view = if (invokedFromLeft) leftViews[position] else rightViews[position]
+        val position = if (invokedFromLeft) 0 else rightItems.lastIndex
+        val swipeItem = if (invokedFromLeft) leftItems[position] else rightItems[position]
         onSwipeItemClickListener?.onSwipeItemClick(
-            view,
-            invokedFromLeft,
+            swipeItem,
             position,
         )
     }
@@ -692,7 +693,7 @@ open class SwipeLayout(
     }
 
     fun interface OnSwipeItemClickListener {
-        fun onSwipeItemClick(view: View, left: Boolean, index: Int)
+        fun onSwipeItemClick(swipeItem: SwipeItem, index: Int)
     }
 
     private val rightItems: MutableList<SwipeItem> = mutableListOf()
@@ -706,20 +707,20 @@ open class SwipeLayout(
         swipeItem.update(this)
         if (swipeItem.left) {
             leftItems.add(swipeItem)
-            setLeftSwipeItems(leftItems.map { it.customView ?: it.view })
+            setLeftSwipeItems(leftItems.map { it.customView ?: it.swipeItemView })
         } else {
             rightItems.add(swipeItem)
-            setRightSwipeItems(rightItems.map { it.customView ?: it.view })
+            setRightSwipeItems(rightItems.map { it.customView ?: it.swipeItemView })
         }
     }
 
     internal fun removeSwipeItem(swipeItem: SwipeItem) {
         if (swipeItem.left) {
             leftItems.remove(swipeItem)
-            setLeftSwipeItems(leftItems.map { it.customView ?: it.view })
+            setLeftSwipeItems(leftItems.map { it.customView ?: it.swipeItemView })
         } else {
             rightItems.remove(swipeItem)
-            setRightSwipeItems(rightItems.map { it.customView ?: it.view })
+            setRightSwipeItems(rightItems.map { it.customView ?: it.swipeItemView })
         }
     }
 
@@ -736,7 +737,8 @@ open class SwipeLayout(
         val iconSize: Int = 100,
         val textSize: Float = 14f,
     ) {
-        internal val view: SwipeItemView = SwipeItemView(context)
+        internal val swipeItemView: SwipeItemView = SwipeItemView(context)
+        val view: View get() = swipeItemView
 
         var customView: View? = null
 
@@ -747,8 +749,8 @@ open class SwipeLayout(
         @SuppressLint("ClickableViewAccessibility")
         internal fun update(l: View.OnTouchListener) {
             customView?.setOnTouchListener(l) ?: kotlin.run {
-                view.update(this)
-                view.setOnTouchListener(l)
+                swipeItemView.update(this)
+                swipeItemView.setOnTouchListener(l)
             }
         }
     }

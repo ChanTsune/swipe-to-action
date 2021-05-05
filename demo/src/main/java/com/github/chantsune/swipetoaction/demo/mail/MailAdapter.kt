@@ -3,9 +3,7 @@ package com.github.chantsune.swipetoaction.demo.mail
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.paging.PagedListAdapter
 import androidx.paging.PagingDataAdapter
-import androidx.recyclerview.widget.AsyncDifferConfig
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.github.chantsune.swipetoaction.demo.databinding.ViewMailListItemBinding
@@ -35,8 +33,8 @@ abstract class MailAdapter : PagingDataAdapter<Mail, MailAdapter.ViewHolder>(DIF
         binding.title.text = item.title
         binding.flag.visibility = if (item.flag) View.VISIBLE else View.INVISIBLE
         binding.body.text = item.body
-        binding.root.setOnSwipeItemClickListener { view, left, index ->
-            onItemSwipeItemClicked(binding.root, view, left, index, holder.absoluteAdapterPosition)
+        binding.root.setOnSwipeItemClickListener { swipeItem, index ->
+            onItemSwipeItemClicked(binding.root, swipeItem.customView ?: swipeItem.view, swipeItem.left, index, holder.absoluteAdapterPosition)
         }
     }
 

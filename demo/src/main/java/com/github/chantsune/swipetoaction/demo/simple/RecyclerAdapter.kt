@@ -52,8 +52,8 @@ class RecyclerAdapter : RecyclerView.Adapter<RecyclerAdapter.ViewHolder>() {
             ).show()
             true
         }
-        holder.binding.swipeLayout.setOnSwipeItemClickListener { view, left, index ->
-            if (left) {
+        holder.binding.swipeLayout.setOnSwipeItemClickListener { swipeItem, index ->
+            if (swipeItem.left) {
                 holder.binding.swipeLayout.also { swipeLayout ->
                     if (swipeLayout.isEnabledAtIndex(true, index)) {
                         swipeLayout.setAlphaAtIndex(true, index, 0.5f)
