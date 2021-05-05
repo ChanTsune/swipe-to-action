@@ -66,10 +66,9 @@ open class SwipeLayout(
     private val leftLinearWithoutFirst: LinearLayout = createLinearLayout(Gravity.START)
     private val fullSwipeEdgePadding: Int =
         resources.getDimensionPixelSize(R.dimen.full_swipe_edge_padding)
-    var rightViews: List<View> = listOf()
-        private set
-    var leftViews: List<View> = listOf()
-        private set
+    private var rightViews: List<View> = listOf()
+    private var leftViews: List<View> = listOf()
+
     private var onSwipeItemClickListener: OnSwipeItemClickListener? = null
     private var onScrollListener: RecyclerView.OnScrollListener? = null
 
@@ -726,17 +725,59 @@ open class SwipeLayout(
 
     class SwipeItem(
         private val context: Context,
-        val icon: Int? = null,
-        val iconColor: Int? = null,
-        val backgroundColor: Int? = null,
-        val text: String? = null,
-        val textColor: Int? = null,
         val left: Boolean,
+        icon: Int? = null,
+        iconColor: Int? = null,
+        backgroundColor: Int? = null,
+        text: String? = null,
+        textColor: Int? = null,
         // internal params
-        val itemWidth: Int = 100,
-        val iconSize: Int = 100,
-        val textSize: Float = 14f,
+        itemWidth: Int = 100,
+        iconSize: Int = 100,
+        textSize: Float = 14f,
     ) {
+        var icon: Int? = icon
+            set(value) {
+                field = value
+                update()
+            }
+        var iconColor: Int? = iconColor
+            set(value) {
+                field = value
+                update()
+            }
+        var backgroundColor: Int? = backgroundColor
+            set(value) {
+                field = value
+                update()
+            }
+        var text: String? = text
+            set(value) {
+                field = value
+                update()
+            }
+        var textColor: Int? = textColor
+            set(value) {
+                field = value
+                update()
+            }
+        // internal params
+        var itemWidth: Int = itemWidth
+            set(value) {
+                field = value
+                update()
+            }
+        var iconSize: Int = iconSize
+            set(value) {
+                field = value
+                update()
+            }
+        var textSize: Float = textSize
+            set(value) {
+                field = value
+                update()
+            }
+
         internal val swipeItemView: SwipeItemView = SwipeItemView(context)
         val view: View get() = swipeItemView
 
@@ -752,6 +793,10 @@ open class SwipeLayout(
                 swipeItemView.update(this)
                 swipeItemView.setOnTouchListener(l)
             }
+        }
+
+        private fun update() {
+            swipeItemView.update(this)
         }
     }
 

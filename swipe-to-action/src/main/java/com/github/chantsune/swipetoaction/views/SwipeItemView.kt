@@ -29,8 +29,8 @@ internal class SwipeItemView(
             imageView.also { imageView ->
                 imageView.setImageDrawable(
                     ContextCompat.getDrawable(context, icon)?.also { drawable ->
-                        if (swipeItem.iconColor != null) {
-                            drawable.setTint(swipeItem.iconColor)
+                        swipeItem.iconColor?.let { iconColor ->
+                            drawable.setTint(iconColor)
                         }
                     })
                 imageView.id = ID_IMAGE_VIEW
@@ -44,8 +44,8 @@ internal class SwipeItemView(
                 if (swipeItem.textSize > 0) {
                     textView.setTextSize(TypedValue.COMPLEX_UNIT_PX, swipeItem.textSize)
                 }
-                if (swipeItem.textColor != null) {
-                    textView.setTextColor(swipeItem.textColor)
+                swipeItem.textColor?.let { textColor ->
+                    textView.setTextColor(textColor)
                 }
                 textView.text = text
                 textView.gravity = Gravity.CENTER
@@ -100,8 +100,8 @@ internal class SwipeItemView(
                 Gravity.CENTER_VERTICAL or if (swipeItem.left) Gravity.END else Gravity.START
             )
         )
-        if (swipeItem.backgroundColor != null) {
-            setBackgroundColor(swipeItem.backgroundColor)
+        swipeItem.backgroundColor?.let { backgroundColor ->
+            setBackgroundColor(backgroundColor)
         }
         layoutParams =
             LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.MATCH_PARENT, 1f)
