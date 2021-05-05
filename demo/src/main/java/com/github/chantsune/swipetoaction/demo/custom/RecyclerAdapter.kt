@@ -43,7 +43,7 @@ class RecyclerAdapter : RecyclerView.Adapter<RecyclerAdapter.ViewHolder>() {
         override fun onClick(view: View) {
             Toast.makeText(
                 view.context,
-                "Clicked at ${strings[adapterPosition]}",
+                "Clicked at ${strings[absoluteAdapterPosition]}",
                 Toast.LENGTH_SHORT
             ).show()
         }
@@ -51,7 +51,7 @@ class RecyclerAdapter : RecyclerView.Adapter<RecyclerAdapter.ViewHolder>() {
         override fun onLongClick(view: View): Boolean {
             Toast.makeText(
                 view.context,
-                "Long Clicked at ${strings[adapterPosition]}",
+                "Long Clicked at ${strings[absoluteAdapterPosition]}",
                 Toast.LENGTH_SHORT
             ).show()
             return true
@@ -78,7 +78,7 @@ class RecyclerAdapter : RecyclerView.Adapter<RecyclerAdapter.ViewHolder>() {
                         Toast.makeText(itemView.context, "Settings", Toast.LENGTH_SHORT).show()
                     }
                     2 -> {
-                        val pos = adapterPosition
+                        val pos = absoluteAdapterPosition
                         strings.removeAt(pos)
                         notifyItemRemoved(pos)
                         Toast.makeText(itemView.context, "Trash", Toast.LENGTH_SHORT).show()
