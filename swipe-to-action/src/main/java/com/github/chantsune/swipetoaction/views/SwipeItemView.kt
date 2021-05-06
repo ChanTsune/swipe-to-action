@@ -19,7 +19,7 @@ internal class SwipeItemView(
     private var imageView: ImageView = ImageView(context).also { view ->
         view.id = android.R.id.icon1
     }
-    private var textView: TextView = TextView(context).also { view ->
+    internal var textView: TextView = TextView(context).also { view ->
         view.id = android.R.id.text1
     }
     private var containerView: ConstraintLayout = ConstraintLayout(context)
@@ -44,9 +44,6 @@ internal class SwipeItemView(
         swipeItem.text?.let { text ->
             textView.also { textView ->
                 textView.maxLines = 2
-                if (swipeItem.textSize > 0) {
-                    textView.setTextSize(TypedValue.COMPLEX_UNIT_PX, swipeItem.textSize)
-                }
                 swipeItem.textColor?.let { textColor ->
                     textView.setTextColor(textColor)
                 }

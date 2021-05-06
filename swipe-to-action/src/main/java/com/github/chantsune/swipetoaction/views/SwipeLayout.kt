@@ -734,7 +734,6 @@ open class SwipeLayout(
         // internal params
         itemWidth: Int = 100,
         iconSize: Int = 100,
-        textSize: Float = 14f,
     ) {
         var icon: Int? = icon
             set(value) {
@@ -772,11 +771,14 @@ open class SwipeLayout(
                 field = value
                 update()
             }
-        var textSize: Float = textSize
+        var textSize: Float
+            get() = swipeItemView.textView.textSize
             set(value) {
-                field = value
-                update()
+                swipeItemView.textView.textSize = value
             }
+        fun setTextSize(unit: Int, size: Float) {
+            swipeItemView.textView.setTextSize(unit, size)
+        }
 
         internal val swipeItemView: SwipeItemView = SwipeItemView(context)
         val view: View get() = swipeItemView

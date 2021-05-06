@@ -3,7 +3,7 @@ package com.github.chantsune.swipetoaction.views
 import android.content.Context
 import android.content.res.TypedArray
 import android.util.AttributeSet
-import android.view.View
+import android.util.TypedValue
 import android.view.ViewGroup
 import androidx.core.content.res.use
 import com.github.chantsune.swipetoaction.R
@@ -193,8 +193,11 @@ open class SimpleSwipeLayout(c: Context, attrs: AttributeSet? = null) : SwipeLay
                     left = left,
                     itemWidth = itemWidth,
                     iconSize = iconSize,
-                    textSize = textSize,
-                )
+                ).also { item ->
+                    if (textSize > 0) {
+                        item.setTextSize(TypedValue.COMPLEX_UNIT_PX, textSize)
+                    }
+                }
             }
     }
 }
