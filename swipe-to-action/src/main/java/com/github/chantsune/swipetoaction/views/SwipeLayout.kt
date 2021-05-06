@@ -698,6 +698,9 @@ open class SwipeLayout(
     private val rightItems: MutableList<SwipeItem> = mutableListOf()
     private val leftItems: MutableList<SwipeItem> = mutableListOf()
 
+    val rightSwipeItemCount: Int = rightItems.size
+    val leftSwipeItemCount: Int = leftItems.size
+
     fun newSwipeItem(left: Boolean): SwipeItem {
         return SwipeItem(context, left = left)
     }
