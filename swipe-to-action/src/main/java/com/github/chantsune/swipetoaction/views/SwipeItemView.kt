@@ -16,8 +16,12 @@ internal class SwipeItemView(
     attrs: AttributeSet? = null,
 ) : FrameLayout(context, attrs) {
 
-    private var imageView: ImageView = ImageView(context)
-    private var textView: TextView = TextView(context)
+    private var imageView: ImageView = ImageView(context).also { view ->
+        view.id = android.R.id.icon1
+    }
+    private var textView: TextView = TextView(context).also { view ->
+        view.id = android.R.id.text1
+    }
     private var containerView: ConstraintLayout = ConstraintLayout(context)
 
     init {
@@ -33,7 +37,6 @@ internal class SwipeItemView(
                             drawable.setTint(iconColor)
                         }
                     })
-                imageView.id = ID_IMAGE_VIEW
             }
         }
 
@@ -49,7 +52,6 @@ internal class SwipeItemView(
                 }
                 textView.text = text
                 textView.gravity = Gravity.CENTER
-                textView.id = ID_TEXT_VIEW
             }
         }
 
@@ -114,8 +116,4 @@ internal class SwipeItemView(
                 it.getDrawable(0)
             }
         }
-    companion object {
-        private const val ID_IMAGE_VIEW = 1
-        private const val ID_TEXT_VIEW = 2
-    }
 }
