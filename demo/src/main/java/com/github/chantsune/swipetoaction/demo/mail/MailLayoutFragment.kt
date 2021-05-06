@@ -37,12 +37,11 @@ class MailLayoutFragment : BaseListFragment() {
             adapter = object : MailAdapter() {
                 override fun onItemSwipeItemClicked(
                     swipeLayout: SwipeLayout,
-                    view: View,
-                    isLeft: Boolean,
+                    swipeItem: SwipeLayout.SwipeItem,
                     index: Int,
                     position: Int
                 ) {
-                    if (isLeft) {
+                    if (swipeItem.left) {
                         updateItemIsOpen(swipeLayout, position)
                     } else {
                         when (index) {

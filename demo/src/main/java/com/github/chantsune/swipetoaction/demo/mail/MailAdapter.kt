@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
+import com.github.chantsune.swipetoaction.demo.R
 import com.github.chantsune.swipetoaction.demo.databinding.ViewMailListItemBinding
 import com.github.chantsune.swipetoaction.demo.mail.model.Mail
 import com.github.chantsune.swipetoaction.views.SwipeLayout
@@ -33,12 +34,16 @@ abstract class MailAdapter : PagingDataAdapter<Mail, MailAdapter.ViewHolder>(DIF
         binding.title.text = item.title
         binding.flag.visibility = if (item.flag) View.VISIBLE else View.INVISIBLE
         binding.body.text = item.body
+        binding.root.getSwipeItemAt(0, true).apply {
+            icon = if (item.isOpened) R.drawable.ic_baseline_mark_email_unread_24
+            else R.drawable.ic_baseline_email_24
+        }
         binding.root.setOnSwipeItemClickListener { swipeItem, index ->
-            onItemSwipeItemClicked(binding.root, swipeItem.customView ?: swipeItem.view, swipeItem.left, index, holder.absoluteAdapterPosition)
+            onItemSwipeItemClicked(binding.root, swipeItem, index, holder.absoluteAdapterPosition)
         }
     }
 
-    abstract fun onItemSwipeItemClicked(swipeLayout: SwipeLayout, view: View, isLeft:Boolean, index: Int, position: Int)
+    abstract fun onItemSwipeItemClicked(swipeLayout: SwipeLayout, swipeItem: SwipeLayout.SwipeItem, index: Int, position: Int)
 
     companion object {
         private val DIFF_CALL_BACK = object : DiffUtil.ItemCallback<Mail>() {

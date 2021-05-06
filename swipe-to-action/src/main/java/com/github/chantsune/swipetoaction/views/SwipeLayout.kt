@@ -713,7 +713,7 @@ open class SwipeLayout(
         }
     }
 
-    internal fun removeSwipeItem(swipeItem: SwipeItem) {
+    fun removeSwipeItem(swipeItem: SwipeItem) {
         if (swipeItem.left) {
             leftItems.remove(swipeItem)
             setLeftSwipeItems(leftItems.map { it.customView ?: it.swipeItemView })
@@ -721,6 +721,10 @@ open class SwipeLayout(
             rightItems.remove(swipeItem)
             setRightSwipeItems(rightItems.map { it.customView ?: it.swipeItemView })
         }
+    }
+
+    fun getSwipeItemAt(position: Int, left: Boolean): SwipeItem {
+        return if (left) leftItems[position] else rightItems[position]
     }
 
     class SwipeItem(
