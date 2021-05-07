@@ -35,12 +35,16 @@ abstract class MailAdapter : PagingDataAdapter<Mail, MailAdapter.ViewHolder>(DIF
         binding.flag.visibility = if (item.flag) View.VISIBLE else View.INVISIBLE
         binding.body.text = item.body
         binding.root.getSwipeItemAt(0, true).apply {
-            icon = if (item.isOpened) R.drawable.ic_baseline_mark_email_unread_24
-            else R.drawable.ic_baseline_email_24
+            setIcon(
+                if (item.isOpened) R.drawable.ic_baseline_mark_email_unread_24
+                else R.drawable.ic_baseline_email_24
+            )
         }
         binding.root.getSwipeItemAt(1, false).apply {
-            icon = if (item.flag) R.drawable.ic_baseline_outlined_flag_24
-            else R.drawable.ic_baseline_flag_24
+            setIcon(
+                if (item.flag) R.drawable.ic_baseline_outlined_flag_24
+                else R.drawable.ic_baseline_flag_24
+            )
         }
         binding.root.setOnSwipeItemClickListener { swipeItem, index ->
             onItemSwipeItemClicked(binding.root, swipeItem, index, holder.absoluteAdapterPosition)

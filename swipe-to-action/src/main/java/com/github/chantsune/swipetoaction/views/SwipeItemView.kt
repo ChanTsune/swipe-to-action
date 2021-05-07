@@ -16,7 +16,7 @@ internal class SwipeItemView(
     attrs: AttributeSet? = null,
 ) : FrameLayout(context, attrs) {
 
-    private var imageView: ImageView = ImageView(context).also { view ->
+    internal var imageView: ImageView = ImageView(context).also { view ->
         view.id = android.R.id.icon1
     }
     internal var textView: TextView = TextView(context).also { view ->
@@ -31,12 +31,7 @@ internal class SwipeItemView(
     private fun getImageViewInternal(swipeItem: SwipeLayout.SwipeItem): ImageView? =
         swipeItem.icon?.let { icon ->
             imageView.also { imageView ->
-                imageView.setImageDrawable(
-                    ContextCompat.getDrawable(context, icon)?.also { drawable ->
-                        swipeItem.iconColor?.let { iconColor ->
-                            drawable.setTint(iconColor)
-                        }
-                    })
+                imageView.setImageDrawable(icon)
             }
         }
 
@@ -44,9 +39,6 @@ internal class SwipeItemView(
         swipeItem.text?.let { text ->
             textView.also { textView ->
                 textView.maxLines = 2
-                swipeItem.textColor?.let { textColor ->
-                    textView.setTextColor(textColor)
-                }
                 textView.text = text
                 textView.gravity = Gravity.CENTER
             }

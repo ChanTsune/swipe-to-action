@@ -5,6 +5,7 @@ import android.content.res.TypedArray
 import android.util.AttributeSet
 import android.util.TypedValue
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.core.content.res.use
 import com.github.chantsune.swipetoaction.R
 import com.github.chantsune.swipetoaction.ktx.getIntArrayOrNull
@@ -183,19 +184,29 @@ open class SimpleSwipeLayout(c: Context, attrs: AttributeSet? = null) : SwipeLay
             .zipLongest(texts)
             .zipLongest(textColors)
             .map {
+                val icon = it.first?.first?.let { iconRes ->
+                    val iconColor = it.first?.second
+                    ContextCompat.getDrawable(context, iconRes)?.also { drawable ->
+                        iconColor?.let { iconColor ->
+                            drawable.setTint(iconColor)
+                        }
+                    }
+                }
+                val textColor = it.third
                 SwipeItem(
                     context,
-                    icon = it.first?.first,
-                    iconColor = it.first?.second,
+                    left = left,
+                    icon = icon,
                     backgroundColor = it.first?.third,
                     text = it.second,
-                    textColor = it.third,
-                    left = left,
                     itemWidth = itemWidth,
                     iconSize = iconSize,
                 ).also { item ->
                     if (textSize > 0) {
                         item.setTextSize(TypedValue.COMPLEX_UNIT_PX, textSize)
+                    }
+                    textColor?.let {
+                        item.setTextColor(textColor)
                     }
                 }
             }

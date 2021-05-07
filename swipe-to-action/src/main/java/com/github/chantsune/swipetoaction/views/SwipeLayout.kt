@@ -2,6 +2,7 @@ package com.github.chantsune.swipetoaction.views
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.graphics.drawable.Drawable
 import android.os.Handler
 import android.os.Looper
 import android.util.AttributeSet
@@ -9,7 +10,8 @@ import android.util.Log
 import android.view.*
 import android.view.animation.Animation
 import android.widget.*
-import androidx.annotation.LayoutRes
+import androidx.annotation.*
+import androidx.core.content.ContextCompat
 import androidx.core.content.res.use
 import androidx.core.view.children
 import androidx.recyclerview.widget.RecyclerView
@@ -733,40 +735,37 @@ open class SwipeLayout(
     class SwipeItem(
         private val context: Context,
         val left: Boolean,
-        icon: Int? = null,
-        iconColor: Int? = null,
+        icon: Drawable? = null,
         backgroundColor: Int? = null,
-        text: String? = null,
-        textColor: Int? = null,
+        text: CharSequence? = null,
         // internal params
         itemWidth: Int = 100,
         iconSize: Int = 100,
     ) {
-        var icon: Int? = icon
+        var icon: Drawable? = icon
             set(value) {
                 field = value
                 update()
             }
-        var iconColor: Int? = iconColor
-            set(value) {
-                field = value
-                update()
-            }
+        fun setIcon(@DrawableRes id: Int) {
+            icon = ContextCompat.getDrawable(context, id)
+        }
         var backgroundColor: Int? = backgroundColor
             set(value) {
                 field = value
                 update()
             }
-        var text: String? = text
+        var text: CharSequence? = text
             set(value) {
                 field = value
                 update()
             }
-        var textColor: Int? = textColor
-            set(value) {
-                field = value
-                update()
-            }
+        fun setText(@StringRes id: Int) {
+            text = context.getText(id)
+        }
+        fun setTextColor(@ColorInt color: Int) {
+            swipeItemView.textView.setTextColor(color)
+        }
         // internal params
         var itemWidth: Int = itemWidth
             set(value) {
