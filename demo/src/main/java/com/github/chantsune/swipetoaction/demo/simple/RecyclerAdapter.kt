@@ -54,15 +54,13 @@ class RecyclerAdapter : RecyclerView.Adapter<RecyclerAdapter.ViewHolder>() {
         }
         holder.binding.swipeLayout.setOnSwipeItemClickListener { swipeItem, index ->
             if (swipeItem.left) {
-                holder.binding.swipeLayout.also { swipeLayout ->
-                    if (swipeLayout.isEnabledAtIndex(true, index)) {
-                        swipeLayout.setAlphaAtIndex(true, index, 0.5f)
-                        swipeLayout.setEnableAtIndex(true, index, false)
-                        swipeLayout.collapseAll(true)
-                    } else {
-                        swipeLayout.setAlphaAtIndex(true, index, 1f)
-                        swipeLayout.setEnableAtIndex(true, index, true)
-                    }
+                if (swipeItem.view.isEnabled) {
+                    swipeItem.view.alpha = 0.5f
+                    swipeItem.view.isEnabled = false
+                    holder.binding.swipeLayout.collapseAll(true)
+                } else {
+                    swipeItem.view.alpha = 1f
+                    swipeItem.view.isEnabled = true
                 }
             } else {
                 when (index) {

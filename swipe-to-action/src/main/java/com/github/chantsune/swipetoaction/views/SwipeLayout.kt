@@ -206,26 +206,6 @@ open class SwipeLayout(
         }
     }
 
-    fun setAlphaAtIndex(left: Boolean, index: Int, alpha: Float) {
-        val views = if (left) leftViews else rightViews
-        views.getOrNull(index)?.alpha = alpha
-    }
-
-    fun setEnableAtIndex(left: Boolean, index: Int, enabled: Boolean) {
-        val views = if (left) leftViews else rightViews
-        views.getOrNull(index)?.isEnabled = enabled
-    }
-
-    fun getAlphaAtIndex(left: Boolean, index: Int): Float {
-        val views = if (left) leftViews else rightViews
-        return views.getOrNull(index)?.alpha ?: 1f
-    }
-
-    fun isEnabledAtIndex(left: Boolean, index: Int): Boolean {
-        val views = if (left) leftViews else rightViews
-        return views.getOrNull(index)?.isEnabled ?: true
-    }
-
     override fun setOnClickListener(listener: OnClickListener?) {
         contentView.setOnClickListener(listener)
     }
