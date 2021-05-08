@@ -684,7 +684,7 @@ open class SwipeLayout(
     val leftSwipeItemCount: Int get() = leftItems.size
 
     fun newSwipeItem(left: Boolean): SwipeItem {
-        return SwipeItem(context, left = left)
+        return SwipeItem(context, left = left, itemWidth = itemWidth)
     }
 
     fun addSwipeItem(swipeItem: SwipeItem) {
@@ -719,7 +719,7 @@ open class SwipeLayout(
         backgroundColor: Int? = null,
         text: CharSequence? = null,
         // internal params
-        itemWidth: Int = 100,
+        val itemWidth: Int,
         iconSize: Int = 100,
     ) {
         var icon: Drawable? = icon
@@ -747,11 +747,6 @@ open class SwipeLayout(
             swipeItemView.textView.setTextColor(color)
         }
         // internal params
-        var itemWidth: Int = itemWidth
-            set(value) {
-                field = value
-                update()
-            }
         var iconSize: Int = iconSize
             set(value) {
                 field = value
