@@ -39,12 +39,14 @@ abstract class MailAdapter : PagingDataAdapter<Mail, MailAdapter.ViewHolder>(DIF
                 if (item.isOpened) R.drawable.ic_baseline_mark_email_unread_24
                 else R.drawable.ic_baseline_email_24
             )
+            icon?.setTint(binding.root.context.getColor(R.color.white))
         }
         binding.root.getSwipeItemAt(1, false).apply {
             setIcon(
                 if (item.flag) R.drawable.ic_baseline_outlined_flag_24
                 else R.drawable.ic_baseline_flag_24
             )
+            icon?.setTint(binding.root.context.getColor(R.color.white))
         }
         binding.root.setOnSwipeItemClickListener { swipeItem, index ->
             onItemSwipeItemClicked(binding.root, swipeItem, index, holder.absoluteAdapterPosition)
