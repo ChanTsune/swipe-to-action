@@ -52,7 +52,7 @@ class RecyclerAdapter : RecyclerView.Adapter<RecyclerAdapter.ViewHolder>() {
             ).show()
             true
         }
-        holder.binding.swipeLayout.setOnSwipeItemClickListener { swipeItem, index ->
+        holder.binding.swipeLayout.setOnSwipeItemClickListener { swipeItem ->
             if (swipeItem.left) {
                 if (swipeItem.view.isEnabled) {
                     swipeItem.view.alpha = 0.5f
@@ -63,7 +63,7 @@ class RecyclerAdapter : RecyclerView.Adapter<RecyclerAdapter.ViewHolder>() {
                     swipeItem.view.isEnabled = true
                 }
             } else {
-                when (index) {
+                when (swipeItem.position) {
                     0 -> {
                         Toast.makeText(holder.itemView.context, "Reload", Toast.LENGTH_SHORT)
                             .show()

@@ -48,12 +48,12 @@ abstract class MailAdapter : PagingDataAdapter<Mail, MailAdapter.ViewHolder>(DIF
             )
             icon?.setTint(binding.root.context.getColor(R.color.white))
         }
-        binding.root.setOnSwipeItemClickListener { swipeItem, index ->
-            onItemSwipeItemClicked(binding.root, swipeItem, index, holder.absoluteAdapterPosition)
+        binding.root.setOnSwipeItemClickListener { swipeItem ->
+            onItemSwipeItemClicked(binding.root, swipeItem, holder.absoluteAdapterPosition)
         }
     }
 
-    abstract fun onItemSwipeItemClicked(swipeLayout: SwipeLayout, swipeItem: SwipeLayout.SwipeItem, index: Int, position: Int)
+    abstract fun onItemSwipeItemClicked(swipeLayout: SwipeLayout, swipeItem: SwipeLayout.SwipeItem, position: Int)
 
     companion object {
         private val DIFF_CALL_BACK = object : DiffUtil.ItemCallback<Mail>() {

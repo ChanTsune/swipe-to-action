@@ -38,13 +38,12 @@ class MailLayoutFragment : BaseListFragment() {
                 override fun onItemSwipeItemClicked(
                     swipeLayout: SwipeLayout,
                     swipeItem: SwipeLayout.SwipeItem,
-                    index: Int,
                     position: Int
                 ) {
                     if (swipeItem.left) {
                         updateItemIsOpen(swipeLayout, position)
                     } else {
-                        when (index) {
+                        when (swipeItem.position) {
                             0 -> openGitHubRepo()
                             1 -> updateItemFlag(swipeLayout, position)
                             2 -> deleteItem(position)

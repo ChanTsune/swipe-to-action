@@ -177,12 +177,12 @@ open class SwipeLayout(
         placementLeftItemViewLayout()
 
         if (bindSwipeItemOnClick) {
-            for ((i, item) in leftItems.withIndex()) {
+            for (item in leftItems) {
                 val view = item.customView ?: item.swipeItemView
                 view.isClickable = true
                 view.isFocusable = true
                 view.setOnClickListener {
-                    onSwipeItemClickListener?.onSwipeItemClick(item, i)
+                    onSwipeItemClickListener?.onSwipeItemClick(item)
                 }
             }
         }
@@ -194,12 +194,12 @@ open class SwipeLayout(
         placementRightItemViewLayout()
 
         if (bindSwipeItemOnClick) {
-            for ((i, item) in rightItems.withIndex()) {
+            for (item in rightItems) {
                 val view = item.customView ?: item.swipeItemView
                 view.isClickable = true
                 view.isFocusable = true
                 view.setOnClickListener {
-                    onSwipeItemClickListener?.onSwipeItemClick(item, i)
+                    onSwipeItemClickListener?.onSwipeItemClick(item)
                 }
             }
         }
@@ -283,7 +283,6 @@ open class SwipeLayout(
         val swipeItem = if (invokedFromLeft) leftItems[position] else rightItems[position]
         onSwipeItemClickListener?.onSwipeItemClick(
             swipeItem,
-            position,
         )
     }
 
@@ -671,7 +670,7 @@ open class SwipeLayout(
     }
 
     fun interface OnSwipeItemClickListener {
-        fun onSwipeItemClick(swipeItem: SwipeItem, index: Int)
+        fun onSwipeItemClick(swipeItem: SwipeItem)
     }
 
     private val rightItems: MutableList<SwipeItem> = mutableListOf()
@@ -679,6 +678,12 @@ open class SwipeLayout(
 
     val rightSwipeItemCount: Int get() = rightItems.size
     val leftSwipeItemCount: Int get() = leftItems.size
+
+    private fun updateItemPosition(items: List<SwipeItem>) {
+        for ((i, item) in items.withIndex()) {
+            item.position = i
+        }
+    }
 
     fun newSwipeItem(left: Boolean): SwipeItem {
         return SwipeItem(context, left = left, itemWidth = itemWidth)
@@ -689,9 +694,11 @@ open class SwipeLayout(
         if (swipeItem.left) {
             leftItems.add(swipeItem)
             setLeftSwipeItems(leftItems.map { it.customView ?: it.swipeItemView })
+            updateItemPosition(leftItems)
         } else {
             rightItems.add(swipeItem)
             setRightSwipeItems(rightItems.map { it.customView ?: it.swipeItemView })
+            updateItemPosition(rightItems)
         }
     }
 
@@ -719,6 +726,9 @@ open class SwipeLayout(
         val itemWidth: Int,
         iconSize: Int = 100,
     ) {
+        var position: Int = INVALID_ITEM_POSITION
+        internal set
+
         var icon: Drawable? = icon
             set(value) {
                 field = value
@@ -777,6 +787,9 @@ open class SwipeLayout(
 
         private fun update() {
             swipeItemView.update(this)
+        }
+        companion object {
+            const val INVALID_ITEM_POSITION = -1
         }
     }
 

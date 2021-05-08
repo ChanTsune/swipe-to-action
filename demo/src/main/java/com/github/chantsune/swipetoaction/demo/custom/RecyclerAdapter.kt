@@ -57,7 +57,7 @@ class RecyclerAdapter : RecyclerView.Adapter<RecyclerAdapter.ViewHolder>() {
             return true
         }
 
-        override fun onSwipeItemClick(swipeItem: SwipeLayout.SwipeItem, index: Int) {
+        override fun onSwipeItemClick(swipeItem: SwipeLayout.SwipeItem) {
             if (swipeItem.left) {
                 if (swipeItem.view.isEnabled) {
                     swipeItem.view.alpha = 0.5f
@@ -68,7 +68,7 @@ class RecyclerAdapter : RecyclerView.Adapter<RecyclerAdapter.ViewHolder>() {
                     swipeItem.view.isEnabled = true
                 }
             } else {
-                when (index) {
+                when (swipeItem.position) {
                     0 -> {
                         Toast.makeText(itemView.context, "Reload", Toast.LENGTH_SHORT).show()
                     }
