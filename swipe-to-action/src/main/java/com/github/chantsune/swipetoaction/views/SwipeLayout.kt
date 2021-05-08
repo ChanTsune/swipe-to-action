@@ -52,8 +52,8 @@ open class SwipeLayout(
     var onlyOneSwipe = true
     protected var itemWidth = 0
 
-    private val rightLayoutMaxWidth: Int get() = itemWidth * rightViews.size
-    private val leftLayoutMaxWidth: Int get() = itemWidth * leftViews.size
+    private val rightLayoutMaxWidth: Int get() = itemWidth * rightItems.size
+    private val leftLayoutMaxWidth: Int get() = itemWidth * leftItems.size
     var contentView: View = View(context).also { addView(it) }
         private set
     private val rightLinear: LinearLayout = createLinearLayout(Gravity.END).also {
@@ -171,7 +171,6 @@ open class SwipeLayout(
         }
     }
 
-
     private fun setLeftSwipeItems(views: List<View>, bindSwipeItemOnClick: Boolean = true) {
         leftViews = views
 
@@ -209,7 +208,6 @@ open class SwipeLayout(
     override fun setOnClickListener(listener: OnClickListener?) {
         contentView.setOnClickListener(listener)
     }
-
 
     private fun createLinearLayout(gravity: Int): LinearLayout {
         return LinearLayout(context).also { linearLayout ->
@@ -277,7 +275,6 @@ open class SwipeLayout(
             override fun onAnimationEnd(animation: Animation) {
                 clickBySwipe()
             }
-
             override fun onAnimationRepeat(animation: Animation) {}
         }
 
@@ -579,7 +576,7 @@ open class SwipeLayout(
         animated: Boolean,
         animationListener: Animation.AnimationListener?
     ) {
-        val requiredWidthRight = rightViews.size * itemWidth
+        val requiredWidthRight = rightLayoutMaxWidth
         if (animated) {
             val swipeAnim =
                 SwipeAnimation(rightLinear, requiredWidthRight, contentView, false)
@@ -592,7 +589,7 @@ open class SwipeLayout(
     }
 
     private fun expandLeftItem(animated: Boolean, animationListener: Animation.AnimationListener?) {
-        val requiredWidthLeft = leftViews.size * itemWidth
+        val requiredWidthLeft = leftLayoutMaxWidth
         if (animated) {
             val swipeAnim =
                 SwipeAnimation(leftLinear, requiredWidthLeft, contentView, true)
