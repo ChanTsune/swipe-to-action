@@ -2,7 +2,7 @@ package com.github.chantsune.swipetoaction.demo.mail.paging
 
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
-import com.github.chantsune.swipetoaction.demo.mail.model.Mail
+import com.github.chantsune.swipetoaction.demo.mail.entity.Mail
 import com.github.chantsune.swipetoaction.demo.mail.repository.IMailRepository
 
 class MailDataSource(private val repository: IMailRepository) : PagingSource<Int, Mail>() {

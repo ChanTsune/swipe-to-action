@@ -2,7 +2,7 @@ package com.github.chantsune.swipetoaction.demo.mail
 
 import androidx.lifecycle.ViewModel
 import androidx.paging.*
-import com.github.chantsune.swipetoaction.demo.mail.model.Mail
+import com.github.chantsune.swipetoaction.demo.mail.entity.Mail
 import com.github.chantsune.swipetoaction.demo.mail.paging.MailDataSource
 import com.github.chantsune.swipetoaction.demo.mail.repository.IMailRepository
 import com.github.chantsune.swipetoaction.demo.mail.repository.MailRepository

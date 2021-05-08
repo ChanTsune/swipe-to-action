@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.github.chantsune.swipetoaction.demo.R
 import com.github.chantsune.swipetoaction.demo.databinding.ViewMailListItemBinding
-import com.github.chantsune.swipetoaction.demo.mail.model.Mail
+import com.github.chantsune.swipetoaction.demo.mail.entity.Mail
 import com.github.chantsune.swipetoaction.views.SwipeLayout
 
 abstract class MailAdapter : PagingDataAdapter<Mail, MailAdapter.ViewHolder>(DIFF_CALL_BACK) {

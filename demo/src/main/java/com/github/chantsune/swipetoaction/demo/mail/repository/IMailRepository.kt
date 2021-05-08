@@ -1,6 +1,6 @@
 package com.github.chantsune.swipetoaction.demo.mail.repository
 
-import com.github.chantsune.swipetoaction.demo.mail.model.Mail
+import com.github.chantsune.swipetoaction.demo.mail.entity.Mail
 
 interface IMailRepository {
     suspend fun getList(page: Int, size: Int): List<Mail>

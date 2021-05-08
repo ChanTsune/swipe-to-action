@@ -1,4 +1,4 @@
-package com.github.chantsune.swipetoaction.demo.mail.model
+package com.github.chantsune.swipetoaction.demo.mail.entity
 
 data class Mail(
     val id: Int,
