@@ -8,33 +8,47 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.get
 import androidx.navigation.fragment.findNavController
-import com.github.chantsune.swipetoaction.demo.databinding.FragmentMainBinding
+import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.github.chantsune.swipetoaction.demo.R
+import com.github.chantsune.swipetoaction.demo.base.BaseListFragment
 
-class MainFragment : Fragment() {
-    private lateinit var binding: FragmentMainBinding
+class MainFragment : BaseListFragment() {
+
     private lateinit var viewModel: MainViewModel
-
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        binding = FragmentMainBinding.inflate(inflater, container, false)
-        return binding.root
-    }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         viewModel = ViewModelProvider(this).get()
 
-        binding.goToSimpleButton.setOnClickListener {
-            findNavController().navigate(MainFragmentDirections.actionMainFragmentToSimpleSwipeLayoutFragment())
+        binding.swipeRefreshLayout.setOnRefreshListener {
+            binding.swipeRefreshLayout.isRefreshing = false
         }
-        binding.goToCustomButton.setOnClickListener {
-            findNavController().navigate(MainFragmentDirections.actionMainFragmentToCustomSwipeLayoutFragment())
-        }
-        binding.goToGridButton.setOnClickListener {
-            findNavController().navigate(MainFragmentDirections.actionMainFragmentToMailLayoutFragment())
+
+        binding.recyclerView.apply {
+            adapter = object : MainListAdapter(listOf(
+                R.string.simple_swipe_layout,
+                R.string.custom_swipe_layout,
+                R.string.mail_app_sample,
+            ).map { getString(it) }) {
+                override fun onItemClick(item: String, position: Int) {
+                    findNavController().navigate(
+                        when (position) {
+                            0 -> MainFragmentDirections.actionMainFragmentToSimpleSwipeLayoutFragment()
+                            1 -> MainFragmentDirections.actionMainFragmentToCustomSwipeLayoutFragment()
+                            else -> MainFragmentDirections.actionMainFragmentToMailLayoutFragment()
+                        }
+                    )
+                }
+            }
+            layoutManager = LinearLayoutManager(requireContext())
+            addItemDecoration(
+                DividerItemDecoration(
+                    requireContext(),
+                    DividerItemDecoration.VERTICAL
+                )
+            )
+            setHasFixedSize(true)
         }
     }
-
 }

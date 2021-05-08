@@ -7,17 +7,18 @@
     app:layout_swipeCanFullSwipeLeftToRight="false"
     app:layout_swipeCanFullSwipeRightToLeft="true"
     app:layout_swipeIconSize="25dp"
+    app:layout_swipeLeftIconColors="@array/mail_left_icon_colors"
     app:layout_swipeLeftItemColors="@array/mail_left_colors"
     app:layout_swipeLeftItemIcons="@array/mail_left_icons"
-    app:layout_swipeLeftIconColors="@array/mail_left_icon_colors"
+    app:layout_swipeRightIconColors="@array/rightDrawableColors"
     app:layout_swipeRightItemColors="@array/mail_right_colors"
     app:layout_swipeRightItemIcons="@array/mail_right_icons"
-    app:layout_swipeRightIconColors="@array/rightDrawableColors"
     app:layout_swipeSwipeItemWidth="70dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="?attr/selectableItemBackground">
 
         <androidx.constraintlayout.utils.widget.ImageFilterView
             android:id="@+id/notification_icon"
