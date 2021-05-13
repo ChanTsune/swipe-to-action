@@ -4,6 +4,9 @@
 [![](https://jitpack.io/v/ChanTsune/swipe-to-action.svg)](https://jitpack.io/#ChanTsune/swipe-to-action)
 ![GitHub](https://img.shields.io/github/license/ChanTsune/swipe-to-action)
 
+
+<img src="https://user-images.githubusercontent.com/41658782/118068563-8c6c8a80-b3dd-11eb-886f-207bd8813dad.png" width="360" />
+
 ## setup
 
 ```groovy
