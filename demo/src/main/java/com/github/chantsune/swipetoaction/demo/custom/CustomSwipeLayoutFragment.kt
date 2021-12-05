@@ -2,6 +2,7 @@ package com.github.chantsune.swipetoaction.demo.custom
 
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
+import android.view.View
 import androidx.lifecycle.get
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
