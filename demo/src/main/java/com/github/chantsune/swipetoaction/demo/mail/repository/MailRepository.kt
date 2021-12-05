@@ -5,12 +5,7 @@ import com.github.chantsune.swipetoaction.demo.mail.entity.Mail
 class MailRepository : IMailRepository {
 
     private val mailList: MutableList<Mail> = MutableList(50) {
-        when (it) {
-            0 -> Mail(it, "Apple Store", "Title", "Body ".repeat(10), "18:58", false, false)
-            1 -> Mail(it, "Apple Store", "Title", "Body ".repeat(20), "17:32", false, false)
-            2 -> Mail(it, "Apple Store", "Title", "Body ".repeat(30), "15:43", true, true)
-            else -> Mail(it, "Apple Store", "Title", "Body ".repeat(30), "date", false, false)
-        }
+        createEmail(it)
     }
 
     override suspend fun getList(page: Int, size: Int): List<Mail> {
@@ -33,6 +28,12 @@ class MailRepository : IMailRepository {
             else -> {
                 mailList[idx] = mail
             }
+        }
+    }
+
+    companion object {
+        fun createEmail(id: Int): Mail {
+            return Mail(id, "Apple Store", "Title", "Body ".repeat(id + 1), "18:%02d".format(id), false, false)
         }
     }
 }
