@@ -5,6 +5,8 @@ plugins {
 }
 
 android {
+    namespace "com.github.chantsune.swipetoaction.demo"
+
     compileSdkVersion 33
     buildToolsVersion "30.0.3"
 
