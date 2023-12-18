@@ -9,7 +9,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - id: release
-        uses: ChanTsune/release-with-commit@v2.8.1
+        uses: ChanTsune/release-with-commit@v3.0.0
         with:
           regexp: "Release (\\d+([.]\\d+)*)\n*((\\s|\\S)+)"
           regexp_options: "us"
