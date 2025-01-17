@@ -2,7 +2,7 @@
 buildscript {
     ext.kotlin_version = "2.1.0"
     ext.nav_version = "2.8.5"
-    ext.paging_version = "3.3.4"
+    ext.paging_version = "3.3.5"
 
     repositories {
         google()
